@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scientific-paper xmlns="http://www.ftn.uns.ac.rs/scientific-paper"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.ftn.uns.ac.rs/scientific-paper"
+ received="2006-05-04" revised="2006-05-04" accepted="2006-05-04">
+    <header>
+        <title>Scientific publication 1</title>
+        <authors>
+            <paper-author>
+                <first-name>first-name0</first-name>
+                <last-name>last-name0</last-name>
+                <university>
+                    <name>name0</name>
+                    <address>
+                        <city>city0</city>
+                        <country>country0</country>
+                    </address>
+                </university>
+            </paper-author>
+        </authors>
+    </header>
+    <abstract>
+        <keywords>keywords0</keywords>
+        <purpose>
+            Some text....
+            <bold>bold0</bold>
+            More text...
+            <bold>The end</bold>
+        </purpose>
+        <paper-type>paper-type0</paper-type>
+    </abstract>
+    <sections>
+        <section heading="heading1">
+            <paragraph>
+                Bunch of text.....
+                <underline>underline0</underline>
+                <quote>"Some quote"</quote>
+            </paragraph>
+            <paragraph>
+                A bit of text here
+                <underline>underline1</underline>
+                <underline>underline2</underline>
+                A bit of text there
+            </paragraph>
+        </section>
+        <section heading="heading3">
+            <paragraph>
+                <underline>underline3</underline>
+                <italic>italic0</italic>
+            </paragraph>
+            <paragraph>
+                <quote>quote1</quote>
+                <italic>italic1</italic>
+            </paragraph>
+        </section>
+    </sections>
+    <references>
+        <reference>
+            <authors>
+                <ref-author>
+                    <first-name>first-name2</first-name>
+                    <last-name>last-name2</last-name>
+                    <middle-name>middle-name2</middle-name>
+                </ref-author>
+                <ref-author>
+                    <first-name>first-name3</first-name>
+                    <last-name>last-name3</last-name>
+                    <middle-name>middle-name3</middle-name>
+                </ref-author>
+            </authors>
+            <year>50</year>
+            <paper-name>paper-name0</paper-name>
+            <journal>journal0</journal>
+        </reference>
+        <reference>
+            <authors>
+                <ref-author>
+                    <first-name>first-name4</first-name>
+                    <last-name>last-name4</last-name>
+                </ref-author>
+            </authors>
+            <year>50</year>
+            <paper-name>paper-name1</paper-name>
+        </reference>
+    </references>
+</scientific-paper>

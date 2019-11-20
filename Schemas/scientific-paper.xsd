@@ -2,7 +2,7 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
     targetNamespace="http://www.ftn.uns.ac.rs/scientific-paper"
     xmlns:sp="http://www.ftn.uns.ac.rs/scientific-paper">
-
+    
     <xs:element name="scientific-paper">
         <xs:complexType>
             <xs:sequence>
@@ -42,8 +42,8 @@
     <xs:complexType abstract="false" name="TAuthor">
         <xs:sequence>
             <xs:element minOccurs="1" name="first-name" type="xs:string"/>
-            <xs:element name="last-name" type="xs:string"/>
             <xs:element minOccurs="0" name="middle-name" type="xs:string"/>
+            <xs:element name="last-name" type="xs:string"/>
         </xs:sequence>
     </xs:complexType>
     <xs:complexType name="TPaperAuthor">

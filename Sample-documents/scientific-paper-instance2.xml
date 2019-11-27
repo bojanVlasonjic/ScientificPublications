@@ -9,34 +9,34 @@
         <title>Document phenomenology: a framework for holistic analysis</title>
         
         <authors>
-            <paper-author>
+            <author>
                 <first-name>Tim</first-name>
                 <last-name>Gorichanaz</last-name>
                 
-                <university>
+                <institution>
                     <name>Drexel University</name>
-                    <address>
+                    <location>
                         <city>Philadelphia </city>
                         <state>Pennsylvania </state>
                         <country>USA </country>
-                    </address>
-                </university>
-            </paper-author>
+                    </location>
+                </institution>
+            </author>
             
-            <paper-author>
+            <author>
                 <first-name>Kiersten</first-name>
                 <middle-name> F. </middle-name>
                 <last-name>Latham</last-name>
                 
-                <university>
+                <institution>
                     <name>Kent State University</name>
-                    <address>
+                    <location>
                         <city>Kent </city>
                         <state>Ohio</state>
                         <country>USA </country>
-                    </address>
-                </university>
-            </paper-author>
+                    </location>
+                </institution>
+            </author>
         </authors>
     </header>
     
@@ -136,10 +136,10 @@
     <references>
         <reference>
             <authors>
-                <ref-author>
+                <author>
                     <first-name>Anderson</first-name>
                     <last-name> R.L. </last-name>
-                </ref-author>
+                </author>
             </authors>
             <year>2007</year>
             <paper-name>The functional ontology of filmic documents</paper-name>
@@ -150,10 +150,10 @@
         
         <reference>
             <authors>
-                <ref-author>
+                <author>
                     <first-name>Bates  </first-name>
                     <last-name> M.J. </last-name>
-                </ref-author>
+                </author>
             </authors>
             <year>2006</year>
             <paper-name>Fundamental forms of information</paper-name>

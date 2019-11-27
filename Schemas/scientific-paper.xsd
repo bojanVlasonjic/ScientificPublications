@@ -2,7 +2,7 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
     targetNamespace="http://www.ftn.uns.ac.rs/scientific-paper"
     xmlns:sp="http://www.ftn.uns.ac.rs/scientific-paper">
-    
+
     <xs:element name="scientific-paper">
         <xs:complexType>
             <xs:sequence>
@@ -16,15 +16,25 @@
             <xs:attribute name="accepted" type="xs:date"/>
         </xs:complexType>
     </xs:element>
-    <xs:element name="university">
+    <xs:element name="institution">
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="name" type="xs:string"/>
-                <xs:element ref="sp:address"/>
+                <xs:element ref="sp:location"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
-    <xs:element name="address">
+    <xs:element name="author">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="first-name" type="xs:string"/>
+                <xs:element minOccurs="0" name="middle-name" type="xs:string"/>
+                <xs:element name="last-name" type="xs:string"/>
+                <xs:element minOccurs="0" ref="sp:institution"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="location">
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="city" type="xs:string"/>
@@ -36,33 +46,12 @@
     <xs:complexType name="THeader">
         <xs:sequence>
             <xs:element name="title" type="xs:string"/>
-            <xs:element name="authors" type="sp:TPaperAuthors"/>
+            <xs:element name="authors" type="sp:TAuthors"/>
         </xs:sequence>
     </xs:complexType>
-    <xs:complexType abstract="false" name="TAuthor">
+    <xs:complexType name="TAuthors">
         <xs:sequence>
-            <xs:element minOccurs="1" name="first-name" type="xs:string"/>
-            <xs:element minOccurs="0" name="middle-name" type="xs:string"/>
-            <xs:element name="last-name" type="xs:string"/>
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="TPaperAuthor">
-        <xs:complexContent>
-            <xs:extension base="sp:TAuthor">
-                <xs:sequence>
-                    <xs:element ref="sp:university"/>
-                </xs:sequence>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
-    <xs:complexType name="TPaperAuthors">
-        <xs:sequence>
-            <xs:element maxOccurs="unbounded" name="paper-author" type="sp:TPaperAuthor"/>
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="TRefAuthors">
-        <xs:sequence>
-            <xs:element maxOccurs="unbounded" name="ref-author" type="sp:TAuthor"/>
+            <xs:element maxOccurs="unbounded" ref="sp:author"/>
         </xs:sequence>
     </xs:complexType>
     <xs:complexType name="TAbstract">
@@ -92,14 +81,14 @@
     </xs:complexType>
     <xs:complexType name="TReference">
         <xs:sequence>
-            <xs:element name="authors" type="sp:TRefAuthors"/>
+            <xs:element name="authors" type="sp:TAuthors"/>
             <xs:element name="year" type="xs:nonNegativeInteger"/>
             <xs:element name="paper-name" type="xs:string"/>
             <xs:element name="journal" type="xs:string" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
     <xs:complexType mixed="true" name="TParagraph">
-        <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:choice maxOccurs="unbounded" minOccurs="1">
             <xs:element maxOccurs="1" minOccurs="0" name="bold" type="xs:string"/>
             <xs:element maxOccurs="1" minOccurs="0" name="italic" type="xs:string"/>
             <xs:element minOccurs="0" name="underline" type="xs:string"/>

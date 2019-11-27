@@ -1,86 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <scientific-paper xmlns="http://www.ftn.uns.ac.rs/scientific-paper"
- xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="http://www.ftn.uns.ac.rs/scientific-paper"
- received="2006-05-04" revised="2006-05-04" accepted="2006-05-04">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.ftn.uns.ac.rs/scientific-paper"
+    received="2006-05-04" revised="2006-05-04" accepted="2006-05-04">
     <header>
-        <title>Scientific publication 1</title>
+        <title>title0</title>
         <authors>
-            <paper-author>
+            <author>
                 <first-name>first-name0</first-name>
+                <middle-name>middle-name0</middle-name>
                 <last-name>last-name0</last-name>
-                <university>
+                <institution>
                     <name>name0</name>
-                    <address>
+                    <location>
                         <city>city0</city>
                         <country>country0</country>
-                    </address>
-                </university>
-            </paper-author>
+                    </location>
+                </institution>
+            </author>
+            <author>
+                <first-name>first-name1</first-name>
+                <middle-name>middle-name1</middle-name>
+                <last-name>last-name1</last-name>
+                <institution>
+                    <name>name1</name>
+                    <location>
+                        <city>city1</city>
+                        <country>country1</country>
+                    </location>
+                </institution>
+            </author>
         </authors>
     </header>
     <abstract>
         <keywords>keywords0</keywords>
         <purpose>
-            Some text....
-            <bold>bold0</bold>
-            More text...
-            <bold>The end</bold>
+            <quote>quote0</quote>
+            <underline>underline0</underline>
         </purpose>
         <paper-type>paper-type0</paper-type>
     </abstract>
     <sections>
         <section heading="heading1">
             <paragraph>
-                Bunch of text.....
-                <underline>underline0</underline>
-                <quote>"Some quote"</quote>
+                <italic>italic0</italic>
+                <bold>bold0</bold>
             </paragraph>
             <paragraph>
-                A bit of text here
-                <underline>underline1</underline>
-                <underline>underline2</underline>
-                A bit of text there
+                <bold>bold1</bold>
+                <quote>quote1</quote>
             </paragraph>
         </section>
         <section heading="heading3">
             <paragraph>
-                <underline>underline3</underline>
-                <italic>italic0</italic>
+                <italic>italic1</italic>
+                <bold>bold2</bold>
             </paragraph>
             <paragraph>
-                <quote>quote1</quote>
-                <italic>italic1</italic>
+                <underline>underline1</underline>
+                <underline>underline2</underline>
             </paragraph>
         </section>
     </sections>
     <references>
         <reference>
             <authors>
-                <ref-author>
+                <author>
                     <first-name>first-name2</first-name>
-                    <last-name>last-name2</last-name>
                     <middle-name>middle-name2</middle-name>
-                </ref-author>
-                <ref-author>
+                    <last-name>last-name2</last-name>
+                </author>
+                <author>
                     <first-name>first-name3</first-name>
-                    <last-name>last-name3</last-name>
                     <middle-name>middle-name3</middle-name>
-                </ref-author>
+                    <last-name>last-name3</last-name>
+                </author>
             </authors>
             <year>50</year>
             <paper-name>paper-name0</paper-name>
             <journal>journal0</journal>
-        </reference>
-        <reference>
-            <authors>
-                <ref-author>
-                    <first-name>first-name4</first-name>
-                    <last-name>last-name4</last-name>
-                </ref-author>
-            </authors>
-            <year>50</year>
-            <paper-name>paper-name1</paper-name>
         </reference>
     </references>
 </scientific-paper>

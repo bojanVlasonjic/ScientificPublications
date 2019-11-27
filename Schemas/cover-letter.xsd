@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+    targetNamespace="http://www.ftn.uns.ac.rs/cover-letter"
+    xmlns:cl="http://www.ftn.uns.ac.rs/cover-letter">
+    <xs:element name="cover-letter">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="sender-contact" type="cl:TContact"/>
+                <xs:element name="employer-contact" type="cl:TContact"/>
+                <xs:element name="body" type="cl:TBody"/>
+            </xs:sequence>
+            <xs:attribute name="date" type="xs:date"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="address">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="street" type="xs:string"/>
+                <xs:element minOccurs="0" name="number" type="xs:string"/>
+                <xs:element name="city" type="xs:string"/>
+                <xs:element minOccurs="0" name="state" type="xs:string"/>
+                <xs:element name="country" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="TContact">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element ref="cl:address"/>
+            <xs:element name="phone-number" type="xs:string"/>
+            <xs:element name="email" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="TBody">
+        <xs:sequence>
+            <xs:element name="salutation" type="xs:string"/>
+            <xs:element maxOccurs="1" name="paragraphs" type="cl:TParagraphs"/>
+            <xs:element name="closure" type="cl:TClosure"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="TParagraphs">
+        <xs:sequence>
+            <xs:element maxOccurs="unbounded" name="paragraph" type="cl:TParagraph"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType mixed="true" name="TParagraph">
+        <xs:choice maxOccurs="unbounded" minOccurs="1">
+            <xs:element maxOccurs="1" minOccurs="0" name="bold" type="xs:string"/>
+            <xs:element maxOccurs="1" minOccurs="0" name="italic" type="xs:string"/>
+            <xs:element minOccurs="0" name="underline" type="xs:string"/>
+        </xs:choice>
+    </xs:complexType>
+    <xs:complexType name="TClosure">
+        <xs:sequence>
+            <xs:element name="compliment" type="xs:string"/>
+            <xs:element name="signature" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

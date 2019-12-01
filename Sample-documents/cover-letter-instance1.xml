@@ -2,47 +2,45 @@
 <cover-letter xmlns="http://www.ftn.uns.ac.rs/cover-letter"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.ftn.uns.ac.rs/cover-letter"
-    date="2006-12-12">
+    date="2018-06-06">
     <sender-contact>
-        <name>MyName</name>
+        <name>Esmeralda Gonzalez</name>
         <address>
-            <street> Some street </street>
-            <number> 126 </number>
-            <city> Longyearbyen </city>
-            <state> Alaska </state>
-            <country>USA</country>
+            <city>Madrid</city>
+            <country>Espanol</country>
         </address>
-        <phone-number>0666514124421</phone-number>
-        <email>somemail@mailed.com</email>
+        <phone-number>066535586</phone-number>
+        <email>sender@email.com</email>
     </sender-contact>
     <employer-contact>
-        <name>name1</name>
+        <name>Companiento</name>
         <address>
-            <city>city1</city>
-            <country>country1</country>
+            <city>Barselona</city>
+            <country>Espanol</country>
         </address>
-        <phone-number>phone-number1</phone-number>
-        <email>email1</email>
+        <phone-number>+381677721812</phone-number>
+        <email>employer@email.com</email>
     </employer-contact>
     <body>
         <salutation>To whom it may concern,</salutation>
         <paragraphs>
             <paragraph>
-                I find myself a suitable candidate because...
-                <bold>Bolded reason </bold>
-                <bold>Another bolded reason </bold>
-                A bit more text
+                I am a computer engineer...
+                I've worked in
+                <italic> vhdl</italic>,
+                <italic> verilog </italic>
+                blabla...
             </paragraph>
-            
             <paragraph>
-                Therefore, here is some 
-                <underline> Underlined </underline>
-                Text...
+                I find myself a suitable candidate....
+                <bold> Some good bolder reason </bold>
+                <underline> Another underlined reason </underline>
+                And so on and so on...
             </paragraph>
         </paragraphs>
         <closure>
-            <compliment>Sincerely,</compliment>
-            <signature>Bojan Vlasonjic</signature>
+            <compliment>Porfavor,</compliment>
+            <signature>Esmeralda</signature>
         </closure>
     </body>
 </cover-letter>

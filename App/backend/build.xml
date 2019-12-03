@@ -1,0 +1,44 @@
+<project name="XMLParsers (JAXB)" default="main" basedir=".">
+	
+    <property name="src.dir" value="${basedir}/src"/>
+  	<property name="lib.dir" value="${basedir}/lib"/>
+  	<property name="bin.dir" value="${basedir}/bin"/>
+  	<property name="data.dir" value="${basedir}/data"/>
+	<property name="gen.dir" value="${basedir}/gen"/>
+	
+	<!-- Task za generisanje objektnog modela na osnovu XSD seme -->
+	<taskdef name="xjc" classname="com.sun.tools.xjc.XJCTask">
+	  <classpath>
+	    <fileset dir="${lib.dir}" includes="*.jar" />
+	  </classpath>
+	</taskdef>
+	
+	<!-- Task za generisanje XSD seme na osnovu objektnog modela -->
+	<taskdef name="schemagen" classname="com.sun.tools.jxc.SchemaGenTask">
+	  <classpath>
+	    <fileset dir="${lib.dir}" includes="*.jar" />
+	  </classpath>
+	</taskdef>
+	
+	<target name="init">
+	    <echo message="basedir = ${basedir}"/>
+	    <echo message="build.compiler = ${build.compiler}"/>
+	    <echo message="java.home = ${java.home}"/>
+	    <echo message="java.class.path = ${java.class.path}"/>
+	</target>
+	
+
+	<!-- Generisanje seme za naucni rad -->
+	<target name="generate_scientific_paper" depends="init">
+			<xjc schema="${data.dir}/scientific-paper.xsd" destdir="${gen.dir}"/>
+	</target>
+	
+	<!-- Generisanje seme propratno pismo -->
+	<target name="generate_cover_letter" depends="init">
+				<xjc schema="${data.dir}/cover-letter.xsd" destdir="${gen.dir}"/>
+		</target>
+		
+
+	<target name="main"/>
+  
+</project>

@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+    elementFormDefault="qualified"
     targetNamespace="http://www.ftn.uns.ac.rs/scientific-paper"
     xmlns:sp="http://www.ftn.uns.ac.rs/scientific-paper"
+    xmlns:cmn="http://www.ftn.uns.ac.rs/common"
     xmlns:jxb="http://java.sun.com/xml/ns/jaxb" jxb:version="2.0">
 
+    <xs:import schemaLocation="common.xsd" namespace="http://www.ftn.uns.ac.rs/common"/>
     <!-- Converting dates from XMLGregoricanCalendar to java.util.date -> TODO: set paths
     <xs:annotation>
         <xs:appinfo>
@@ -24,8 +27,11 @@
             <xs:attribute name="received" type="xs:date"/>
             <xs:attribute name="revised" type="xs:date"/>
             <xs:attribute name="accepted" type="xs:date"/>
+            <xs:attribute name="id" type="cmn:TPositiveInteger" use="required"/>
+
         </xs:complexType>
     </xs:element>
+
     <xs:element name="institution">
         <xs:complexType>
             <xs:sequence>
@@ -105,4 +111,6 @@
             <xs:element minOccurs="0" name="quote" type="xs:string"/>
         </xs:choice>
     </xs:complexType>
+
+
 </xs:schema>

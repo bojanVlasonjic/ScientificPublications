@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<rvw:review xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rvw="http://www.ftn.uns.ac.rs/review" xsi:schemaLocation="http://www.ftn.uns.ac.rs/review review.xsd" id="1" paper-id="2">
+  
+
+  <rvw:recommendation>Minor Revisions</rvw:recommendation>
+  
+  <rvw:questionare>
+    <rvw:question>
+      <rvw:question-text>The subject addressed in this article is worthy of investigation</rvw:question-text>
+      <rvw:selected>Agree</rvw:selected>
+    </rvw:question>
+    <rvw:question>
+      <rvw:question-text>The information presented is new</rvw:question-text>
+      <rvw:selected>Strongly agree</rvw:selected>
+    </rvw:question>
+    <rvw:question>
+      <rvw:question-text>The conclusions are supported by data</rvw:question-text>
+      <rvw:selected>Agree</rvw:selected>
+    </rvw:question>
+    <rvw:question>
+      <rvw:question-text>Figures, tables and supplementary data are apporpriate</rvw:question-text>
+      <rvw:selected>Disagree</rvw:selected>
+    </rvw:question>
+  </rvw:questionare>
+  
+  <rvw:comments-to-author>
+  	<rvw:comment>Comment 1</rvw:comment>
+  	<rvw:comment>Comment 2</rvw:comment>
+  	<rvw:comment>Comment 3</rvw:comment>
+  </rvw:comments-to-author>
+
+  <rvw:comments-to-editor>
+  	<rvw:comment>Secret comment 1</rvw:comment>
+  	<rvw:comment>Secret comment 2</rvw:comment>
+  	<rvw:comment>Secret comment 3</rvw:comment>
+  </rvw:comments-to-editor>
+</rvw:review>

@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+		   elementFormDefault="qualified" 
+	       targetNamespace="http://www.ftn.uns.ac.rs/review" 
+	       xmlns:rvw="http://www.ftn.uns.ac.rs/review" 
+	       xmlns:cmn="http://www.ftn.uns.ac.rs/common"
+	       xmlns:jxb="http://java.sun.com/xml/ns/jaxb" 
+	       jxb:version="2.0">
+  <xs:import schemaLocation="common.xsd" namespace="http://www.ftn.uns.ac.rs/common"/>
+
+  <xs:element name="review">
+  	<xs:complexType>
+  		<xs:sequence>
+  			<xs:element name="recommendation" type="rvw:TRecommendation"/>
+  			<xs:element name="questionare" type="rvw:TQuestionare"/>
+  			<xs:element name="comments-to-author" type="rvw:TComments"/>
+  			<xs:element name="comments-to-editor" type="rvw:TComments"/>
+  		</xs:sequence>
+  		<xs:attribute name="id" type="cmn:TPositiveInteger" use="required"/>
+  		<xs:attribute name="paper-id" type="cmn:TPositiveInteger" use="required"/>
+  	</xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="TRecommendation">
+  	<xs:restriction base="xs:string">
+  		<xs:enumeration value="Accept"/>
+  		<xs:enumeration value="Reject"/>
+  		<xs:enumeration value="Minor Revisions"/>
+  		<xs:enumeration value="Major Revisions"/>
+  	</xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="TQuestionare">
+  	<xs:sequence>
+  		<xs:element name="question" type="rvw:TQuestion" maxOccurs="unbounded"/>
+  	</xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="TQuestion">
+  	<xs:sequence>
+  	  <xs:element name="question-text" type="xs:string"/>
+      <xs:element name="selected" type="rvw:TOption"/>
+  	</xs:sequence>
+  </xs:complexType>
+	
+  <xs:simpleType name="TOption">
+  	<xs:restriction base="xs:string">
+  		<xs:enumeration value="Strongly disagree"/>
+  		<xs:enumeration value="Disagree"/>
+  		<xs:enumeration value="Neutral"/>
+  		<xs:enumeration value="Agree"/>
+  		<xs:enumeration value="Strongly agree"/>
+  	</xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="TComments">
+  	<xs:sequence>
+  		<xs:element name="comment" maxOccurs="unbounded"/>
+  	</xs:sequence>
+  </xs:complexType>
+
+</xs:schema>

@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	       xmlns:cmn="http://www.ftn.uns.ac.rs/common" 
+	       xmlns:jxb="http://java.sun.com/xml/ns/jaxb" 
+	       elementFormDefault="qualified" 
+	       targetNamespace="http://www.ftn.uns.ac.rs/common" 
+	       jxb:version="2.0">
+
+	<xs:simpleType name="TPositiveInteger">
+        <xs:restriction base="xs:nonNegativeInteger">
+            <xs:minInclusive value="1"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>

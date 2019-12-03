@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cover-letter xmlns="http://www.ftn.uns.ac.rs/cover-letter"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.ftn.uns.ac.rs/cover-letter"
+    date="2018-06-06">
+    <sender-contact>
+        <name>Esmeralda Gonzalez</name>
+        <address>
+            <city>Madrid</city>
+            <country>Espanol</country>
+        </address>
+        <phone-number>066535586</phone-number>
+        <email>sender@email.com</email>
+    </sender-contact>
+    <employer-contact>
+        <name>Companiento</name>
+        <address>
+            <city>Barselona</city>
+            <country>Espanol</country>
+        </address>
+        <phone-number>+381677721812</phone-number>
+        <email>employer@email.com</email>
+    </employer-contact>
+    <body>
+        <salutation>To whom it may concern,</salutation>
+        <paragraphs>
+            <paragraph>
+                I am a computer engineer...
+                I've worked in
+                <italic> vhdl</italic>,
+                <italic> verilog </italic>
+                blabla...
+            </paragraph>
+            <paragraph>
+                I find myself a suitable candidate....
+                <bold> Some good bolder reason </bold>
+                <underline> Another underlined reason </underline>
+                And so on and so on...
+            </paragraph>
+        </paragraphs>
+        <closure>
+            <compliment>Porfavor,</compliment>
+            <signature>Esmeralda</signature>
+        </closure>
+    </body>
+</cover-letter>

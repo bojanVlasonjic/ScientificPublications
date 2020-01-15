@@ -2,7 +2,7 @@
 <scientific-paper xmlns="http://www.ftn.uns.ac.rs/scientific-paper"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.ftn.uns.ac.rs ../Schemas/scientific-paper.xsd"
-    received="2006-05-04" revised="2006-05-04" accepted="2006-05-04" id="1">
+    received="2006-05-04" revised="2006-05-04" accepted="2006-05-04">
     <header>
         <title>title0</title>
         <authors>

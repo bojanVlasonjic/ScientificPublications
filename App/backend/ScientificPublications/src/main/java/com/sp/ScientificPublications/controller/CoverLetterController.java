@@ -2,6 +2,7 @@ package com.sp.ScientificPublications.controller;
 
 import com.sp.ScientificPublications.dto.DocumentPathDTO;
 import com.sp.ScientificPublications.service.CoverLetterService;
+import com.sp.ScientificPublications.service.XmlTransformerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,10 +13,20 @@ import org.springframework.web.bind.annotation.*;
 public class CoverLetterController {
 
     @Autowired
-    CoverLetterService coverLetterService;
+    private CoverLetterService coverLetterService;
+
 
     @PostMapping("/validate")
-    public ResponseEntity<Boolean> validateCoverLetter(@RequestBody DocumentPathDTO documentPathDTO) {
-        return new ResponseEntity<>(coverLetterService.validateCoverLetter(documentPathDTO.getPath()), HttpStatus.OK);
+    public ResponseEntity<Boolean> validateCoverLetter(@RequestBody DocumentPathDTO documentPath) {
+        return new ResponseEntity<>(coverLetterService.validateCoverLetter(documentPath.getPath()), HttpStatus.OK);
+    }
+
+    @PostMapping("/generate-pdf")
+    public ResponseEntity<String> generatePdf(@RequestBody DocumentPathDTO documentPath) {
+
+        return new ResponseEntity<>(
+                coverLetterService.generatePdf(documentPath.getPath()),
+                HttpStatus.OK);
+
     }
 }

@@ -55,31 +55,42 @@
 		</dependency>
 
 
+		<!-- Additional dependencies -->
 		<dependency>
 			<groupId>net.sf.xmldb-org</groupId>
 			<artifactId>xmldb-api</artifactId>
 			<version>1.7.0</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.exist-db</groupId>
 			<artifactId>exist-core</artifactId>
 			<version>5.0.0</version>
 			<scope>runtime</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>com.fasterxml.jackson.dataformat</groupId>
 			<artifactId>jackson-dataformat-xml</artifactId>
 			<version>2.9.8</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.w3c</groupId>
 			<artifactId>dom</artifactId>
 			<version>2.3.0-jaxb-1.0.6</version>
 		</dependency>
+
 		<dependency>
 			<groupId>xerces</groupId>
 			<artifactId>xercesImpl</artifactId>
 			<version>2.11.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.xmlgraphics</groupId>
+			<artifactId>fop</artifactId>
+			<version>2.4</version>
 		</dependency>
 
 	</dependencies>

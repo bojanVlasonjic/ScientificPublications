@@ -12,6 +12,7 @@
         <phone-number>066535586</phone-number>
         <email>sender@email.com</email>
     </sender-contact>
+    
     <employer-contact>
         <name>Companiento</name>
         <address>
@@ -21,6 +22,7 @@
         <phone-number>+381677721812</phone-number>
         <email>employer@email.com</email>
     </employer-contact>
+    
     <body>
         <salutation>To whom it may concern,</salutation>
         <paragraphs>

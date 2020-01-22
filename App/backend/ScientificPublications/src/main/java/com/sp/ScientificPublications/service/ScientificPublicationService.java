@@ -9,10 +9,18 @@ public class ScientificPublicationService {
     @Autowired
     DomParserService domParserSvc;
 
-    private final String schemaPath = "src/main/resources/data/schemas/scientific-paper.xsd";
+    @Autowired
+    XmlTransformerService xmlTransformSvc;
+
+    private final String schemaPath = "src/main/resources/data/xsd_schema/scientific-paper.xsd";
+    private static final String xslFilePath = "src/main/resources/data/xsl_fo/ADD_FILE_NAME_HERE";
 
 
     public boolean validateScientificPublication(String xmlDocumentPath) {
         return domParserSvc.validateXmlDocument(xmlDocumentPath, schemaPath);
+    }
+
+    public String generatePdf(String xmlDocumentPath) {
+        return xmlTransformSvc.generatePdfFromXml(xmlDocumentPath, xslFilePath);
     }
 }

@@ -1,6 +1,9 @@
 package com.sp.ScientificPublications.service;
 
 import com.sp.ScientificPublications.dto.DocumentDTO;
+import com.thaiopensource.util.Uri;
+import org.apache.commons.io.Charsets;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
@@ -16,8 +19,12 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 
 @Service

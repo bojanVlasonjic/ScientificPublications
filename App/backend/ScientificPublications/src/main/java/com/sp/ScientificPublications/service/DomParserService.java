@@ -73,7 +73,7 @@ public class DomParserService {
             Schema schema = schemaFactory.newSchema(schemaFile);
             Validator validator = schema.newValidator();
             validator.validate(xmlFile);
-            System.out.println(xmlFile.getSystemId() + " is valid");
+            System.out.println("Document is valid");
 
             return true;
 

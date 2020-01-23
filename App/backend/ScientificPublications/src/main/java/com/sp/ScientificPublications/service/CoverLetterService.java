@@ -33,7 +33,27 @@ public class CoverLetterService {
         return xmlTransformSvc.generatePdfFromXml(xmlDocumentPath, xslFilePath);
     }
 
+    public DocumentDTO retrieveCoverLetter(String fileId) {
+
+        XMLResource resource;
+        DocumentDTO document;
+
+        try {
+            resource = existRepo.retrieveXmlFile(collectionId, fileId);
+            document = new DocumentDTO(resource.getId(), resource.getContent().toString());
+        } catch (XMLDBException e) {
+            e.printStackTrace();
+            throw new ApiBadRequestException("Failed to retrieve the cover letter");
+        }
+
+        return document;
+    }
+
     public DocumentDTO storeCoverLetter(DocumentDTO documentDTO) {
+
+        if(!validateCoverLetter(documentDTO.getDocumentContent())) {
+            throw new ApiBadRequestException("The cover letter is not in a valid format");
+        }
 
         XMLResource resource;
 

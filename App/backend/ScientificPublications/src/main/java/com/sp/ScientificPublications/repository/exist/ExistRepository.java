@@ -1,6 +1,7 @@
 package com.sp.ScientificPublications.repository.exist;
 
 import com.sp.ScientificPublications.dto.DocumentDTO;
+import com.sp.ScientificPublications.exception.ApiNotFoundException;
 import com.sp.ScientificPublications.models.ConnectionProperties;
 import org.exist.xmldb.EXistResource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.CollectionManagementService;
 import org.xmldb.api.modules.XMLResource;
 
+import javax.xml.transform.OutputKeys;
 import java.util.UUID;
 
 @Repository
@@ -46,32 +48,56 @@ public class ExistRepository {
             System.out.println("[INFO] Done.");
 
         } finally {
-            //clean up
-            if(res != null) {
-                try {
-                    ((EXistResource)res).freeResources();
-                } catch (XMLDBException xe) {
-                    xe.printStackTrace();
-                }
-            }
-
-            if(col != null) {
-                try {
-                    col.close();
-                } catch (XMLDBException xe) {
-                    xe.printStackTrace();
-                }
-            }
+            this.cleanUp(col, res);
         }
 
         return res;
     }
 
 
-    public XMLResource retrieveXmlFile(String collectionId, String fileId) {
-        //TODO: implement
+    public XMLResource retrieveXmlFile(String collectionId, String documentId) throws XMLDBException {
 
-        return null;
+        Collection col = null;
+        XMLResource res = null;
+
+        try {
+            System.out.println("[INFO] Retrieving the collection: " + collectionId);
+            col = getOrCreateCollection(collectionId);
+            col.setProperty(OutputKeys.INDENT, "yes");
+
+            System.out.println("[INFO] Retrieving the document: " + documentId);
+            res = (XMLResource)col.getResource(documentId);
+
+            if(res == null) {
+                throw new ApiNotFoundException("Failed to find document");
+            }
+
+        } finally {
+            this.cleanUp(col, res);
+        }
+
+        return res;
+    }
+
+
+    private void cleanUp(Collection col, XMLResource res) {
+
+        if(res != null) {
+            try {
+                ((EXistResource)res).freeResources();
+            } catch (XMLDBException xe) {
+                xe.printStackTrace();
+            }
+        }
+
+        if(col != null) {
+            try {
+                col.close();
+            } catch (XMLDBException xe) {
+                xe.printStackTrace();
+            }
+        }
+
     }
 
 

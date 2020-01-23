@@ -15,6 +15,11 @@ public class CoverLetterController {
     @Autowired
     private CoverLetterService coverLetterService;
 
+    @GetMapping("/{id}")
+    public  ResponseEntity<DocumentDTO> getCoverLetterById(@PathVariable String id) {
+        return new ResponseEntity<>(coverLetterService.retrieveCoverLetter(id), HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<DocumentDTO> storeCoverLetter(@RequestBody DocumentDTO documentDTO) {
         return new ResponseEntity<>(coverLetterService.storeCoverLetter(documentDTO), HttpStatus.CREATED);

@@ -1,5 +1,6 @@
 package com.sp.ScientificPublications.controller;
 
+import com.sp.ScientificPublications.dto.DocumentDTO;
 import com.sp.ScientificPublications.dto.DocumentPathDTO;
 import com.sp.ScientificPublications.service.CoverLetterService;
 import com.sp.ScientificPublications.service.XmlTransformerService;
@@ -15,6 +16,10 @@ public class CoverLetterController {
     @Autowired
     private CoverLetterService coverLetterService;
 
+    @PostMapping
+    public ResponseEntity<DocumentDTO> storeCoverLetter(@RequestBody DocumentDTO documentDTO) {
+        return new ResponseEntity<>(coverLetterService.storeCoverLetter(documentDTO), HttpStatus.CREATED);
+    }
 
     @PostMapping("/validate")
     public ResponseEntity<Boolean> validateCoverLetter(@RequestBody DocumentPathDTO documentPath) {
@@ -27,6 +32,7 @@ public class CoverLetterController {
         return new ResponseEntity<>(
                 coverLetterService.generatePdf(documentPath.getPath()),
                 HttpStatus.OK);
-
     }
+
+
 }

@@ -1,5 +1,6 @@
 package com.sp.ScientificPublications.controller;
 
+import com.sp.ScientificPublications.dto.DocumentDTO;
 import com.sp.ScientificPublications.dto.DocumentPathDTO;
 import com.sp.ScientificPublications.service.ScientificPublicationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,8 @@ public class ScientificPublicationController {
     ScientificPublicationService scPublService;
 
     @PostMapping("/validate")
-    public ResponseEntity<Boolean> validateScientificPublication(@RequestBody  DocumentPathDTO documentPathDTO) {
-        return new ResponseEntity<>(scPublService.validateScientificPublication(documentPathDTO.getPath()), HttpStatus.OK);
+    public ResponseEntity<Boolean> validateScientificPublication(@RequestBody DocumentDTO document) {
+        return new ResponseEntity<>(scPublService.validateScientificPublication(document.getDocumentContent()),
+                HttpStatus.OK);
     }
 }

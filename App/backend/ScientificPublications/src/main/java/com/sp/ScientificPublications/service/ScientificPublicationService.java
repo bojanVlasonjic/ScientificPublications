@@ -17,8 +17,8 @@ public class ScientificPublicationService {
     private static final String collectionId = "/db/scientific-publication/scientific-publications";
 
 
-    public boolean validateScientificPublication(String xmlDocumentPath) {
-        return domParserSvc.validateXmlDocument(xmlDocumentPath, schemaPath);
+    public boolean validateScientificPublication(String documentContent) {
+        return domParserSvc.validateXmlDocument(documentContent, schemaPath);
     }
 
     public String generatePdf(String xmlDocumentPath) {

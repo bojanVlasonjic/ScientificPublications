@@ -1,11 +1,7 @@
 package com.sp.ScientificPublications.service;
 
 import com.sp.ScientificPublications.dto.DocumentDTO;
-import com.sp.ScientificPublications.exception.ApiBadRequestException;
-import com.sp.ScientificPublications.exception.ApiException;
-import com.sp.ScientificPublications.exception.ApiNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
@@ -20,7 +16,6 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringReader;
 
@@ -58,14 +53,14 @@ public class DomParserService {
     }
 
 
-    public boolean validateXmlDocument(String filePath, String schemaPath) {
+    public boolean validateXmlDocument(String fileContent, String schemaPath) {
 
-        if(filePath == null || schemaPath == null) {
+        if(fileContent == null || schemaPath == null) {
             return false;
         }
 
         File schemaFile = new File(schemaPath);
-        Source xmlFile = new StreamSource(new File(filePath));
+        Source xmlFile = new StreamSource(new StringReader(fileContent));
 
         try {
             Schema schema = schemaFactory.newSchema(schemaFile);

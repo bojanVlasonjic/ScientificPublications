@@ -25,8 +25,8 @@ public class CoverLetterService {
     private static final String collectionId = "/db/scientific-publication/cover-letters";
 
 
-    public boolean validateCoverLetter(String xmlDocumentPath) {
-        return domParserSvc.validateXmlDocument(xmlDocumentPath, schemaPath);
+    public boolean validateCoverLetter(String documentContent) {
+        return domParserSvc.validateXmlDocument(documentContent, schemaPath);
     }
 
     public String generatePdf(String xmlDocumentPath) {

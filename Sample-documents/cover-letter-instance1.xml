@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<cover-letter xmlns="http://www.ftn.uns.ac.rs/cover-letter"
+<cover-letter xmlns="http://www.ftn.uns.ac.rs/scientific-paper"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.ftn.uns.ac.rs/cover-letter"
+    xsi:schemaLocation="http://www.ftn.uns.ac.rs/scientific-paper"
     date="2018-06-06">
     <sender-contact>
         <name>Esmeralda Gonzalez</name>

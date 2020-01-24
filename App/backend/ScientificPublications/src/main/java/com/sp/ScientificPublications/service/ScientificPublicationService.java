@@ -21,7 +21,7 @@ public class ScientificPublicationService {
     ExistRepository existRepo;
 
     private static final String schemaPath = "src/main/resources/data/xsd_schema/scientific-paper.xsd";
-    private static final String xslFilePath = "src/main/resources/data/xsl_fo/ADD_FILE_NAME_HERE";
+    private static final String xslFilePath = "src/main/resources/data/xsl_fo/scientific-paper-fo.xsl";
     private static final String collectionId = "/db/scientific-publication/scientific-publications";
 
 

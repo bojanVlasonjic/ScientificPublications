@@ -68,7 +68,7 @@
                             </fo:block>
                             <xsl:for-each select="sp:paragraph">
                                 <fo:block text-indent="20px" font-size="12px" margin-bottom="5px" text-align="justify">
-                                    <xsl:value-of select="."></xsl:value-of>
+                                    <xsl:apply-templates />
                                 </fo:block>
                             </xsl:for-each>
                         </xsl:for-each>
@@ -91,6 +91,18 @@
                 </fo:flow>
             </fo:page-sequence>
         </fo:root>
+    </xsl:template>
+    
+    <xsl:template match="sp:scientific-paper/sp:sections/sp:section/sp:paragraph/sp:bold">
+        <fo:inline font-weight="bold">
+            <xsl:apply-templates select="node()"/>
+        </fo:inline>  
+    </xsl:template>
+    
+    <xsl:template match="sp:scientific-paper/sp:sections/sp:section/sp:paragraph/sp:italic">
+        <fo:inline font-style="italic">
+            <xsl:apply-templates select="node()"/>
+        </fo:inline>  
     </xsl:template>
     
 </xsl:stylesheet>

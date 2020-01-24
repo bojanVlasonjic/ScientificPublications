@@ -13,7 +13,7 @@ public class ScientificPublicationService {
     XmlTransformerService xmlTransformSvc;
 
     private final String schemaPath = "src/main/resources/data/xsd_schema/scientific-paper.xsd";
-    private static final String xslFilePath = "src/main/resources/data/xsl_fo/ADD_FILE_NAME_HERE";
+    private static final String xslFilePath = "src/main/resources/data/xsl_fo/scientific-paper-fo.xsl";
 
 
     public boolean validateScientificPublication(String xmlDocumentPath) {

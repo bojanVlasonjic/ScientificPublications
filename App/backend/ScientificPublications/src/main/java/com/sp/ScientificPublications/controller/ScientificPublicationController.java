@@ -21,4 +21,12 @@ public class ScientificPublicationController {
     public ResponseEntity<Boolean> validateScientificPublication(@RequestBody  DocumentPathDTO documentPathDTO) {
         return new ResponseEntity<>(scPublService.validateScientificPublication(documentPathDTO.getPath()), HttpStatus.OK);
     }
+    
+    @PostMapping("/generate-pdf")
+    public ResponseEntity<String> generatePdf(@RequestBody DocumentPathDTO documentPath) {
+        return new ResponseEntity<>(
+        		scPublService.generatePdf(documentPath.getPath()),
+                HttpStatus.OK);
+
+    }
 }

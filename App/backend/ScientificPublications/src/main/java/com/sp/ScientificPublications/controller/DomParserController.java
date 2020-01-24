@@ -14,8 +14,10 @@ public class DomParserController {
     @Autowired
     DomParserService docValidatorSvc;
 
+
     @PostMapping("/parse")
     public ResponseEntity<Boolean> parseXmlDocument(@RequestBody DocumentDTO documentDTO) {
         return new ResponseEntity<>(docValidatorSvc.parseXmlDocument(documentDTO), HttpStatus.OK);
     }
+
 }

@@ -1,8 +1,8 @@
 package com.sp.ScientificPublications.controller;
 
+import com.sp.ScientificPublications.dto.DocumentDTO;
 import com.sp.ScientificPublications.dto.DocumentPathDTO;
 import com.sp.ScientificPublications.service.CoverLetterService;
-import com.sp.ScientificPublications.service.XmlTransformerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +15,19 @@ public class CoverLetterController {
     @Autowired
     private CoverLetterService coverLetterService;
 
+    @GetMapping("/{id}")
+    public  ResponseEntity<DocumentDTO> getCoverLetterById(@PathVariable String id) {
+        return new ResponseEntity<>(coverLetterService.retrieveCoverLetter(id), HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<DocumentDTO> storeCoverLetter(@RequestBody DocumentDTO documentDTO) {
+        return new ResponseEntity<>(coverLetterService.storeCoverLetter(documentDTO), HttpStatus.CREATED);
+    }
 
     @PostMapping("/validate")
-    public ResponseEntity<Boolean> validateCoverLetter(@RequestBody DocumentPathDTO documentPath) {
-        return new ResponseEntity<>(coverLetterService.validateCoverLetter(documentPath.getPath()), HttpStatus.OK);
+    public ResponseEntity<Boolean> validateCoverLetter(@RequestBody DocumentDTO document) {
+        return new ResponseEntity<>(coverLetterService.validateCoverLetter(document.getDocumentContent()), HttpStatus.OK);
     }
 
     @PostMapping("/generate-pdf")
@@ -27,6 +36,7 @@ public class CoverLetterController {
         return new ResponseEntity<>(
                 coverLetterService.generatePdf(documentPath.getPath()),
                 HttpStatus.OK);
-
     }
+
+
 }

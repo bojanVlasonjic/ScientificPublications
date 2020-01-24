@@ -1,48 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<cover-letter xmlns="http://www.ftn.uns.ac.rs/scientific-paper"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.ftn.uns.ac.rs/scientific-paper"
-    date="2018-06-06">
-    <sender-contact>
-        <name>Esmeralda Gonzalez</name>
-        <address>
-            <city>Madrid</city>
-            <country>Espanol</country>
-        </address>
-        <phone-number>066535586</phone-number>
-        <email>sender@email.com</email>
-    </sender-contact>
-    
-    <employer-contact>
-        <name>Companiento</name>
-        <address>
-            <city>Barselona</city>
-            <country>Espanol</country>
-        </address>
-        <phone-number>+381677721812</phone-number>
-        <email>employer@email.com</email>
-    </employer-contact>
-    
-    <body>
-        <salutation>To whom it may concern,</salutation>
-        <paragraphs>
-            <paragraph>
-                I am a computer engineer...
-                I've worked in
-                <italic> vhdl</italic>,
-                <italic> verilog </italic>
-                blabla...
-            </paragraph>
-            <paragraph>
-                I find myself a suitable candidate....
-                <bold> Some good bolder reason </bold>
-                <underline> Another underlined reason </underline>
-                And so on and so on...
-            </paragraph>
-        </paragraphs>
-        <closure>
-            <compliment>Porfavor,</compliment>
-            <signature>Esmeralda</signature>
-        </closure>
-    </body>
-</cover-letter>
+<cl:cover-letter xmlns:cl="http://www.ftn.uns.ac.rs/scientific-paper"
+ xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.ftn.uns.ac.rs/scientific-paper file:/C:/Users/bojan/Desktop/SIIT/VII_semestar/XML-Projekat/ScientificPublications/Schemas/cover-letter.xsd">
+    <cl:sender-contact>
+        <cl:name>name0</cl:name>
+        <cl:address>
+            <cl:city>city0</cl:city>
+            <cl:country>country0</cl:country>
+        </cl:address>
+        <cl:phone-number>000000000</cl:phone-number>
+        <cl:email>a@a.aa</cl:email>
+    </cl:sender-contact>
+    <cl:employer-contact>
+        <cl:name>name1</cl:name>
+        <cl:address>
+            <cl:city>city1</cl:city>
+            <cl:country>country1</cl:country>
+        </cl:address>
+        <cl:phone-number>000000000</cl:phone-number>
+        <cl:email>a@a.aa</cl:email>
+    </cl:employer-contact>
+    <cl:body>
+        <cl:salutation>salutation0</cl:salutation>
+        <cl:paragraphs>
+            <cl:paragraph>
+            </cl:paragraph>
+        </cl:paragraphs>
+        <cl:closure>
+            <cl:compliment>compliment0</cl:compliment>
+            <cl:signature>signature0</cl:signature>
+        </cl:closure>
+    </cl:body>
+</cl:cover-letter>

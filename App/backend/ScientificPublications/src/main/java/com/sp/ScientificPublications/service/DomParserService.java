@@ -6,6 +6,7 @@ import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -84,6 +85,21 @@ public class DomParserService {
         }
 
         return false;
+    }
+    
+    public String readMultipartXMLFile(MultipartFile file) {
+    	String data = "";
+    	if (!file.isEmpty()) {
+    		byte[] bytes;
+			try {
+				bytes = file.getBytes();
+				data = new String(bytes);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+    		
+    	}
+    	return data;
     }
 
 }

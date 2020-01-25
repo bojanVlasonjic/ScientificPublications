@@ -2,6 +2,7 @@ package com.sp.ScientificPublications.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class DocumentReviewService {
@@ -15,6 +16,9 @@ public class DocumentReviewService {
 	private static final String schemaPath = "src/main/resources/data/xsd_schema/document-review.xsd";
     private static final String xslFilePath = "src/main/resources/data/xsl_fo/document-review-fo.xsl";
 
+    public boolean validateDocumentReviewXMLFile(MultipartFile file) {
+    	return this.validateDocumentReview(domParserSvc.readMultipartXMLFile(file));
+    }
 
     public boolean validateDocumentReview(String documentContent) {
         return domParserSvc.validateXmlDocument(documentContent, schemaPath);

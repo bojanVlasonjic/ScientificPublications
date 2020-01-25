@@ -5,6 +5,7 @@ import com.sp.ScientificPublications.exception.ApiBadRequestException;
 import com.sp.ScientificPublications.repository.exist.ExistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.XMLResource;
 
@@ -24,6 +25,9 @@ public class ScientificPublicationService {
     private static final String xslFilePath = "src/main/resources/data/xsl_fo/scientific-paper-fo.xsl";
     private static final String collectionId = "/db/scientific-publication/scientific-publications";
 
+    public boolean validateScientificPublicationXMLFile(MultipartFile file) {
+    	return this.validateScientificPublication(domParserSvc.readMultipartXMLFile(file));
+    }
 
     public boolean validateScientificPublication(String documentContent) {
         return domParserSvc.validateXmlDocument(documentContent, schemaPath);

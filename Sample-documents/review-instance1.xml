@@ -1,37 +1,22 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<rvw:review xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rvw="http://www.ftn.uns.ac.rs/scientific-paper" xsi:schemaLocation="http://www.ftn.uns.ac.rs/scientific-paper review.xsd" id="1" paper-id="2">
-  
-
-  <rvw:recommendation>Minor Revisions</rvw:recommendation>
-  
-  <rvw:questionare>
-    <rvw:question>
-      <rvw:question-text>The subject addressed in this article is worthy of investigation</rvw:question-text>
-      <rvw:selected>Agree</rvw:selected>
-    </rvw:question>
-    <rvw:question>
-      <rvw:question-text>The information presented is new</rvw:question-text>
-      <rvw:selected>Strongly agree</rvw:selected>
-    </rvw:question>
-    <rvw:question>
-      <rvw:question-text>The conclusions are supported by data</rvw:question-text>
-      <rvw:selected>Agree</rvw:selected>
-    </rvw:question>
-    <rvw:question>
-      <rvw:question-text>Figures, tables and supplementary data are apporpriate</rvw:question-text>
-      <rvw:selected>Disagree</rvw:selected>
-    </rvw:question>
-  </rvw:questionare>
-  
-  <rvw:comments-to-author>
-  	<rvw:comment>Comment 1</rvw:comment>
-  	<rvw:comment>Comment 2</rvw:comment>
-  	<rvw:comment>Comment 3</rvw:comment>
-  </rvw:comments-to-author>
-
-  <rvw:comments-to-editor>
-  	<rvw:comment>Secret comment 1</rvw:comment>
-  	<rvw:comment>Secret comment 2</rvw:comment>
-  	<rvw:comment>Secret comment 3</rvw:comment>
-  </rvw:comments-to-editor>
+<?xml version="1.0" encoding="UTF-8"?>
+<rvw:review xmlns:cmn="http://www.ftn.uns.ac.rs/common"
+ xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+ xmlns:rvw="http://www.ftn.uns.ac.rs/scientific-publication"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.ftn.uns.ac.rs/scientific-publication file:/C:/Users/bojan/Desktop/SIIT/VII_semestar/XML-Projekat/ScientificPublications/Schemas/review.xsd" id="50" paper-id="50">
+    <rvw:recommendation>Accept</rvw:recommendation>
+    <rvw:questionare>
+        <rvw:question>
+            <rvw:question-text>question-text0</rvw:question-text>
+            <rvw:selected>Strongly disagree</rvw:selected>
+        </rvw:question>
+    </rvw:questionare>
+    <rvw:comments-to-author>
+        <rvw:comment>
+        </rvw:comment>
+    </rvw:comments-to-author>
+    <rvw:comments-to-editor>
+        <rvw:comment>
+        </rvw:comment>
+    </rvw:comments-to-editor>
 </rvw:review>

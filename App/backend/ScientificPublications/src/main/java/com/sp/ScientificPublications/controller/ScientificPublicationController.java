@@ -1,7 +1,6 @@
 package com.sp.ScientificPublications.controller;
 
 import com.sp.ScientificPublications.dto.DocumentDTO;
-import com.sp.ScientificPublications.dto.DocumentPathDTO;
 import com.sp.ScientificPublications.service.ScientificPublicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,10 +31,10 @@ public class ScientificPublicationController {
                 HttpStatus.OK);
     }
     
-    @PostMapping("/generate-pdf")
-    public ResponseEntity<String> generatePdf(@RequestBody DocumentPathDTO documentPath) {
+    @PostMapping("/pdf/{id}")
+    public ResponseEntity<String> generatePdf(@PathVariable String id) {
         return new ResponseEntity<>(
-        		scPublService.generatePdf(documentPath.getPath()),
+        		scPublService.generatePdf(id),
                 HttpStatus.OK);
 
     }

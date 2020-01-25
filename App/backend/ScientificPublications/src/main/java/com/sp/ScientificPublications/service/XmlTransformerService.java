@@ -1,5 +1,6 @@
 package com.sp.ScientificPublications.service;
 
+import com.sp.ScientificPublications.dto.DocumentDTO;
 import com.sp.ScientificPublications.exception.ApiBadRequestException;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.fop.apps.FOUserAgent;
@@ -29,26 +30,22 @@ public class XmlTransformerService {
 
 
     /** Transforms .xml file to .pdf, using the .xsl file. Each file type has it's matching .xsl file.
-     * @param inputFilePath - path to the input xml file
-     * @param xslFilePath - path to the
+     * @param document - a dto containing the document id and it's content
+     * @param xslFilePath - path to the xsl file that fits the document type
      * @return path to the transformed pdf file (for now) */
-    public String generatePdfFromXml(String inputFilePath, String xslFilePath) {
-
-        if(!FilenameUtils.getExtension(inputFilePath).equals("xml")) {
-            throw new ApiBadRequestException("Please select a valid xml file");
-        }
+    public String generatePdfFromXml(DocumentDTO document, String xslFilePath) {
 
         ByteArrayOutputStream outputStream;
 
         // transformation using fop and xsl file
         try {
-            outputStream = this.pdfFopProcessing(inputFilePath, xslFilePath);
+            outputStream = this.pdfFopProcessing(document.getDocumentContent(), xslFilePath);
         } catch (Exception ex) {
             ex.printStackTrace();
             throw new ApiBadRequestException("Failed to transform the xml file to a pdf file");
         }
 
-        File pdfFile = this.createPdfFile(inputFilePath);
+        File pdfFile = this.createPdfFile(document.getDocumentId());
 
         // generating pdf file and it's content to the output folder
         try {
@@ -64,13 +61,13 @@ public class XmlTransformerService {
     }
 
 
-    private ByteArrayOutputStream pdfFopProcessing(String inputFilePath, String xslFilePath) throws Exception {
+    private ByteArrayOutputStream pdfFopProcessing(String documentContent, String xslFilePath) throws Exception {
 
         /* Prepping transformation data */
         File xslFile  = new File(xslFilePath);
 
         StreamSource transformSrc = new StreamSource(xslFile); // creating transformation source
-        StreamSource source = new StreamSource(new File(inputFilePath)); // init transformation subject
+        StreamSource source = new StreamSource(new StringReader(documentContent)); // init transformation subject
 
         FOUserAgent userAgent = fopFactory.newFOUserAgent(); // init user agent required for transformation
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream(); // output stream used to store results
@@ -87,11 +84,10 @@ public class XmlTransformerService {
 
     }
 
-    private File createPdfFile(String inputFilePath) {
+    private File createPdfFile(String documentId) {
 
         // generating pdf file name based on the input file name
-        String outputFileName = FilenameUtils.getBaseName(inputFilePath);
-        String outputFilePath = outputDirectory + outputFileName + ".pdf";
+        String outputFilePath = outputDirectory + documentId + ".pdf";
 
         File pdfFile = new File(outputFilePath);
         if(!pdfFile.getParentFile().exists()) {

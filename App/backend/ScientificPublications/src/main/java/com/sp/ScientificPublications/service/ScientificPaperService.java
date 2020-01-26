@@ -10,7 +10,7 @@ import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.XMLResource;
 
 @Service
-public class ScientificPublicationService {
+public class ScientificPaperService {
 
     @Autowired
     DomParserService domParserSvc;
@@ -25,19 +25,19 @@ public class ScientificPublicationService {
     private static final String xslFilePath = "src/main/resources/data/xsl_fo/scientific-paper-fo.xsl";
     private static final String collectionId = "/db/scientific-publication/scientific-publications";
 
-    public boolean validateScientificPublicationXMLFile(MultipartFile file) {
-    	return this.validateScientificPublication(domParserSvc.readMultipartXMLFile(file));
+    public boolean validateScientificPaperXMLFile(MultipartFile file) {
+    	return this.validateScientificPaper(domParserSvc.readMultipartXMLFile(file));
     }
 
-    public boolean validateScientificPublication(String documentContent) {
+    public boolean validateScientificPaper(String documentContent) {
         return domParserSvc.validateXmlDocument(documentContent, schemaPath);
     }
 
     public String generatePdf(String documentId) {
-        return xmlTransformSvc.generatePdfFromXml(retrieveScientificPublication(documentId), xslFilePath);
+        return xmlTransformSvc.generatePdfFromXml(retrieveScientificPaper(documentId), xslFilePath);
     }
 
-    public DocumentDTO retrieveScientificPublication(String fileId) {
+    public DocumentDTO retrieveScientificPaper(String fileId) {
 
         XMLResource resource;
         DocumentDTO document;
@@ -53,9 +53,9 @@ public class ScientificPublicationService {
         return document;
     }
 
-    public DocumentDTO storeScientificPublication(DocumentDTO document) {
+    public DocumentDTO storeScientificPaper(DocumentDTO document) {
 
-        if(!validateScientificPublication(document.getDocumentContent())) {
+        if(!validateScientificPaper(document.getDocumentContent())) {
             throw new ApiBadRequestException("The scientific publication is not in a valid format");
         }
 

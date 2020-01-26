@@ -14,10 +14,10 @@ export class ScientificPaperService {
   }
 
   validate(data: Document): Observable<any> {
-    return this.http.post<any>('api/scientific-publication/validate', data);
+    return this.http.post<any>('api/scientific-paper/validate', data);
   }
 
   validateFile(form: FormData): Observable<any> {
-    return this.http.post<any>('api/scientific-publication/validate-xml-file', form);
+    return this.http.post<any>('api/scientific-paper/validate-xml-file', form);
   }
 }

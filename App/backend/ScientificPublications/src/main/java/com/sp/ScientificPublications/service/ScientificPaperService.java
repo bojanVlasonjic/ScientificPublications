@@ -23,7 +23,7 @@ public class ScientificPaperService {
 
     private static final String schemaPath = "src/main/resources/data/xsd_schema/scientific-paper.xsd";
     private static final String xslFilePath = "src/main/resources/data/xsl_fo/scientific-paper-fo.xsl";
-    private static final String collectionId = "/db/scientific-publication/scientific-publications";
+    private static final String collectionId = "/db/scientific-publication/scientific-papers";
 
     public boolean validateScientificPaperXMLFile(MultipartFile file) {
     	return this.validateScientificPaper(domParserSvc.readMultipartXMLFile(file));

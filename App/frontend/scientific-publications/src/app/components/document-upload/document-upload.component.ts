@@ -4,11 +4,11 @@ import { ScientificPaperService } from 'src/app/services/scientific-paper.servic
 import { CoverLetterService } from 'src/app/services/cover-letter.service';
 
 @Component({
-  selector: 'div [app-document-validation]',
-  templateUrl: './document-validation.component.html',
-  styleUrls: ['./document-validation.component.css']
+  selector: 'div [app-document-upload]',
+  templateUrl: './document-upload.component.html',
+  styleUrls: ['./document-upload.component.css']
 })
-export class DocumentValidationComponent implements OnInit {
+export class DocumentUploadComponent implements OnInit {
 
   @ViewChild('xmlFile', {static: false}) xmlFile: ElementRef;
   private fileName: string = 'No file chosen';

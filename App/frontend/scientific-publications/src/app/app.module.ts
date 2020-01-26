@@ -7,9 +7,10 @@ import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { HttpClientModule } from '@angular/common/http';
-import { DocumentValidationComponent } from './components/document-validation/document-validation.component';
+import { DocumentUploadComponent } from './components/document-upload/document-upload.component';
 import { XmlEditorComponent } from './components/xml-editor/xml-editor.component';
 import { AceEditorModule } from 'ng2-ace-editor';
+import { DocumentEditorComponent } from './components/document-editor/document-editor.component';
 
 @NgModule({
   declarations: [
@@ -17,8 +18,9 @@ import { AceEditorModule } from 'ng2-ace-editor';
     HomeComponent,
     LoginComponent,
     RegisterComponent,
-    DocumentValidationComponent,
-    XmlEditorComponent
+    DocumentUploadComponent,
+    XmlEditorComponent,
+    DocumentEditorComponent
   ],
   imports: [
     BrowserModule,

@@ -9,6 +9,10 @@ export class ScientificPaperService {
 
   constructor(private http: HttpClient) { }
 
+  storeDocument(document: Document): Observable<any> {
+    return this.http.post<any>('api/scientific-paper', document);
+  }
+
   validate(data: Document): Observable<any> {
     return this.http.post<any>('api/scientific-publication/validate', data);
   }

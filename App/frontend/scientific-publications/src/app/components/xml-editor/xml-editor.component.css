@@ -1,0 +1,7 @@
+#xml-editor {
+    min-height: 600px;
+    font-size: 20px;
+    width:100%;
+    overflow: auto;
+    margin-bottom: 2ex;
+}

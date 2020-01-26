@@ -9,6 +9,10 @@ export class CoverLetterService {
 
   constructor(private http: HttpClient) { }
 
+  storeDocument(document: Document): Observable<any> {
+    return this.http.post<any>('api/cover-letter', document);
+  }
+
   validate(data: Document): Observable<any> {
     return this.http.post<any>('api/cover-letter/validate', data);
   }

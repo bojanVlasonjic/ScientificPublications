@@ -33,9 +33,9 @@ public class ScientificPublicationController {
     }
     
     @PostMapping("/validate-xml-file")
-	  public ResponseEntity<Boolean> validateScientificPublicationFile(@RequestParam("file") MultipartFile file) {
-		    return new ResponseEntity<>(scPublService.validateScientificPublicationXMLFile(file), HttpStatus.OK);
-	  }
+    public ResponseEntity<Boolean> validateScientificPublicationFile(@RequestParam("file") MultipartFile file) {
+        return new ResponseEntity<>(scPublService.validateScientificPublicationXMLFile(file), HttpStatus.OK);
+    }
     
 
     @PostMapping("/pdf/{id}")

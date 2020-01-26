@@ -35,7 +35,7 @@ public class DocumentReviewController {
 	@PostMapping("/validate")
 	public ResponseEntity<Boolean> validateDocumentReview(@RequestBody DocumentDTO document) {
         return new ResponseEntity<>(documentReviewService.validateDocumentReview(document.getDocumentContent()), HttpStatus.OK);
-  }
+ 	 }
   
 	
 	@PostMapping("/validate-xml-file")
@@ -45,8 +45,8 @@ public class DocumentReviewController {
 	
 	
 	@PostMapping("/pdf/{id}")
-  public ResponseEntity<String> generatePdf(@PathVariable String id) {
-      return new ResponseEntity<>(documentReviewService.generatePdf(id), HttpStatus.OK);
-  }
+  	public ResponseEntity<String> generatePdf(@PathVariable String id) {
+		return new ResponseEntity<>(documentReviewService.generatePdf(id), HttpStatus.OK);
+  	}
   
 }

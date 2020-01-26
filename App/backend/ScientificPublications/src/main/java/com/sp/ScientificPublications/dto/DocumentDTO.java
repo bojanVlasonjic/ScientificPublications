@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Setter
 public class DocumentDTO {
 
-    private String documentId; // just in case we need it
+    private String documentId;
     private String documentContent;
 
 }

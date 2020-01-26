@@ -1,18 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
-    targetNamespace="http://www.ftn.uns.ac.rs/scientific-paper"
-    xmlns:cl="http://www.ftn.uns.ac.rs/scientific-paper"
+    targetNamespace="http://www.ftn.uns.ac.rs/scientific-publication"
+    xmlns:cl="http://www.ftn.uns.ac.rs/scientific-publication"
     xmlns:jxb="http://java.sun.com/xml/ns/jaxb" jxb:version="2.0">
-    
-    <!-- Converting dates from XMLGregoricanCalendar to java.util.date -> TODO: set paths
-    <xs:annotation>
-        <xs:appinfo>
-            <jxb:globalBindings>
-                <jxb:javaType name="java.util.Calendar" xmlType="xs:dateTime" parseMethod="package-name.ConvertClass.convertMethod" printMethod="package.Class.method" />
-            </jxb:globalBindings>
-        </xs:appinfo>
-    </xs:annotation> -->
-    
+
     <xs:element name="cover-letter">
         <xs:complexType>
             <xs:sequence>

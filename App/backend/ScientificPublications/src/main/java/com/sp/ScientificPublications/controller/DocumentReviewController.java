@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.*;
 
 import com.sp.ScientificPublications.dto.DocumentDTO;
-import com.sp.ScientificPublications.dto.DocumentPathDTO;
 import com.sp.ScientificPublications.service.DocumentReviewService;
 
 @RestController
@@ -20,21 +20,33 @@ public class DocumentReviewController {
 	
 	@Autowired
 	DocumentReviewService documentReviewService;
+
+	@GetMapping("/{id}")
+	public ResponseEntity<DocumentDTO> getDocumentReviewById(@PathVariable String id) {
+		return new ResponseEntity<>(documentReviewService.retrieveDocumentReview(id), HttpStatus.OK);
+	}
+
+	@PostMapping
+	public ResponseEntity<DocumentDTO> storeDocumentReview(@RequestBody DocumentDTO documentDTO) {
+		return new ResponseEntity<>(documentReviewService.storeDocumentReview(documentDTO),
+				HttpStatus.CREATED);
+	}
 	
 	@PostMapping("/validate")
 	public ResponseEntity<Boolean> validateDocumentReview(@RequestBody DocumentDTO document) {
         return new ResponseEntity<>(documentReviewService.validateDocumentReview(document.getDocumentContent()), HttpStatus.OK);
-    }
+  }
+  
 	
 	@PostMapping("/validate-xml-file")
 	public ResponseEntity<Boolean> validateDocumentReviewFile(@RequestParam("file") MultipartFile file) {
 		return new ResponseEntity<>(documentReviewService.validateDocumentReviewXMLFile(file), HttpStatus.OK);
 	}
 	
-	@PostMapping("/generate-pdf")
-    public ResponseEntity<String> generatePdf(@RequestBody DocumentPathDTO documentPath) {
-        return new ResponseEntity<>(
-        		documentReviewService.generatePdf(documentPath.getPath()),
-                HttpStatus.OK);
-    }
+	
+	@PostMapping("/pdf/{id}")
+  public ResponseEntity<String> generatePdf(@PathVariable String id) {
+      return new ResponseEntity<>(documentReviewService.generatePdf(id), HttpStatus.OK);
+  }
+  
 }

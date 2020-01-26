@@ -1,7 +1,6 @@
 package com.sp.ScientificPublications.controller;
 
 import com.sp.ScientificPublications.dto.DocumentDTO;
-import com.sp.ScientificPublications.dto.DocumentPathDTO;
 import com.sp.ScientificPublications.service.ScientificPublicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,15 +33,14 @@ public class ScientificPublicationController {
     }
     
     @PostMapping("/validate-xml-file")
-	public ResponseEntity<Boolean> validateScientificPublicationFile(@RequestParam("file") MultipartFile file) {
-		return new ResponseEntity<>(scPublService.validateScientificPublicationXMLFile(file), HttpStatus.OK);
-	}
+	  public ResponseEntity<Boolean> validateScientificPublicationFile(@RequestParam("file") MultipartFile file) {
+		    return new ResponseEntity<>(scPublService.validateScientificPublicationXMLFile(file), HttpStatus.OK);
+	  }
     
-    @PostMapping("/generate-pdf")
-    public ResponseEntity<String> generatePdf(@RequestBody DocumentPathDTO documentPath) {
-        return new ResponseEntity<>(
-        		scPublService.generatePdf(documentPath.getPath()),
-                HttpStatus.OK);
 
+    @PostMapping("/pdf/{id}")
+    public ResponseEntity<String> generatePdf(@PathVariable String id) {
+        return new ResponseEntity<>(scPublService.generatePdf(id), HttpStatus.OK);
     }
+  
 }

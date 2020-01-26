@@ -33,8 +33,8 @@ public class CoverLetterService {
         return domParserSvc.validateXmlDocument(documentContent, schemaPath);
     }
 
-    public String generatePdf(String xmlDocumentPath) {
-        return xmlTransformSvc.generatePdfFromXml(xmlDocumentPath, xslFilePath);
+    public String generatePdf(String documentId) {
+        return xmlTransformSvc.generatePdfFromXml(retrieveCoverLetter(documentId), xslFilePath);
     }
 
     public DocumentDTO retrieveCoverLetter(String fileId) {

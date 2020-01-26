@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<cl:cover-letter xmlns:cl="http://www.ftn.uns.ac.rs/scientific-paper"
+<cl:cover-letter xmlns:cl="http://www.ftn.uns.ac.rs/scientific-publication"
  xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="http://www.ftn.uns.ac.rs/scientific-paper file:/C:/Users/bojan/Desktop/SIIT/VII_semestar/XML-Projekat/ScientificPublications/Schemas/cover-letter.xsd">
+ xsi:schemaLocation="http://www.ftn.uns.ac.rs/scientific-publication file:/C:/Users/bojan/Desktop/SIIT/VII_semestar/XML-Projekat/ScientificPublications/Schemas/cover-letter.xsd">
     <cl:sender-contact>
         <cl:name>name0</cl:name>
         <cl:address>

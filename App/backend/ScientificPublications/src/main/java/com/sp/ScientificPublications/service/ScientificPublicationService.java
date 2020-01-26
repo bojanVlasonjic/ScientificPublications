@@ -33,8 +33,8 @@ public class ScientificPublicationService {
         return domParserSvc.validateXmlDocument(documentContent, schemaPath);
     }
 
-    public String generatePdf(String xmlDocumentPath) {
-        return xmlTransformSvc.generatePdfFromXml(xmlDocumentPath, xslFilePath);
+    public String generatePdf(String documentId) {
+        return xmlTransformSvc.generatePdfFromXml(retrieveScientificPublication(documentId), xslFilePath);
     }
 
     public DocumentDTO retrieveScientificPublication(String fileId) {

@@ -5,25 +5,29 @@ import com.sp.ScientificPublications.exception.ApiBadRequestException;
 import com.sp.ScientificPublications.repository.exist.ExistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.XMLResource;
 
 @Service
 public class DocumentReviewService {
 	
-	@Autowired
+	  @Autowired
     DomParserService domParserSvc;
 	
-	@Autowired
+	  @Autowired
     XmlTransformerService xmlTransformSvc;
 
     @Autowired
     ExistRepository existRepo;
 	
-	private static final String schemaPath = "src/main/resources/data/xsd_schema/document-document-review.xsd";
+	  private static final String schemaPath = "src/main/resources/data/xsd_schema/document-document-review.xsd";
     private static final String xslFilePath = "src/main/resources/data/xsl_fo/document-review-fo.xsl";
     private static final String collectionId = "/db/scientific-publication/document-reviews";
 
+    public boolean validateDocumentReviewXMLFile(MultipartFile file) {
+    	return this.validateDocumentReview(domParserSvc.readMultipartXMLFile(file));
+    }
 
     public boolean validateDocumentReview(String documentContent) {
         return domParserSvc.validateXmlDocument(documentContent, schemaPath);

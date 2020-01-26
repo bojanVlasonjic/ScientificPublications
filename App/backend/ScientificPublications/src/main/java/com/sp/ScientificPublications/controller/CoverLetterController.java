@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("api/cover-letter")
@@ -28,6 +29,11 @@ public class CoverLetterController {
     public ResponseEntity<Boolean> validateCoverLetter(@RequestBody DocumentDTO document) {
         return new ResponseEntity<>(coverLetterService.validateCoverLetter(document.getDocumentContent()), HttpStatus.OK);
     }
+    
+    @PostMapping("/validate-xml-file")
+	public ResponseEntity<Boolean> validateCoverLetterFile(@RequestParam("file") MultipartFile file) {
+		return new ResponseEntity<>(coverLetterService.validateCoverLetterXMLFile(file), HttpStatus.OK);
+	}
 
     @PostMapping("/pdf/{id}")
     public ResponseEntity<String> generatePdf(@PathVariable String id) {

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("api/scientific-publication")
@@ -31,11 +32,15 @@ public class ScientificPublicationController {
                 HttpStatus.OK);
     }
     
+    @PostMapping("/validate-xml-file")
+	  public ResponseEntity<Boolean> validateScientificPublicationFile(@RequestParam("file") MultipartFile file) {
+		    return new ResponseEntity<>(scPublService.validateScientificPublicationXMLFile(file), HttpStatus.OK);
+	  }
+    
+
     @PostMapping("/pdf/{id}")
     public ResponseEntity<String> generatePdf(@PathVariable String id) {
-        return new ResponseEntity<>(
-        		scPublService.generatePdf(id),
-                HttpStatus.OK);
-
+        return new ResponseEntity<>(scPublService.generatePdf(id), HttpStatus.OK);
     }
+  
 }

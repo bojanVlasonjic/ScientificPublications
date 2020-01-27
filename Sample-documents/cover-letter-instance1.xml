@@ -1,31 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<cl:cover-letter xmlns:cl="http://www.ftn.uns.ac.rs/scientific-publication"
+<cl:cover-letter xmlns:cmn="http://www.ftn.uns.ac.rs/common"
  xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+ xmlns:cl="http://www.ftn.uns.ac.rs/scientific-publication"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://www.ftn.uns.ac.rs/scientific-publication file:/C:/Users/bojan/Desktop/SIIT/VII_semestar/XML-Projekat/ScientificPublications/Schemas/cover-letter.xsd">
     <cl:sender-contact>
         <cl:name>name0</cl:name>
-        <cl:address>
-            <cl:city>city0</cl:city>
-            <cl:country>country0</cl:country>
-        </cl:address>
+        <cmn:location>
+            <cmn:city>city0</cmn:city>
+            <cmn:state>Georgia</cmn:state>
+            <cmn:country>country0</cmn:country>
+        </cmn:location>
         <cl:phone-number>000000000</cl:phone-number>
         <cl:email>a@a.aa</cl:email>
     </cl:sender-contact>
     <cl:employer-contact>
         <cl:name>name1</cl:name>
-        <cl:address>
-            <cl:city>city1</cl:city>
-            <cl:country>country1</cl:country>
-        </cl:address>
+        <cmn:location>
+            <cmn:city>city1</cmn:city>
+            <cmn:country>country1</cmn:country>
+        </cmn:location>
         <cl:phone-number>000000000</cl:phone-number>
         <cl:email>a@a.aa</cl:email>
     </cl:employer-contact>
     <cl:body>
         <cl:salutation>salutation0</cl:salutation>
         <cl:paragraphs>
-            <cl:paragraph>
-            </cl:paragraph>
+            <cmn:paragraph>
+                blablalba
+                <cmn:bold>aaaa</cmn:bold>
+                <cmn:italic>blablalba</cmn:italic>
+            </cmn:paragraph>
+            <cmn:paragraph>
+            </cmn:paragraph>
         </cl:paragraphs>
         <cl:closure>
             <cl:compliment>compliment0</cl:compliment>

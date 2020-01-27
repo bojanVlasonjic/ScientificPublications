@@ -10,6 +10,10 @@ export class DocumentReviewService {
 
   constructor(private http: HttpClient) { }
 
+  storeDocument(document: Document): Observable<any> {
+    return this.http.post<any>('api/document-review', document);
+  }
+
   validate(data: Document): Observable<any> {
     return this.http.post<any>('api/document-review/validate', data);
   }

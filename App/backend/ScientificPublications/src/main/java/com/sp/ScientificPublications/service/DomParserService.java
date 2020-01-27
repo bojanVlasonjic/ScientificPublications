@@ -1,12 +1,14 @@
 package com.sp.ScientificPublications.service;
 
 import com.sp.ScientificPublications.dto.DocumentDTO;
+import com.sp.ScientificPublications.exception.ApiNotValidException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -71,7 +73,9 @@ public class DomParserService {
             return true;
 
         } catch (SAXException e) {
-            System.out.println(xmlFile.getSystemId() + " is NOT valid reason:" + e);
+            System.out.println("Document not valid: " + e);
+            throw new ApiNotValidException(e.getMessage(), ((SAXParseException)e).getLineNumber(),
+                    ((SAXParseException)e).getColumnNumber());
         } catch (IOException e) {
            System.out.println("Failed to find the xml document");
         }

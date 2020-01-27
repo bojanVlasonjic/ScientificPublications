@@ -1,6 +1,4 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { DocumentReviewService } from 'src/app/services/document-review.service';
-import { Document } from 'src/app/models/document';
 
 @Component({
   selector: 'app-home',

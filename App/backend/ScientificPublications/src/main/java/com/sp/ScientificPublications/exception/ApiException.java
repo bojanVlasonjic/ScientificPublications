@@ -3,19 +3,21 @@ package com.sp.ScientificPublications.exception;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 
+@NoArgsConstructor
+@Getter
+@Setter
 public class ApiException extends RuntimeException{
 
     private HttpStatus status;
     private String message;
     private LocalDateTime timeStamp;
-
-    public ApiException() {
-
-    }
 
     public ApiException(HttpStatus status, String message) {
         this.status = status;
@@ -35,28 +37,4 @@ public class ApiException extends RuntimeException{
 
     }
 
-
-    public HttpStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(HttpStatus status) {
-        this.status = status;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public LocalDateTime getTimeStamp() {
-        return timeStamp;
-    }
-
-    public void setTimeStamp(LocalDateTime timeStamp) {
-        this.timeStamp = timeStamp;
-    }
 }

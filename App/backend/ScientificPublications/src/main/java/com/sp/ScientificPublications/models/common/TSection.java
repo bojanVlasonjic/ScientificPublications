@@ -6,9 +6,7 @@
 //
 
 
-package com.sp.ScientificPublications.models.cover_letter;
-
-import com.sp.ScientificPublications.models.common.TParagraphs;
+package com.sp.ScientificPublications.models.common;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -17,18 +15,17 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for TBody complex type.
+ * <p>Java class for TSection complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="TBody">
+ * &lt;complexType name="TSection">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="salutation" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="header" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="paragraphs" type="{http://www.ftn.uns.ac.rs/common}TParagraphs"/>
- *         &lt;element name="closure" type="{http://www.ftn.uns.ac.rs/scientific-publication}TClosure"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -38,42 +35,39 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "TBody", propOrder = {
-    "salutation",
-    "paragraphs",
-    "closure"
+@XmlType(name = "TSection", propOrder = {
+    "header",
+    "paragraphs"
 })
-public class TBody {
+public class TSection {
 
     @XmlElement(required = true)
-    protected String salutation;
+    protected String header;
     @XmlElement(required = true)
     protected TParagraphs paragraphs;
-    @XmlElement(required = true)
-    protected TClosure closure;
 
     /**
-     * Gets the value of the salutation property.
+     * Gets the value of the header property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getSalutation() {
-        return salutation;
+    public String getHeader() {
+        return header;
     }
 
     /**
-     * Sets the value of the salutation property.
+     * Sets the value of the header property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setSalutation(String value) {
-        this.salutation = value;
+    public void setHeader(String value) {
+        this.header = value;
     }
 
     /**
@@ -98,30 +92,6 @@ public class TBody {
      */
     public void setParagraphs(TParagraphs value) {
         this.paragraphs = value;
-    }
-
-    /**
-     * Gets the value of the closure property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link TClosure }
-     *     
-     */
-    public TClosure getClosure() {
-        return closure;
-    }
-
-    /**
-     * Sets the value of the closure property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link TClosure }
-     *     
-     */
-    public void setClosure(TClosure value) {
-        this.closure = value;
     }
 
 }

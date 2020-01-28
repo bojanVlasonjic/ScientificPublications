@@ -5,5 +5,5 @@
 // Generated on: 2020.01.28 at 12:34:30 PM CET 
 //
 
-@javax.xml.bind.annotation.XmlSchema(namespace = "http://www.ftn.uns.ac.rs/scientific-publication", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
-package com.sp.ScientificPublications.models.cover_letter;
+@javax.xml.bind.annotation.XmlSchema(namespace = "http://www.ftn.uns.ac.rs/common", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
+package com.sp.ScientificPublications.models.common;

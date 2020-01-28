@@ -6,26 +6,27 @@
 //
 
 
-package com.sp.ScientificPublications.models.cover_letter;
+package com.sp.ScientificPublications.models.common;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for TClosure complex type.
+ * <p>Java class for anonymous complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="TClosure">
+ * &lt;complexType>
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="compliment" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="signature" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element ref="{http://www.ftn.uns.ac.rs/common}location"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -35,63 +36,64 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "TClosure", propOrder = {
-    "compliment",
-    "signature"
+@XmlType(name = "", propOrder = {
+    "name",
+    "location"
 })
-public class TClosure {
+@XmlRootElement(name = "institution")
+public class Institution {
 
     @XmlElement(required = true)
-    protected String compliment;
+    protected String name;
     @XmlElement(required = true)
-    protected String signature;
+    protected Location location;
 
     /**
-     * Gets the value of the compliment property.
+     * Gets the value of the name property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getCompliment() {
-        return compliment;
+    public String getName() {
+        return name;
     }
 
     /**
-     * Sets the value of the compliment property.
+     * Sets the value of the name property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setCompliment(String value) {
-        this.compliment = value;
+    public void setName(String value) {
+        this.name = value;
     }
 
     /**
-     * Gets the value of the signature property.
+     * Gets the value of the location property.
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link Location }
      *     
      */
-    public String getSignature() {
-        return signature;
+    public Location getLocation() {
+        return location;
     }
 
     /**
-     * Sets the value of the signature property.
+     * Sets the value of the location property.
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link Location }
      *     
      */
-    public void setSignature(String value) {
-        this.signature = value;
+    public void setLocation(Location value) {
+        this.location = value;
     }
 
 }

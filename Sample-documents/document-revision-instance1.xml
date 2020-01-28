@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rvw:review xmlns:cmn="http://www.ftn.uns.ac.rs/common"
+<rvw:document-revision xmlns:cmn="http://www.ftn.uns.ac.rs/common"
  xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
  xmlns:rvw="http://www.ftn.uns.ac.rs/scientific-publication"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="http://www.ftn.uns.ac.rs/scientific-publication file:/C:/Users/bojan/Desktop/SIIT/VII_semestar/XML-Projekat/ScientificPublications/Schemas/review.xsd" id="50" paper-id="50">
+ xsi:schemaLocation="http://www.ftn.uns.ac.rs/scientific-publication file:/C:/Users/bojan/Desktop/SIIT/VII_semestar/XML-Projekat/ScientificPublications/Schemas/document-revision.xsd" id="50" paper-id="50">
     <rvw:recommendation>Accept</rvw:recommendation>
     <rvw:questionare>
         <rvw:question>
@@ -12,11 +12,9 @@
         </rvw:question>
     </rvw:questionare>
     <rvw:comments-to-author>
-        <rvw:comment>
-        </rvw:comment>
+        <rvw:comment>comment0</rvw:comment>
     </rvw:comments-to-author>
     <rvw:comments-to-editor>
-        <rvw:comment>
-        </rvw:comment>
+        <rvw:comment>comment1</rvw:comment>
     </rvw:comments-to-editor>
-</rvw:review>
+</rvw:document-revision>

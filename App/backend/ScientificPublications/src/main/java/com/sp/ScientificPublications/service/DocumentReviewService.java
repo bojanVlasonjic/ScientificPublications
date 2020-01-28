@@ -21,7 +21,7 @@ public class DocumentReviewService {
     @Autowired
     ExistRepository existRepo;
 	
-    private static final String schemaPath = "src/main/resources/data/xsd_schema/document-document-review.xsd";
+    private static final String schemaPath = "src/main/resources/data/xsd_schema/document-review.xsd";
     private static final String xslFilePath = "src/main/resources/data/xsl_fo/document-review-fo.xsl";
     private static final String collectionId = "/db/scientific-publication/document-reviews";
 

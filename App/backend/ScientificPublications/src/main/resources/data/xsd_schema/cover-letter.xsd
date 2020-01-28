@@ -2,8 +2,10 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
     targetNamespace="http://www.ftn.uns.ac.rs/scientific-publication"
     xmlns:cl="http://www.ftn.uns.ac.rs/scientific-publication"
-    xmlns:jxb="http://java.sun.com/xml/ns/jaxb" jxb:version="2.0">
+    xmlns:jxb="http://java.sun.com/xml/ns/jaxb" jxb:version="2.0"
+    xmlns:cmn="http://www.ftn.uns.ac.rs/common">
 
+    <xs:import namespace="http://www.ftn.uns.ac.rs/common" schemaLocation="common.xsd"/>
     <xs:element name="cover-letter">
         <xs:complexType>
             <xs:sequence>
@@ -14,21 +16,10 @@
             <xs:attribute name="date" type="xs:date"/>
         </xs:complexType>
     </xs:element>
-    <xs:element name="address">
-        <xs:complexType>
-            <xs:sequence>
-                <xs:element minOccurs="0" name="street" type="xs:string"/>
-                <xs:element minOccurs="0" name="number" type="xs:string"/>
-                <xs:element name="city" type="xs:string"/>
-                <xs:element minOccurs="0" name="state" type="xs:string"/>
-                <xs:element name="country" type="xs:string"/>
-            </xs:sequence>
-        </xs:complexType>
-    </xs:element>
     <xs:complexType name="TContact">
         <xs:sequence>
             <xs:element name="name" type="xs:string"/>
-            <xs:element ref="cl:address"/>
+            <xs:element ref="cmn:location"/>
             <xs:element name="phone-number">
                 <xs:simpleType>
                     <xs:restriction base="xs:string">
@@ -48,21 +39,9 @@
     <xs:complexType name="TBody">
         <xs:sequence>
             <xs:element name="salutation" type="xs:string"/>
-            <xs:element maxOccurs="1" name="paragraphs" type="cl:TParagraphs"/>
+            <xs:element maxOccurs="1" name="paragraphs" type="cmn:TParagraphs"/>
             <xs:element name="closure" type="cl:TClosure"/>
         </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="TParagraphs">
-        <xs:sequence>
-            <xs:element maxOccurs="unbounded" name="paragraph" type="cl:TParagraph"/>
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType mixed="true" name="TParagraph">
-        <xs:choice maxOccurs="unbounded" minOccurs="1">
-            <xs:element maxOccurs="1" minOccurs="0" name="bold" type="xs:string"/>
-            <xs:element maxOccurs="1" minOccurs="0" name="italic" type="xs:string"/>
-            <xs:element minOccurs="0" name="underline" type="xs:string"/>
-        </xs:choice>
     </xs:complexType>
     <xs:complexType name="TClosure">
         <xs:sequence>

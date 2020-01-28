@@ -1,35 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<sp:scientific-paper xmlns:sp="http://www.ftn.uns.ac.rs/scientific-publication"
+<sp:scientific-paper xmlns:cmn="http://www.ftn.uns.ac.rs/common"
  xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+ xmlns:sp="http://www.ftn.uns.ac.rs/scientific-publication"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://www.ftn.uns.ac.rs/scientific-publication file:/C:/Users/bojan/Desktop/SIIT/VII_semestar/XML-Projekat/ScientificPublications/Schemas/scientific-paper.xsd">
     <sp:header>
         <sp:title>title0</sp:title>
         <sp:authors>
-            <sp:author>
-                <sp:first-name>first-name0</sp:first-name>
-                <sp:last-name>last-name0</sp:last-name>
-            </sp:author>
+            <cmn:author>
+                <cmn:first-name>first-name0</cmn:first-name>
+                <cmn:last-name>last-name0</cmn:last-name>
+                <cmn:institution>
+                    <cmn:name>Faculty</cmn:name>
+                    <cmn:location>
+                        <cmn:city>City</cmn:city>
+                        <cmn:country>Country</cmn:country>
+                    </cmn:location>
+                </cmn:institution>
+            </cmn:author>
         </sp:authors>
     </sp:header>
     <sp:abstract>
         <sp:keywords>keywords0</sp:keywords>
         <sp:purpose>
+            blablabla 
+            <cmn:bold>blablalba</cmn:bold>
+            <cmn:italic>blablalba</cmn:italic>
+            blabla
         </sp:purpose>
     </sp:abstract>
     <sp:sections>
-        <sp:section>
-            <sp:paragraph>
-            </sp:paragraph>
-        </sp:section>
+        <cmn:section>
+            <cmn:header>header0</cmn:header>
+            <cmn:paragraphs>
+                <cmn:paragraph>
+                    blablabla 
+                    <cmn:bold>blablalba</cmn:bold>
+                    <cmn:italic>blablalba</cmn:italic>
+                    blabla
+                </cmn:paragraph>
+            </cmn:paragraphs>
+        </cmn:section>
     </sp:sections>
     <sp:references>
         <sp:reference>
             <sp:authors>
-                <sp:author>
-                    <sp:first-name>first-name1</sp:first-name>
-                    <sp:last-name>last-name1</sp:last-name>
-                </sp:author>
+                <cmn:author>
+                    <cmn:first-name>first-name1</cmn:first-name>
+                    <cmn:last-name>last-name1</cmn:last-name>
+                </cmn:author>
             </sp:authors>
             <sp:year>50</sp:year>
             <sp:paper-name>paper-name0</sp:paper-name>

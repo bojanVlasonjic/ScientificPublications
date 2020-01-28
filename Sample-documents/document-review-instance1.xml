@@ -1,26 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document-review xmlns="http://www.ftn.uns.ac.rs/scientific-publication"
+<dr:document-review xmlns:cmn="http://www.ftn.uns.ac.rs/common"
+ xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+ xmlns:dr="http://www.ftn.uns.ac.rs/scientific-publication"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://www.ftn.uns.ac.rs/scientific-publication file:/C:/Users/bojan/Desktop/SIIT/VII_semestar/XML-Projekat/ScientificPublications/Schemas/document-review.xsd">
-    <title>
-    </title>
-    <authors>
-        <author>
-            <first-name>first-name0</first-name>
-            <last-name>last-name0</last-name>
-        </author>
-    </authors>
-    <reviewer>
-        <first-name>first-name1</first-name>
-        <last-name>last-name1</last-name>
-    </reviewer>
-    <sections>
-        <section>
-            <header>header0</header>
-            <paragraphs>
-                <paragraph>
-                </paragraph>
-            </paragraphs>
-        </section>
-    </sections>
-</document-review>
+    <dr:title>title0</dr:title>
+    <dr:authors>
+        <cmn:author>
+            <cmn:first-name>first-name0</cmn:first-name>
+            <cmn:middle-name>middle name </cmn:middle-name>
+            <cmn:last-name>last-name0</cmn:last-name>
+            <cmn:institution>
+                <cmn:name>some institute</cmn:name>
+                <cmn:location>
+                    <cmn:city>City</cmn:city>
+                    <cmn:country>Country</cmn:country>
+                </cmn:location>
+            </cmn:institution>
+        </cmn:author>
+    </dr:authors>
+    <dr:reviewer>
+        <dr:first-name>first-name0</dr:first-name>
+        <dr:last-name>last-name0</dr:last-name>
+    </dr:reviewer>
+    <dr:sections>
+        <cmn:section>
+            <cmn:header>header0</cmn:header>
+            <cmn:paragraphs>
+                <cmn:paragraph>
+                    blablablabla
+                    <cmn:underline>underlined blabla</cmn:underline>
+                </cmn:paragraph>
+            </cmn:paragraphs>
+        </cmn:section>
+    </dr:sections>
+</dr:document-review>

@@ -1,55 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
     targetNamespace="http://www.ftn.uns.ac.rs/scientific-publication"
-    xmlns:dr="http://www.ftn.uns.ac.rs/scientific-publication">
+    xmlns:dr="http://www.ftn.uns.ac.rs/scientific-publication"
+    xmlns:cmn="http://www.ftn.uns.ac.rs/common">
 
+    <xs:import namespace="http://www.ftn.uns.ac.rs/common" schemaLocation="common.xsd"/>
     <xs:element name="document-review">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="title"/>
-                <xs:element name="authors" type="dr:Authors"/>
+                <xs:element name="title" type="xs:string"/>
+                <xs:element name="authors" type="cmn:TAuthors"/>
                 <xs:element name="reviewer" type="dr:Reviewer"/>
-                <xs:element name="sections" type="dr:TSections"/>
+                <xs:element name="sections" type="cmn:TSections"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
-    <xs:complexType name="TSections">
-        <xs:sequence>
-            <xs:element name="section" type="dr:TSection" maxOccurs="unbounded"/>
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="TSection">
-        <xs:sequence>
-            <xs:element name="header" type="xs:string"/>
-            <xs:element name="paragraphs" type="dr:TParagraphs"/>
-        </xs:sequence>
-    </xs:complexType>
     <xs:complexType name="Reviewer">
         <xs:all>
             <xs:element name="first-name" type="xs:string"/>
             <xs:element name="last-name" type="xs:string"/>
         </xs:all>
-    </xs:complexType>
-    <xs:complexType name="Authors">
-        <xs:sequence>
-            <xs:element name="author" type="dr:Author" maxOccurs="unbounded"/>
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="Author">
-        <xs:sequence>
-            <xs:element name="first-name" type="xs:string"/>
-            <xs:element name="last-name" type="xs:string"/>
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="TParagraphs">
-        <xs:sequence>
-            <xs:element maxOccurs="unbounded" name="paragraph" type="dr:TParagraph"/>
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType mixed="true" name="TParagraph">
-        <xs:choice maxOccurs="1" minOccurs="1">
-            <xs:element maxOccurs="unbounded" minOccurs="0" name="bold" type="xs:string"/>
-            <xs:element maxOccurs="unbounded" minOccurs="0" name="italic" type="xs:string"/>
-        </xs:choice>
     </xs:complexType>
 </xs:schema>

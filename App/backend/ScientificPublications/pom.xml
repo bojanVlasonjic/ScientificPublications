@@ -101,6 +101,14 @@
 			<version>2.4</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/com.sun.xml.bind/jaxb-xjc -->
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-xjc</artifactId>
+			<version>2.3.2</version>
+		</dependency>
+
+
 	</dependencies>
 
 	<build>
@@ -109,6 +117,28 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+
+			<!-- Plugin for generating classes from schemas -->
+			<!-- The output directory is by default in target/generated-sources/jaxb -->
+			<!-- I would recommend generating one schema at a time, append in to the source path -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jaxb2-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>xjc</id>
+						<goals>
+							<goal>xjc</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<sources>
+						<source>src/main/resources/data/xsd_schema</source> <!-- Add schema name to this path -->
+					</sources>
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</build>
 

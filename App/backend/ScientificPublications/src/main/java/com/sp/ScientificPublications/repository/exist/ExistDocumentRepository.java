@@ -21,7 +21,7 @@ import javax.xml.transform.OutputKeys;
 import java.util.UUID;
 
 @Repository
-public class ExistRepository {
+public class ExistDocumentRepository {
 
     @Autowired
     ConnectionProperties connProperties;
@@ -63,40 +63,6 @@ public class ExistRepository {
         return res;
     }
 
-
-    public Object retrieveJaxbObject(String collectionId, String documentId, String modelPackage)
-            throws XMLDBException, JAXBException {
-
-        Collection col = null;
-        XMLResource res = null;
-
-        try {
-            //System.out.println("[INFO] Retrieving the collection: " + collectionId);
-            col = existUtilSvc.getOrCreateCollection(collectionId);
-            col.setProperty(OutputKeys.INDENT, "yes");
-
-            //System.out.println("[INFO] Retrieving the document: " + documentId);
-            res = (XMLResource)col.getResource(documentId);
-
-            if(res == null) {
-                throw new ApiNotFoundException("Failed to find document");
-            }
-
-            System.out.println("[INFO] Binding XML resouce to an JAXB instance: ");
-            JAXBContext context = JAXBContext.newInstance(modelPackage);
-
-            Unmarshaller unmarshaller = context.createUnmarshaller();
-
-            CoverLetter coverLetter = (CoverLetter) unmarshaller.unmarshal(res.getContentAsDOM());
-            System.out.println(coverLetter);
-
-
-        } finally {
-            existUtilSvc.cleanUp(col, res);
-        }
-
-        return null;
-    }
 
     public XMLResource retrieveXmlFile(String collectionId, String documentId) throws XMLDBException {
 

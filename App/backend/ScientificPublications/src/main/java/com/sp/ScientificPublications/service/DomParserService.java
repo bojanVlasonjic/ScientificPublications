@@ -31,7 +31,8 @@ public class DomParserService {
     @Autowired
     SchemaFactory schemaFactory;
 
-    // returns a boolean for now
+    // this we probably won't need
+    /*
     public boolean parseXmlDocument(DocumentDTO documentDTO) {
 
         try {
@@ -52,7 +53,7 @@ public class DomParserService {
 
         return false;
 
-    }
+    }*/
 
 
     public boolean validateXmlDocument(String fileContent, String schemaPath) {

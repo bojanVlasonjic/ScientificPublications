@@ -24,7 +24,7 @@ public class DocumentReviewController {
 
 
 	@GetMapping("/template")
-	public ResponseEntity<DocumentDTO> getScientificPaperTemplate() {
+	public ResponseEntity<DocumentDTO> getDocumentReviewTemplate() {
 		return new ResponseEntity<>(documentReviewService.getTemplate(), HttpStatus.OK);
 	}
 

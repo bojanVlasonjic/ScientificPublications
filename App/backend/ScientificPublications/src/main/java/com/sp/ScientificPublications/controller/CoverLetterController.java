@@ -19,7 +19,7 @@ public class CoverLetterController {
 
 
     @GetMapping("/template")
-    public ResponseEntity<DocumentDTO> getScientificPaperTemplate() {
+    public ResponseEntity<DocumentDTO> getCoverLetterTemplate() {
         return new ResponseEntity<>(coverLetterService.getTemplate(), HttpStatus.OK);
     }
 

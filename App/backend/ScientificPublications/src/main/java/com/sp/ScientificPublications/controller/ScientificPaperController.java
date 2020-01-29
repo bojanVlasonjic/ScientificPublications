@@ -1,13 +1,21 @@
 package com.sp.ScientificPublications.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.sp.ScientificPublications.dto.DocumentDTO;
 import com.sp.ScientificPublications.models.scientific_paper.ScientificPaper;
+import com.sp.ScientificPublications.service.DomParserService;
 import com.sp.ScientificPublications.service.ScientificPaperService;
+
+import java.io.IOException;
+
+import javax.xml.transform.TransformerException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.xml.sax.SAXException;
 
 @RestController
 @RequestMapping("api/scientific-paper")
@@ -15,6 +23,9 @@ public class ScientificPaperController {
 
     @Autowired
     ScientificPaperService scPaperService;
+    
+    @Autowired
+    DomParserService domParserSvc;
 
     @GetMapping("/template")
     public ResponseEntity<DocumentDTO> getScientificPaperTemplate() {
@@ -58,4 +69,10 @@ public class ScientificPaperController {
         return new ResponseEntity<>(scPaperService.generatePdf(id), HttpStatus.OK);
     }
   
+    @PostMapping("/rdf/extract")
+    public ResponseEntity<String> extractMetadata(@RequestParam("file") MultipartFile file) throws IOException, SAXException, TransformerException {
+    	scPaperService.extractMetaData(domParserSvc.readMultipartXMLFile(file));
+    	return new ResponseEntity<>("Test success", HttpStatus.OK);
+    }
+    
 }

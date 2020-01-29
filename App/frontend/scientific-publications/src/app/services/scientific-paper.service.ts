@@ -21,4 +21,11 @@ export class ScientificPaperService {
   validateFile(form: FormData): Observable<any> {
     return this.http.post<any>('api/scientific-paper/validate-xml-file', form);
   }
+
+  searchByAuthorsMetadata(author: string): Observable<any> {
+    return this.http.post<any>('api/scientific-paper/rdf/search/by-authors', {
+      'author': author
+    });
+  }
+
 }

@@ -1,0 +1,19 @@
+<div class="search-documents">
+    <ul>
+        <li>
+            <input #searchHolder (input)="search($event)" class="search" placeholder="Search..." type="text" />
+        </li>
+        <li>
+            <select #searchType class="search-type" (change)="search($event)">
+                <option value="default">Default</option>
+                <option value="authors">Authors</option>
+            </select>
+        </li>
+    </ul>
+</div>
+
+<table>
+    <tr *ngFor="let d of sparqlResult">
+        <td>{{d.author}}</td>
+    </tr>
+</table>

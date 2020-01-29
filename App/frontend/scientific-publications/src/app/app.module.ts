@@ -11,6 +11,7 @@ import { DocumentUploadComponent } from './components/document-upload/document-u
 import { XmlEditorComponent } from './components/xml-editor/xml-editor.component';
 import { AceEditorModule } from 'ng2-ace-editor';
 import { DocumentEditorComponent } from './components/document-editor/document-editor.component';
+import { DocumentsComponent } from './components/documents/documents.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { DocumentEditorComponent } from './components/document-editor/document-e
     RegisterComponent,
     DocumentUploadComponent,
     XmlEditorComponent,
-    DocumentEditorComponent
+    DocumentEditorComponent,
+    DocumentsComponent
   ],
   imports: [
     BrowserModule,

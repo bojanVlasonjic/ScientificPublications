@@ -2,6 +2,7 @@ package com.sp.ScientificPublications.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.sp.ScientificPublications.dto.DocumentDTO;
+import com.sp.ScientificPublications.dto.SearchByAuthorsResponseDTO;
 import com.sp.ScientificPublications.models.scientific_paper.ScientificPaper;
 import com.sp.ScientificPublications.service.DomParserService;
 import com.sp.ScientificPublications.service.ScientificPaperService;
@@ -66,8 +67,21 @@ public class ScientificPaperController {
   
     @PostMapping("/rdf/extract")
     public ResponseEntity<String> extractMetadata(@RequestParam("file") MultipartFile file) throws IOException, SAXException, TransformerException {
-    	scPaperService.extractMetaData(domParserSvc.readMultipartXMLFile(file));
+    	scPaperService.extractMetaData(domParserSvc.readMultipartXMLFile(file), "test");
     	return new ResponseEntity<>("Test success", HttpStatus.OK);
     }
+    
+    @PostMapping("/rdf/search/by-authors")
+    public ResponseEntity<SearchByAuthorsResponseDTO> searchByAuthors(@RequestBody JsonNode node) {
+    	try {
+			return new ResponseEntity<>(scPaperService.searchMetadataByAuthor(
+					node.get("author").asText()),
+					HttpStatus.OK);
+		} catch (IOException e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+    	
+    }
+    
     
 }

@@ -5,6 +5,7 @@
     overflow: auto;
     margin-bottom: 2ex;
     border-color: red;
+    border-radius: 10px;
 }
 
 .error {

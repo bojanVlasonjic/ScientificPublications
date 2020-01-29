@@ -1,4 +1,4 @@
-export class Document {
+export class DocumentDTO {
     documentId: string;
     documentContent: string;
 

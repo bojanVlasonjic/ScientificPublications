@@ -50,18 +50,12 @@ public class ScientificPaperService {
 
     public ScientificPaper retrieveScientificPaperAsObject(String documentId) {
 
-        ScientificPaper scientificPaper = null;
-
         try {
-            scientificPaper = existJaxbRepo.retrieveScientificPaper(collectionId, documentId, modelPackage);
-        } catch (XMLDBException e) {
+            return (ScientificPaper) existJaxbRepo.retrieveObject(collectionId, documentId, modelPackage);
+        } catch (XMLDBException | JAXBException e) {
             e.printStackTrace();
             throw new ApiBadRequestException("Failed to retrieve scientific paper");
-        } catch (JAXBException e) {
-            e.printStackTrace();
         }
-
-        return scientificPaper;
 
     }
 
@@ -81,6 +75,24 @@ public class ScientificPaperService {
 
         return document;
     }
+
+
+    // TODO: implement an update method, change method name
+    public ScientificPaper storeScientificPaperAsObject(String documentId) {
+
+        ScientificPaper scPaper = retrieveScientificPaperAsObject(documentId);
+
+        //TODO: update data
+        scPaper.getHeader().setTitle("Setter in a getter, woohoo!");
+
+        try {
+            return (ScientificPaper) existJaxbRepo.storeObject(collectionId, documentId, modelPackage, scPaper);
+        } catch (XMLDBException | JAXBException ex) {
+            throw new ApiBadRequestException("Failed to store scientific paper");
+        }
+
+    }
+
 
     public DocumentDTO storeScientificPaperAsDocument(DocumentDTO document) {
 

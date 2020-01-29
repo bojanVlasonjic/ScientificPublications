@@ -120,7 +120,7 @@
 
 			<!-- Plugin for generating classes from schemas -->
 			<!-- The output directory is by default in target/generated-sources/jaxb -->
-			<!-- I would recommend generating one schema at a time, append in to the source path -->
+			<!-- I would recommend generating one schema at a time -> append in to the source path -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>jaxb2-maven-plugin</artifactId>

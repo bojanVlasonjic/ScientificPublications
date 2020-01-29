@@ -14,8 +14,11 @@ import org.xmldb.api.modules.XMLResource;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.OutputKeys;
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 
 @Repository
 public class ExistJaxbRepository {
@@ -30,16 +33,11 @@ public class ExistJaxbRepository {
     ExistUtilityService existUtilSvc;
 
 
-    /***********
-     * RETRIEVAL *
-     * ********/
-
-    public CoverLetter retrieveCoverLetter(String collectionId, String documentId, String modelPackage)
+    public Object retrieveObject(String collectionId, String documentId, String modelPackage)
             throws XMLDBException, JAXBException {
 
         Collection col = null;
         XMLResource res = null;
-        CoverLetter coverLetter;
 
         try {
             col = existUtilSvc.getOrCreateCollection(collectionId);
@@ -48,84 +46,50 @@ public class ExistJaxbRepository {
             res = (XMLResource)col.getResource(documentId);
 
             if(res == null) {
-                throw new ApiNotFoundException("Failed to find cover letter");
+                throw new ApiNotFoundException("Failed to find document");
             }
 
             System.out.println("[INFO] Binding XML resource to an JAXB instance: ");
             JAXBContext context = JAXBContext.newInstance(modelPackage);
             Unmarshaller unmarshaller = context.createUnmarshaller();
-            coverLetter = (CoverLetter) unmarshaller.unmarshal(res.getContentAsDOM());
+
+            return unmarshaller.unmarshal(res.getContentAsDOM());
 
         } finally {
             existUtilSvc.cleanUp(col, res);
         }
 
-        return coverLetter;
     }
 
 
-    public ScientificPaper retrieveScientificPaper(String collectionId, String documentId, String modelPackage)
-            throws XMLDBException, JAXBException {
+    public Object storeObject(String collectionId, String documentId, String modelPackage,
+                                        Object object) throws XMLDBException, JAXBException {
 
         Collection col = null;
         XMLResource res = null;
-        ScientificPaper scientificPaper;
+        OutputStream os = new ByteArrayOutputStream();
 
         try {
+
             col = existUtilSvc.getOrCreateCollection(collectionId);
-            col.setProperty(OutputKeys.INDENT, "yes");
-
-            res = (XMLResource)col.getResource(documentId);
-
-            if(res == null) {
-                throw new ApiNotFoundException("Failed to find scientific paper");
-            }
-
-            System.out.println("[INFO] Binding XML resource to an JAXB instance: ");
             JAXBContext context = JAXBContext.newInstance(modelPackage);
-            Unmarshaller unmarshaller = context.createUnmarshaller();
-            scientificPaper = (ScientificPaper) unmarshaller.unmarshal(res.getContentAsDOM());
+            res = (XMLResource) col.getResource(documentId);
+
+            Marshaller marshaller = context.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+            marshaller.marshal(object, os);
+
+            res.setContent(os);
+            System.out.println("[INFO] Storing the document: " + res.getId());
+
+            col.storeResource(res);
+            System.out.println("[INFO] Done.");
 
         } finally {
             existUtilSvc.cleanUp(col, res);
         }
 
-        return scientificPaper;
+        return object;
     }
-
-
-    public DocumentReview retrieveDocumentReview(String collectionId, String documentId, String modelPackage)
-            throws XMLDBException, JAXBException {
-
-        Collection col = null;
-        XMLResource res = null;
-        DocumentReview documentReview;
-
-        try {
-            col = existUtilSvc.getOrCreateCollection(collectionId);
-            col.setProperty(OutputKeys.INDENT, "yes");
-
-            res = (XMLResource)col.getResource(documentId);
-
-            if(res == null) {
-                throw new ApiNotFoundException("Failed to find document review");
-            }
-
-            System.out.println("[INFO] Binding XML resource to an JAXB instance: ");
-            JAXBContext context = JAXBContext.newInstance(modelPackage);
-            Unmarshaller unmarshaller = context.createUnmarshaller();
-            documentReview = (DocumentReview) unmarshaller.unmarshal(res.getContentAsDOM());
-
-        } finally {
-            existUtilSvc.cleanUp(col, res);
-        }
-
-        return documentReview;
-    }
-
-
-    /***********
-     * STORING *
-     * ********/
 
 }

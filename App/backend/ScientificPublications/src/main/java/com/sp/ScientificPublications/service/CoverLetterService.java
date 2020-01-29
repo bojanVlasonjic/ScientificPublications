@@ -14,6 +14,7 @@ import org.xmldb.api.modules.XMLResource;
 import javax.xml.bind.JAXBException;
 
 
+
 @Service
 public class CoverLetterService {
 
@@ -50,18 +51,12 @@ public class CoverLetterService {
 
     public CoverLetter retrieveCoverLetterAsObject(String documentId) {
 
-        CoverLetter coverLetter = null;
-
         try {
-            coverLetter = existJaxbRepo.retrieveCoverLetter(collectionId, documentId, modelPackage);
-        } catch (XMLDBException e) {
+            return (CoverLetter) existJaxbRepo.retrieveObject(collectionId, documentId, modelPackage);
+        } catch (XMLDBException | JAXBException e) {
             e.printStackTrace();
             throw new ApiBadRequestException("Failed to retrieve cover letter");
-        } catch (JAXBException e) {
-            e.printStackTrace();
         }
-
-        return coverLetter;
 
     }
 
@@ -79,6 +74,22 @@ public class CoverLetterService {
         }
 
         return document;
+    }
+
+    // TODO: implement an update method, change method name
+    public CoverLetter storeCoverLetterAsObject(String documentId) {
+
+        CoverLetter coverLetter = retrieveCoverLetterAsObject(documentId);
+
+        //TODO: update data
+        coverLetter.getBody().setSalutation("Dear Mister Misses Something");
+
+        try {
+            return (CoverLetter) existJaxbRepo.storeObject(collectionId, documentId, modelPackage, coverLetter);
+        } catch (XMLDBException | JAXBException ex) {
+            throw new ApiBadRequestException("Failed to store cover letter");
+        }
+
     }
 
 

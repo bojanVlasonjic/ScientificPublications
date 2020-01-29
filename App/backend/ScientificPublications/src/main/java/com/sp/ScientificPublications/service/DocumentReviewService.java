@@ -50,18 +50,12 @@ public class DocumentReviewService {
 
     public DocumentReview retrieveDocumentReviewAsObject(String documentId) {
 
-        DocumentReview documentReview = null;
-
         try {
-            documentReview = existJaxbRepo.retrieveDocumentReview(collectionId, documentId, modelPackage);
-        } catch (XMLDBException e) {
+            return (DocumentReview) existJaxbRepo.retrieveObject(collectionId, documentId, modelPackage);
+        } catch (XMLDBException | JAXBException e) {
             e.printStackTrace();
             throw new ApiBadRequestException("Failed to retrieve document review");
-        } catch (JAXBException e) {
-            e.printStackTrace();
         }
-
-        return documentReview;
 
     }
 
@@ -79,6 +73,23 @@ public class DocumentReviewService {
         }
 
         return document;
+
+    }
+
+
+    // TODO: implement an update method, change method name
+    public DocumentReview storeDocumentReviewAsObject(String documentId) {
+
+        DocumentReview docReview = retrieveDocumentReviewAsObject(documentId);
+
+        //TODO: update data
+        docReview.setTitle("Say no to lombok");
+
+        try {
+            return (DocumentReview) existJaxbRepo.storeObject(collectionId, documentId, modelPackage, docReview);
+        } catch (XMLDBException | JAXBException ex) {
+            throw new ApiBadRequestException("Failed to store document review");
+        }
 
     }
 

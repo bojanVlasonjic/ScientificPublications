@@ -1,4 +1,4 @@
-import 'ace-builds/src-min-noconflict/ace';
+import 'brace/index';
 import 'brace/mode/xml';
 
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';

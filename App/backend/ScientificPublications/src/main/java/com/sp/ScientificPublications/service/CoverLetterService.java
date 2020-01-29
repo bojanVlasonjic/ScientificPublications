@@ -12,7 +12,7 @@ import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.XMLResource;
 
 import javax.xml.bind.JAXBException;
-
+import java.io.IOException;
 
 
 @Service
@@ -32,8 +32,23 @@ public class CoverLetterService {
 
     private static final String schemaPath = "src/main/resources/data/xsd_schema/cover-letter.xsd";
     private static final String xslFilePath = "src/main/resources/data/xsl_fo/cover-letter-fo.xsl";
+    private static final String templatePath = "src/main/resources/templates/cover-letter-template.xml";
+
     private static final String collectionId = "/db/scientific-publication/cover-letters";
     private static final String modelPackage = "com.sp.ScientificPublications.models.cover_letter";
+
+
+    public DocumentDTO getTemplate() {
+
+        DocumentDTO templateDTO = new DocumentDTO();
+        try {
+            templateDTO.setDocumentContent(domParserSvc.readXmlFile(templatePath));
+        } catch (IOException e) {
+            throw new ApiBadRequestException("Failed to generate cover letter template");
+        }
+
+        return templateDTO;
+    }
 
 
     public boolean validateCoverLetterXMLFile(MultipartFile file) {

@@ -20,6 +20,8 @@ import javax.xml.validation.Validator;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 
 @Service
@@ -97,6 +99,12 @@ public class DomParserService {
     		
     	}
     	return data;
+    }
+
+    public String readXmlFile(String filePath) throws IOException {
+
+        byte[] bytes = Files.readAllBytes(Paths.get(filePath));
+        return new String(bytes);
     }
 
 }

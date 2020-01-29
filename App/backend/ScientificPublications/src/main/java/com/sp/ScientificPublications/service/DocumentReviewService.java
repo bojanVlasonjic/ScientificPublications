@@ -12,6 +12,7 @@ import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.XMLResource;
 
 import javax.xml.bind.JAXBException;
+import java.io.IOException;
 
 @Service
 public class DocumentReviewService {
@@ -30,8 +31,23 @@ public class DocumentReviewService {
 	
     private static final String schemaPath = "src/main/resources/data/xsd_schema/document-review.xsd";
     private static final String xslFilePath = "src/main/resources/data/xsl_fo/document-review-fo.xsl";
+    private static final String templatePath = "src/main/resources/templates/document-review-template.xml";
+
     private static final String collectionId = "/db/scientific-publication/document-reviews";
     private static final String modelPackage = "com.sp.ScientificPublications.models.document_review";
+
+
+    public DocumentDTO getTemplate() {
+
+        DocumentDTO templateDTO = new DocumentDTO();
+        try {
+            templateDTO.setDocumentContent(domParserSvc.readXmlFile(templatePath));
+        } catch (IOException e) {
+            throw new ApiBadRequestException("Failed to generate document review template");
+        }
+
+        return templateDTO;
+    }
 
 
     public boolean validateDocumentReviewXMLFile(MultipartFile file) {

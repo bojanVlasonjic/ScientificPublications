@@ -2,7 +2,6 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
     targetNamespace="http://www.ftn.uns.ac.rs/scientific-publication"
     xmlns:sp="http://www.ftn.uns.ac.rs/scientific-publication"
-    xmlns:jxb="http://java.sun.com/xml/ns/jaxb" jxb:version="2.0"
     xmlns:cmn="http://www.ftn.uns.ac.rs/common">
 
     <xs:import namespace="http://www.ftn.uns.ac.rs/common" schemaLocation="common.xsd"/>

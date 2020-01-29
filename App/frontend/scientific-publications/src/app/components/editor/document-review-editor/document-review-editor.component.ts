@@ -10,6 +10,8 @@ import { DocumentDTO } from 'src/app/models/documentDTO';
 export class DocumentReviewEditorComponent implements OnInit {
 
   document: DocumentDTO;
+  template: string;
+  
   documentValid: boolean;
   errorMessage: string;
 
@@ -19,6 +21,19 @@ export class DocumentReviewEditorComponent implements OnInit {
     this.document = new DocumentDTO();
     this.documentValid = true;
     this.errorMessage = '';
+
+    this.getTemplate();
+  }
+
+  getTemplate() {
+    this.docReviewSvc.generateTemplate().subscribe(
+      data => {
+        this.template = data.documentContent;
+      },
+      error => {
+        console.log(error.error);
+      }
+    );
   }
 
 

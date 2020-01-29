@@ -21,4 +21,8 @@ export class DocumentReviewService {
   validateFile(form: FormData): Observable<any> {
     return this.http.post<any>('api/document-review/validate-xml-file', form);
   }
+
+  generateTemplate(): Observable<any> {
+    return this.http.get('api/document-review/template');
+  }
 }

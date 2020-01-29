@@ -21,4 +21,9 @@ export class ScientificPaperService {
   validateFile(form: FormData): Observable<any> {
     return this.http.post<any>('api/scientific-paper/validate-xml-file', form);
   }
+
+  generateTemplate(): Observable<any> {
+    return this.http.get('api/scientific-paper/template');
+  }
+  
 }

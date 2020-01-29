@@ -16,6 +16,11 @@ public class ScientificPaperController {
     @Autowired
     ScientificPaperService scPaperService;
 
+    @GetMapping("/template")
+    public ResponseEntity<DocumentDTO> getScientificPaperTemplate() {
+        return new ResponseEntity<>(scPaperService.getTemplate(), HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public  ResponseEntity<DocumentDTO> getScientificPaperById(@PathVariable String id) {
         return new ResponseEntity<>(scPaperService.retrieveScientificPaperAsDocument(id), HttpStatus.OK);

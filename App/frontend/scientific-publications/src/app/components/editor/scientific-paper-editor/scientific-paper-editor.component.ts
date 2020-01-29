@@ -9,7 +9,9 @@ import { ScientificPaperService } from 'src/app/services/scientific-paper.servic
 })
 export class ScientificPaperEditorComponent implements OnInit {
 
+  template: string;
   document: DocumentDTO;
+
   documentValid: boolean;
   errorMessage: string;
 
@@ -19,6 +21,19 @@ export class ScientificPaperEditorComponent implements OnInit {
     this.document = new DocumentDTO();
     this.documentValid = true;
     this.errorMessage = '';
+
+    this.getTemplate();
+  }
+
+  getTemplate() {
+    this.scientfPaperSvc.generateTemplate().subscribe(
+      data => {
+        this.template = data.documentContent;
+      },
+      error => {
+        console.log(error.error);
+      }
+    );
   }
 
   validateDocument($event) {

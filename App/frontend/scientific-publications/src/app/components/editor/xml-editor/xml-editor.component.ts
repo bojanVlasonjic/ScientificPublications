@@ -13,6 +13,7 @@ export class XmlEditorComponent implements OnInit {
   xmlContent: string;
   options:any = {maxLines: 1000, printMargin: false, showInvisibles: false};
 
+  @Input() template: string;
   @Input() documentValid: boolean;
   @Input() errorMessage: string;
 
@@ -32,6 +33,13 @@ export class XmlEditorComponent implements OnInit {
 
   uploadDocument() {
     this.uploadEvent.emit(this.xmlContent);
+  }
+
+  generateTemplate() {
+    if(this.template != null) {
+      this.xmlContent = this.template;
+    }
+    
   }
   
 

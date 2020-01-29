@@ -2,6 +2,7 @@ package com.sp.ScientificPublications.service;
 
 import com.sp.ScientificPublications.dto.DocumentDTO;
 import com.sp.ScientificPublications.exception.ApiBadRequestException;
+import com.sp.ScientificPublications.models.document_review.DocumentReview;
 import com.sp.ScientificPublications.models.scientific_paper.ScientificPaper;
 import com.sp.ScientificPublications.repository.exist.ExistDocumentRepository;
 import com.sp.ScientificPublications.repository.exist.ExistJaxbRepository;
@@ -12,6 +13,8 @@ import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.XMLResource;
 
 import javax.xml.bind.JAXBException;
+import java.io.File;
+import java.io.IOException;
 
 @Service
 public class ScientificPaperService {
@@ -30,9 +33,23 @@ public class ScientificPaperService {
 
     private static final String schemaPath = "src/main/resources/data/xsd_schema/scientific-paper.xsd";
     private static final String xslFilePath = "src/main/resources/data/xsl_fo/scientific-paper-fo.xsl";
+    private static final String templatePath = "src/main/resources/templates/scientific-paper-template.xml";
+
     private static final String collectionId = "/db/scientific-publication/scientific-papers";
     private static final String modelPackage = "com.sp.ScientificPublications.models.scientific_paper";
 
+
+    public DocumentDTO getTemplate() {
+
+        DocumentDTO templateDTO = new DocumentDTO();
+        try {
+            templateDTO.setDocumentContent(domParserSvc.readXmlFile(templatePath));
+        } catch (IOException e) {
+            throw new ApiBadRequestException("Failed to generate scientific paper template");
+        }
+
+        return templateDTO;
+    }
 
     public boolean validateScientificPaperXMLFile(MultipartFile file) {
     	return this.validateScientificPaper(domParserSvc.readMultipartXMLFile(file));

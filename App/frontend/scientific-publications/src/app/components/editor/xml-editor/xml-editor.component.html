@@ -1,13 +1,24 @@
 <div class="editor-header" id="editor-toolbar-holder">
     <ul id="editor-toolbar">
-        <li (click)="generateTemplate()">Generate template</li>
-        <li (click)="uploadDocument()"> Upload document </li>
+        <div id="left-selection">
+            <li (click)="generateTemplate()">Generate template</li>
+            <li (click)="uploadDocument()"> Upload document </li>
+        </div>
+        
+        <div id="right-selection">
+            <label>Theme:</label>
+            <li>
+                <select class="custom-select" (change)="changeTheme($event)">
+                    <option *ngFor="let theme of themes; index as i;" [value]="i">{{ themes[i] }}</option>
+                  </select>
+            </li>
+        </div>
+        
     </ul>
 </div>
 
 <div class="editor-header" id="editor-log-holder">
-    <span>Error log: </span>
-    <label> {{ errorMessage }}</label>
+    <label class="log-content"> Error log: {{ errorMessage }}</label>
 </div>
 
 <div ace-editor #editor
@@ -15,6 +26,7 @@
        [ngClass]="documentValid ? 'valid': 'error'"
        [(text)]="xmlContent"
        [mode]="'xml'" 
+       [theme]="selectedTheme"
        [options]="options"
        [readOnly]="false"
        [autoUpdateContent]="true" 

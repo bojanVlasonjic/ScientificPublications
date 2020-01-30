@@ -4,17 +4,20 @@
     width:100%;
     overflow: auto;
     margin-bottom: 2ex;
-    border-color: red;
     border-radius: 10px;
 }
 
 .error {
     border-style: solid;
+    border-color: red;
+    border-width: 5px;
 }
 
 .valid {
     border-style: none;
 }
+
+/* Toolbar */
 
 .editor-header {
     background-color: #333;
@@ -23,13 +26,18 @@
     margin-bottom: 1ex;
 }
 
-#editor-toolbar-holder {
-    height: 6ex;
+#left-selection {
+    position: absolute;
+    left: 1ex;
 }
 
-#editor-log-holder {
-    min-height: 4ex;
-    font-size: 18px;
+#right-selection {
+    position: absolute;
+    right: 1ex;
+}
+
+#editor-toolbar-holder {
+    height: 8ex;
 }
 
 #editor-toolbar {
@@ -39,9 +47,22 @@
 #editor-toolbar li {
     display: inline-block;
     margin: 1ex;
+    padding: 1ex;
+    font-size: 18px;
 }
 
 #editor-toolbar li:hover {
-    background-color: #111;
+    text-decoration: underline;
     cursor: pointer;
 }
+
+#editor-log-holder {
+    min-height: 4ex;
+    font-size: 18px;
+}
+
+.log-content {
+    position: relative;
+    margin: 1ex;
+}
+

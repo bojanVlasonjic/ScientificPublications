@@ -1,4 +1,4 @@
-package com.sp.ScientificPublications.models;
+package com.sp.ScientificPublications.config;
 
 import lombok.Getter;
 import lombok.Setter;

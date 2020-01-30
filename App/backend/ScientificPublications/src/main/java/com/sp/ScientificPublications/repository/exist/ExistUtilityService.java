@@ -1,6 +1,6 @@
 package com.sp.ScientificPublications.repository.exist;
 
-import com.sp.ScientificPublications.models.ConnectionProperties;
+import com.sp.ScientificPublications.config.ConnectionProperties;
 import org.exist.xmldb.EXistResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

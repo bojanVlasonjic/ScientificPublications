@@ -1,0 +1,1 @@
+insert into author(id, email, password, firstname, lastname) values (1, 'test@email.com', '1234', 'ivkovic', 'djordje');

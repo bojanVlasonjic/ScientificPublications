@@ -1,6 +1,5 @@
 package com.sp.ScientificPublications.config;
 
-import com.sp.ScientificPublications.models.ConnectionProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.xmldb.api.DatabaseManager;

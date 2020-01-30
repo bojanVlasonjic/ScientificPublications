@@ -1,7 +1,7 @@
 package com.sp.ScientificPublications.repository.exist;
 
 import com.sp.ScientificPublications.exception.ApiNotFoundException;
-import com.sp.ScientificPublications.models.ConnectionProperties;
+import com.sp.ScientificPublications.config.ConnectionProperties;
 import com.sp.ScientificPublications.models.cover_letter.CoverLetter;
 import com.sp.ScientificPublications.models.document_review.DocumentReview;
 import com.sp.ScientificPublications.models.scientific_paper.ScientificPaper;

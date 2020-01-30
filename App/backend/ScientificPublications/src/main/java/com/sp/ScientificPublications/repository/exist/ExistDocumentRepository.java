@@ -2,21 +2,14 @@ package com.sp.ScientificPublications.repository.exist;
 
 import com.sp.ScientificPublications.dto.DocumentDTO;
 import com.sp.ScientificPublications.exception.ApiNotFoundException;
-import com.sp.ScientificPublications.models.ConnectionProperties;
-import com.sp.ScientificPublications.models.cover_letter.CoverLetter;
-import org.exist.xmldb.EXistResource;
+import com.sp.ScientificPublications.config.ConnectionProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.xmldb.api.DatabaseManager;
 import org.xmldb.api.base.Collection;
 import org.xmldb.api.base.Database;
 import org.xmldb.api.base.XMLDBException;
-import org.xmldb.api.modules.CollectionManagementService;
 import org.xmldb.api.modules.XMLResource;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.OutputKeys;
 import java.util.UUID;
 

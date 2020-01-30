@@ -13,14 +13,14 @@ export class DocumentReviewEditorComponent implements OnInit {
   template: string;
   
   documentValid: boolean;
-  errorMessage: string;
+  logMessage: string;
 
   constructor(private docReviewSvc: DocumentReviewService) { }
 
   ngOnInit() {
     this.document = new DocumentDTO();
     this.documentValid = true;
-    this.errorMessage = '';
+    this.logMessage = '';
 
     this.getTemplate();
   }
@@ -43,11 +43,11 @@ export class DocumentReviewEditorComponent implements OnInit {
     this.docReviewSvc.validate(this.document).subscribe(
       data => {
         this.documentValid = data;
-        this.errorMessage = '';
+        this.logMessage = '';
       },
       error => {
         this.documentValid = false;
-        this.errorMessage = `Error at line ${error.error.lineNumber}, column ${error.error.column}, ${error.error.message}`;
+        this.logMessage = `Error at line ${error.error.lineNumber}, column ${error.error.column}, ${error.error.message}`;
       }
     );
   }
@@ -59,9 +59,10 @@ export class DocumentReviewEditorComponent implements OnInit {
     this.docReviewSvc.storeDocument(this.document).subscribe(
       data => {
         this.document = data;
+        this.logMessage = 'Document successfully uploaded';
       },
       err => {
-        console.log(err.error);
+        this.logMessage = err.error.message;
       }
     );
     

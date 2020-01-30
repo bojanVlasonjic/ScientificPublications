@@ -20,7 +20,7 @@ export class XmlEditorComponent implements OnInit {
 
   @Input() template: string;
   @Input() documentValid: boolean;
-  @Input() errorMessage: string;
+  @Input() logMessage: string;
 
   @Output() validationEvent = new EventEmitter();
   @Output() uploadEvent = new EventEmitter(); 
@@ -29,7 +29,7 @@ export class XmlEditorComponent implements OnInit {
 
   ngOnInit() {
     this.documentValid = true;
-    this.errorMessage = '';
+    this.logMessage = '';
     this.themes = ['monokai', 'eclipse', 'cobalt'];
     this.selectedTheme = this.themes[0];
   }

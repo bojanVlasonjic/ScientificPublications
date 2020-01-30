@@ -13,14 +13,14 @@ export class CoverLetterEditorComponent implements OnInit {
   template: string;
   
   documentValid: boolean;
-  errorMessage: string;
+  logMessage: string;
 
   constructor(private coverLetterSvc: CoverLetterService) { }
 
   ngOnInit() {
     this.document = new DocumentDTO();
     this.documentValid = true;
-    this.errorMessage = '';
+    this.logMessage = '';
 
     this.getTemplate();
   }
@@ -39,16 +39,16 @@ export class CoverLetterEditorComponent implements OnInit {
   validateDocument($event) {
     this.document.documentContent = $event;
 
-    this.coverLetterSvc.validate(this.document).subscribe(
+    this.coverLetterSvc.storeDocument(this.document).subscribe(
       data => {
-        this.documentValid = data;
-        this.errorMessage = '';
+        this.document = data;
+        this.logMessage = 'Document successfully uploaded';
       },
-      error => {
-        this.documentValid = false;
-        this.errorMessage = `Error at line ${error.error.lineNumber}, column ${error.error.column}, ${error.error.message}`;
+      err => {
+        this.logMessage = err.error.message;
       }
     );
+
   }
 
 
@@ -58,9 +58,10 @@ export class CoverLetterEditorComponent implements OnInit {
     this.coverLetterSvc.storeDocument(this.document).subscribe(
       data => {
         this.document = data;
+        this.logMessage = 'Document successfully uploaded';
       },
       err => {
-        console.log(err.error);
+        this.logMessage = err.error.message;
       }
     );
     

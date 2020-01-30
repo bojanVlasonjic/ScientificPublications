@@ -1,4 +1,4 @@
-package com.sp.ScientificPublications.repository.rdf;
+package com.sp.ScientificPublications.utility;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

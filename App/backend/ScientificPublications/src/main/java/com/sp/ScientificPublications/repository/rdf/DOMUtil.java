@@ -15,6 +15,7 @@ import org.w3c.dom.Node;
 
 public class DOMUtil {
 
+	// TODO: Mogao si autowire da uradis -> PdfTransformerConfig
 	private static TransformerFactory transformerFactory;
 	
 	static {

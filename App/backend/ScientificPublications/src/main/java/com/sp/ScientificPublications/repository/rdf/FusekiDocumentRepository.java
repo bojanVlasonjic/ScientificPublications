@@ -16,6 +16,7 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.xml.transform.TransformerException;
 
+import com.sp.ScientificPublications.utility.FileUtil;
 import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryExecutionFactory;
 import org.apache.jena.query.QuerySolution;
@@ -95,7 +96,7 @@ public class FusekiDocumentRepository {
 
 		// Querying the named graph with a referenced SPARQL query
 		System.out.println("[INFO] Loading SPARQL query from file \"" + SEARCH_BY_AUTHORS + "\"");
-		String sparqlQuery = String.format(FileUtil.readFile(SEARCH_BY_AUTHORS, StandardCharsets.UTF_8), 
+		String sparqlQuery = String.format(FileUtil.readFile(SEARCH_BY_AUTHORS, StandardCharsets.UTF_8),
 				conn.dataEndpoint + SPARQL_NAMED_GRAPH_URI, author);
 		
 		System.out.println(sparqlQuery);

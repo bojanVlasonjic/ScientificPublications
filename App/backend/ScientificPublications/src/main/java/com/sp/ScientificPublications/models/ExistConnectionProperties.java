@@ -7,7 +7,7 @@ import java.util.Properties;
 
 @Getter
 @Setter
-public class ConnectionProperties {
+public class ExistConnectionProperties {
 
     private String host;
     private int port;
@@ -19,7 +19,7 @@ public class ConnectionProperties {
     private static final String connectionUri = "xmldb:exist://%1$s:%2$s/exist/xmlrpc";
 
 
-    public ConnectionProperties(Properties properties) {
+    public ExistConnectionProperties(Properties properties) {
 
         user = properties.getProperty("conn.user").trim();
         password = properties.getProperty("conn.password").trim();

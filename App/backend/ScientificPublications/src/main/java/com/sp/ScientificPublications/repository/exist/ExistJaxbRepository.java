@@ -1,10 +1,7 @@
 package com.sp.ScientificPublications.repository.exist;
 
 import com.sp.ScientificPublications.exception.ApiNotFoundException;
-import com.sp.ScientificPublications.models.ConnectionProperties;
-import com.sp.ScientificPublications.models.cover_letter.CoverLetter;
-import com.sp.ScientificPublications.models.document_review.DocumentReview;
-import com.sp.ScientificPublications.models.scientific_paper.ScientificPaper;
+import com.sp.ScientificPublications.models.ExistConnectionProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.xmldb.api.base.Collection;
@@ -24,7 +21,7 @@ import java.io.OutputStream;
 public class ExistJaxbRepository {
 
     @Autowired
-    ConnectionProperties connProperties;
+    ExistConnectionProperties connProperties;
 
     @Autowired
     Database database;

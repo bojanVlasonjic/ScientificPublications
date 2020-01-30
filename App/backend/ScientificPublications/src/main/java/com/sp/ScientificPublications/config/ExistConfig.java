@@ -1,6 +1,6 @@
 package com.sp.ScientificPublications.config;
 
-import com.sp.ScientificPublications.models.ConnectionProperties;
+import com.sp.ScientificPublications.models.ExistConnectionProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.xmldb.api.DatabaseManager;
@@ -18,9 +18,9 @@ public class ExistConfig {
     private static final String existProperties = "src/main/resources/exist.properties";
 
     @Bean
-    public ConnectionProperties connectionProperties() throws IOException {
+    public ExistConnectionProperties connectionProperties() throws IOException {
 
-        return new ConnectionProperties(getExistProperties());
+        return new ExistConnectionProperties(getExistProperties());
     }
 
     @Bean

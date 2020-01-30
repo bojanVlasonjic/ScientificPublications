@@ -9,6 +9,7 @@ import com.sp.ScientificPublications.repository.exist.ExistDocumentRepository;
 import com.sp.ScientificPublications.repository.exist.ExistJaxbRepository;
 import com.sp.ScientificPublications.repository.rdf.FusekiDocumentRepository;
 
+import com.sp.ScientificPublications.utility.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,6 +22,7 @@ import java.io.IOException;
 import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import javax.xml.transform.TransformerException;
 
 @Service
@@ -54,7 +56,7 @@ public class ScientificPaperService {
 
         DocumentDTO templateDTO = new DocumentDTO();
         try {
-            templateDTO.setDocumentContent(domParserSvc.readXmlFile(templatePath));
+            templateDTO.setDocumentContent(FileUtil.readFile(templatePath, StandardCharsets.UTF_8));
         } catch (IOException e) {
             throw new ApiBadRequestException("Failed to generate scientific paper template");
         }

@@ -5,6 +5,7 @@ import com.sp.ScientificPublications.exception.ApiBadRequestException;
 import com.sp.ScientificPublications.models.document_review.DocumentReview;
 import com.sp.ScientificPublications.repository.exist.ExistDocumentRepository;
 import com.sp.ScientificPublications.repository.exist.ExistJaxbRepository;
+import com.sp.ScientificPublications.utility.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,6 +14,7 @@ import org.xmldb.api.modules.XMLResource;
 
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 @Service
 public class DocumentReviewService {
@@ -41,7 +43,7 @@ public class DocumentReviewService {
 
         DocumentDTO templateDTO = new DocumentDTO();
         try {
-            templateDTO.setDocumentContent(domParserSvc.readXmlFile(templatePath));
+            templateDTO.setDocumentContent(FileUtil.readFile(templatePath, StandardCharsets.UTF_8));
         } catch (IOException e) {
             throw new ApiBadRequestException("Failed to generate document review template");
         }

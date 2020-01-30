@@ -26,4 +26,10 @@ export class ScientificPaperService {
     return this.http.get('api/scientific-paper/template');
   }
   
+  searchByAuthorsMetadata(author: string): Observable<any> {
+    return this.http.post<any>('api/scientific-paper/rdf/search/by-authors', {
+      'author': author
+    });
+  }
+
 }

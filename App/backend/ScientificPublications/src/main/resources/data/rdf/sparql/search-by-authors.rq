@@ -1,0 +1,6 @@
+
+SELECT * FROM <%s>
+WHERE { 
+	?author <http://www.ftn.uns.ac.rs/rdf/examples/predicate/authorTo> ?title .
+	FILTER regex(lcase(str(?author)), "%s")
+}

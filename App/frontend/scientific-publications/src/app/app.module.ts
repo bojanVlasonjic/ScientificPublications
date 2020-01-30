@@ -9,6 +9,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { HttpClientModule } from '@angular/common/http';
 import { DocumentUploadComponent } from './components/document-upload/document-upload.component';
 import { EditorModule } from './components/editor/editor.module';
+import { DocumentsComponent } from './components/documents/documents.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { EditorModule } from './components/editor/editor.module';
     HomeComponent,
     LoginComponent,
     RegisterComponent,
-    DocumentUploadComponent
+    DocumentUploadComponent,
+    DocumentsComponent
   ],
   imports: [
     BrowserModule,

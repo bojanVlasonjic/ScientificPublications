@@ -1,6 +1,7 @@
 package com.sp.ScientificPublications.service;
 
 import com.sp.ScientificPublications.dto.DocumentDTO;
+import com.sp.ScientificPublications.dto.SearchByAuthorsResponseDTO;
 import com.sp.ScientificPublications.exception.ApiBadRequestException;
 import com.sp.ScientificPublications.models.document_review.DocumentReview;
 import com.sp.ScientificPublications.models.scientific_paper.ScientificPaper;
@@ -74,8 +75,12 @@ public class ScientificPaperService {
         return xmlTransformSvc.generatePdfFromXml(retrieveScientificPaperAsDocument(documentId), xslFilePath);
     }
     
-    public void extractMetaData(String xmlContent) throws IOException, SAXException, TransformerException {
-    	fusekiDocumentRepository.extractMetadata(xmlContent);
+    public SearchByAuthorsResponseDTO searchMetadataByAuthor(String author) throws IOException {
+    	return fusekiDocumentRepository.searchMetadataByAuthor(author);
+    }
+    
+    public void extractMetaData(String xmlContent, String fileName) throws IOException, SAXException, TransformerException {
+    	fusekiDocumentRepository.extractMetadata(xmlContent, fileName);
     }
 
 

@@ -63,6 +63,7 @@ public class CoverLetterService {
     	DocumentDTO document = new DocumentDTO();
     	document.setDocumentContent(xmlContent);
     	document = this.storeCoverLetterAsDocument(document);
+    	this.generatePdf(document.getDocumentId());
     	return document;
     }
     // =================
@@ -72,7 +73,9 @@ public class CoverLetterService {
     }
 
     public String generatePdf(String documentId) {
-        return xmlTransformSvc.generatePdfFromXml(retrieveCoverLetterAsDocument(documentId), xslFilePath);
+    	DocumentDTO retrievedDTO = this.retrieveCoverLetterAsDocument(documentId);
+    	retrievedDTO.setDocumentId("cover-letter/" + retrievedDTO.getDocumentId());
+        return xmlTransformSvc.generatePdfFromXml(retrievedDTO, xslFilePath);
     }
 
 

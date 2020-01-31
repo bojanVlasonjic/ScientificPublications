@@ -2,7 +2,6 @@ package com.sp.ScientificPublications.service;
 
 import com.sp.ScientificPublications.dto.DocumentDTO;
 import com.sp.ScientificPublications.dto.SearchByAuthorsResponseDTO;
-import com.sp.ScientificPublications.dto.XmlFileUploadResponseDTO;
 import com.sp.ScientificPublications.exception.ApiBadRequestException;
 import com.sp.ScientificPublications.models.document_review.DocumentReview;
 import com.sp.ScientificPublications.models.scientific_paper.ScientificPaper;
@@ -76,6 +75,7 @@ public class ScientificPaperService {
     	DocumentDTO document = new DocumentDTO();
     	document.setDocumentContent(xmlContent);
     	document = this.storeScientificPaperAsDocument(document);
+    	this.generatePdf(document.getDocumentId());
     	return document;
     }
     
@@ -87,7 +87,9 @@ public class ScientificPaperService {
 
 
     public String generatePdf(String documentId) {
-        return xmlTransformSvc.generatePdfFromXml(retrieveScientificPaperAsDocument(documentId), xslFilePath);
+    	DocumentDTO retrievedDTO = this.retrieveScientificPaperAsDocument(documentId);
+    	retrievedDTO.setDocumentId("scientific-paper/" + retrievedDTO.getDocumentId());
+        return xmlTransformSvc.generatePdfFromXml(retrievedDTO, xslFilePath);
     }
     
     public SearchByAuthorsResponseDTO searchMetadataByAuthor(String author) throws IOException {

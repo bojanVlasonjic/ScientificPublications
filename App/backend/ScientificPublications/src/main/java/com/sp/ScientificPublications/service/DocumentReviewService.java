@@ -66,13 +66,16 @@ public class DocumentReviewService {
     	DocumentDTO document = new DocumentDTO();
     	document.setDocumentContent(xmlContent);
     	document = this.storeDocumentReviewAsDocument(document);
+    	this.generatePdf(document.getDocumentId());
     	return document;
     }
     
     // =================
 
     public String generatePdf(String documentId) {
-        return xmlTransformSvc.generatePdfFromXml(retrieveDocumentReviewAsDocument(documentId), xslFilePath);
+    	DocumentDTO retrievedDTO = this.retrieveDocumentReviewAsDocument(documentId);
+    	retrievedDTO.setDocumentId("document-review/" + retrievedDTO.getDocumentId());
+        return xmlTransformSvc.generatePdfFromXml(retrievedDTO, xslFilePath);
     }
 
 

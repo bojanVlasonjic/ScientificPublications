@@ -32,7 +32,8 @@ public class DocumentReviewService {
     ExistJaxbRepository existJaxbRepo;
 	
     private static final String schemaPath = "src/main/resources/data/xsd_schema/document-review.xsd";
-    private static final String xslFilePath = "src/main/resources/data/xsl_fo/document-review-fo.xsl";
+    private static final String xslFoFilePath = "src/main/resources/data/xsl_fo/document-review-fo.xsl";
+    private static final String xsltFilePath = "src/main/resources/data/xslt/document-review-xslt.xsl";
     private static final String templatePath = "src/main/resources/templates/document-review-template.xml";
 
     private static final String collectionId = "/db/scientific-publication/document-reviews";
@@ -75,7 +76,11 @@ public class DocumentReviewService {
     public String generatePdf(String documentId) {
     	DocumentDTO retrievedDTO = this.retrieveDocumentReviewAsDocument(documentId);
     	retrievedDTO.setDocumentId("document-review/" + retrievedDTO.getDocumentId());
-        return xmlTransformSvc.generatePdfFromXml(retrievedDTO, xslFilePath);
+        return xmlTransformSvc.generatePdfFromXml(retrievedDTO, xslFoFilePath);
+    }
+
+    public String generateHtml(String documentId) {
+        return xmlTransformSvc.generateHtmlFromXml(retrieveDocumentReviewAsDocument(documentId), xsltFilePath);
     }
 
 

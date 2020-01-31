@@ -64,9 +64,14 @@ public class DocumentReviewController {
 	
 
 
-	@PostMapping("/pdf/{id}")
+	@GetMapping("/pdf/{id}")
   	public ResponseEntity<String> generatePdf(@PathVariable String id) {
 		return new ResponseEntity<>(documentReviewService.generatePdf(id), HttpStatus.OK);
   	}
+
+	@GetMapping("/html/{id}")
+	public ResponseEntity<String> generateHtml(@PathVariable String id) {
+		return new ResponseEntity<>(documentReviewService.generateHtml(id), HttpStatus.OK);
+	}
   
 }

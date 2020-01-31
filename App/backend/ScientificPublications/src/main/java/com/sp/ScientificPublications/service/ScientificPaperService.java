@@ -3,7 +3,6 @@ package com.sp.ScientificPublications.service;
 import com.sp.ScientificPublications.dto.DocumentDTO;
 import com.sp.ScientificPublications.dto.SearchByAuthorsResponseDTO;
 import com.sp.ScientificPublications.exception.ApiBadRequestException;
-import com.sp.ScientificPublications.models.document_review.DocumentReview;
 import com.sp.ScientificPublications.models.scientific_paper.ScientificPaper;
 import com.sp.ScientificPublications.repository.exist.ExistDocumentRepository;
 import com.sp.ScientificPublications.repository.exist.ExistJaxbRepository;
@@ -20,8 +19,6 @@ import org.xmldb.api.modules.XMLResource;
 import java.io.IOException;
 
 import javax.xml.bind.JAXBException;
-import java.io.File;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import javax.xml.transform.TransformerException;
 
@@ -44,7 +41,8 @@ public class ScientificPaperService {
     FusekiDocumentRepository fusekiDocumentRepository;
 
     private static final String schemaPath = "src/main/resources/data/xsd_schema/scientific-paper.xsd";
-    private static final String xslFilePath = "src/main/resources/data/xsl_fo/scientific-paper-fo.xsl";
+    private static final String xslFoFilePath = "src/main/resources/data/xsl_fo/scientific-paper-fo.xsl";
+    private static final String xsltFilePath = "src/main/resources/data/xslt/scientific-paper-xslt.xsl";
     private static final String templatePath = "src/main/resources/templates/scientific-paper-template.xml";
 
     private static final String collectionId = "/db/scientific-publication/scientific-papers";
@@ -85,11 +83,14 @@ public class ScientificPaperService {
         return domParserSvc.validateXmlDocument(documentContent, schemaPath);
     }
 
-
     public String generatePdf(String documentId) {
     	DocumentDTO retrievedDTO = this.retrieveScientificPaperAsDocument(documentId);
     	retrievedDTO.setDocumentId("scientific-paper/" + retrievedDTO.getDocumentId());
-        return xmlTransformSvc.generatePdfFromXml(retrievedDTO, xslFilePath);
+        return xmlTransformSvc.generatePdfFromXml(retrievedDTO, xslFoFilePath);
+    }
+
+    public String generateHtml(String documentId) {
+        return xmlTransformSvc.generateHtmlFromXml(retrieveScientificPaperAsDocument(documentId), xsltFilePath);
     }
     
     public SearchByAuthorsResponseDTO searchMetadataByAuthor(String author) throws IOException {

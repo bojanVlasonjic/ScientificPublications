@@ -59,12 +59,17 @@ public class CoverLetterController {
 
 
 
-    @PostMapping("/pdf/{id}")
+    @GetMapping("/pdf/{id}")
     public ResponseEntity<String> generatePdf(@PathVariable String id) {
 
         return new ResponseEntity<>(
                 coverLetterService.generatePdf(id),
                 HttpStatus.OK);
+    }
+
+    @GetMapping("/html/{id}")
+    public ResponseEntity<String> generateHtml(@PathVariable String id) {
+        return new ResponseEntity<>(coverLetterService.generateHtml(id), HttpStatus.OK);
     }
 
 

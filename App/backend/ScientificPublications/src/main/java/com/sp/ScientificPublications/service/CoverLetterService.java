@@ -33,7 +33,8 @@ public class CoverLetterService {
     ExistJaxbRepository existJaxbRepo;
 
     private static final String schemaPath = "src/main/resources/data/xsd_schema/cover-letter.xsd";
-    private static final String xslFilePath = "src/main/resources/data/xsl_fo/cover-letter-fo.xsl";
+    private static final String xslFoFilePath = "src/main/resources/data/xsl_fo/cover-letter-fo.xsl";
+    private static final String xsltFilePath = "src/main/resources/data/xslt/cover-letter-xslt.xsl";
     private static final String templatePath = "src/main/resources/templates/cover-letter-template.xml";
 
     private static final String collectionId = "/db/scientific-publication/cover-letters";
@@ -72,10 +73,15 @@ public class CoverLetterService {
         return domParserSvc.validateXmlDocument(documentContent, schemaPath);
     }
 
+
     public String generatePdf(String documentId) {
     	DocumentDTO retrievedDTO = this.retrieveCoverLetterAsDocument(documentId);
     	retrievedDTO.setDocumentId("cover-letter/" + retrievedDTO.getDocumentId());
-        return xmlTransformSvc.generatePdfFromXml(retrievedDTO, xslFilePath);
+        return xmlTransformSvc.generatePdfFromXml(retrievedDTO, xslFoFilePath);
+    }
+
+    public String generateHtml(String documentId) {
+        return xmlTransformSvc.generateHtmlFromXml(retrieveCoverLetterAsDocument(documentId), xsltFilePath);
     }
 
 

@@ -22,7 +22,7 @@ public class DomParserConfig {
         dbFactory.setNamespaceAware(true);
         dbFactory.setIgnoringComments(true);
         dbFactory.setIgnoringElementContentWhitespace(true);
-        dbFactory.setAttribute(JAXP_SCHEMA_LANGUAGE, W3C_XML_SCHEMA);
+        //dbFactory.setAttribute(JAXP_SCHEMA_LANGUAGE, W3C_XML_SCHEMA);
 
         return dbFactory;
     }

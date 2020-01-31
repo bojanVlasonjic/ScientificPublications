@@ -119,6 +119,7 @@ public class XmlTransformerService {
             // transform dom to html
             DOMSource source = new DOMSource(buildDocument(document.getDocumentContent()));
             String outputPath = outputDirectory + "html/" + document.getDocumentId() + ".html";
+            createHtmlOutputDirectory(outputPath);
 
             StreamResult result = new StreamResult(new FileOutputStream(outputPath));
             transformer.transform(source, result);
@@ -128,6 +129,16 @@ public class XmlTransformerService {
         } catch (FileNotFoundException | TransformerException e) {
             e.printStackTrace();
             throw new ApiBadRequestException("Failed to generate html file");
+        }
+
+    }
+
+    private void createHtmlOutputDirectory(String filePath) {
+
+        File htmlFile = new File(filePath);
+
+        if(!htmlFile.getParentFile().exists()) {
+            htmlFile.getParentFile().mkdir();
         }
 
     }

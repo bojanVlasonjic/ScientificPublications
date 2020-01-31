@@ -70,9 +70,12 @@ public class ScientificPaperService {
         return domParserSvc.validateXmlDocument(documentContent, schemaPath);
     }
 
-
     public String generatePdf(String documentId) {
         return xmlTransformSvc.generatePdfFromXml(retrieveScientificPaperAsDocument(documentId), xslFoFilePath);
+    }
+
+    public String generateHtml(String documentId) {
+        return xmlTransformSvc.generateHtmlFromXml(retrieveScientificPaperAsDocument(documentId), xsltFilePath);
     }
     
     public SearchByAuthorsResponseDTO searchMetadataByAuthor(String author) throws IOException {

@@ -66,6 +66,10 @@ public class DocumentReviewService {
         return xmlTransformSvc.generatePdfFromXml(retrieveDocumentReviewAsDocument(documentId), xslFoFilePath);
     }
 
+    public String generateHtml(String documentId) {
+        return xmlTransformSvc.generateHtmlFromXml(retrieveDocumentReviewAsDocument(documentId), xsltFilePath);
+    }
+
 
     public DocumentReview retrieveDocumentReviewAsObject(String documentId) {
 

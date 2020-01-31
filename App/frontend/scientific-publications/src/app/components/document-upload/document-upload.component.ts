@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { DocumentReviewService } from 'src/app/services/document-review.service';
 import { ScientificPaperService } from 'src/app/services/scientific-paper.service';
 import { CoverLetterService } from 'src/app/services/cover-letter.service';
+import { PaperReviewService } from 'src/app/services/paper-review.service';
 
 @Component({
   selector: 'div [app-document-upload]',
@@ -20,7 +21,8 @@ export class DocumentUploadComponent implements OnInit {
   constructor(
     private documentReviewService: DocumentReviewService,
     private scientificPaperService: ScientificPaperService,
-    private coverLetterService: CoverLetterService
+    private coverLetterService: CoverLetterService,
+    private paperReviewService: PaperReviewService
   ) { }
 
   ngOnInit() {
@@ -47,6 +49,19 @@ export class DocumentUploadComponent implements OnInit {
 
     if (this.type == 'document-review'){
       this.documentReviewService.uploadFile(form).subscribe(
+        data => {
+          this.xmlFileIndicator = "Document is successfully uploaded";
+          console.log(data);
+        },
+        error => {
+          this.xmlFileIndicator = "Something went wrong";
+          console.log(error);
+        }
+      );
+    }
+
+    else if (this.type == 'paper-review') {
+      this.paperReviewService.uploadFile(form).subscribe(
         data => {
           this.xmlFileIndicator = "Document is successfully uploaded";
           console.log(data);
@@ -91,6 +106,20 @@ export class DocumentUploadComponent implements OnInit {
 
     if (this.type == 'document-review'){
       this.documentReviewService.validateFile(form).subscribe(
+        data => {
+          this.xmlFileIndicator = "Document is valid";
+          this.isValid = true;
+          console.log(data);
+        },
+        error => {
+          this.xmlFileIndicator = "Document is not valid";
+          this.isValid = false;
+          console.log(error);
+        }
+      );
+    }
+    else if (this.type == 'paper-review') {
+      this.paperReviewService.validateFile(form).subscribe(
         data => {
           this.xmlFileIndicator = "Document is valid";
           this.isValid = true;

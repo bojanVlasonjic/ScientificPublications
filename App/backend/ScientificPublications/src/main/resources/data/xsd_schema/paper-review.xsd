@@ -6,7 +6,7 @@
   jxb:version="2.0">
   <xs:import schemaLocation="common.xsd" namespace="http://www.ftn.uns.ac.rs/common"/>
 
-  <xs:element name="document-revision">
+  <xs:element name="paper-review">
     <xs:complexType>
       <xs:sequence>
         <xs:element name="recommendation" type="rvw:TRecommendation"/>
@@ -53,8 +53,13 @@
 
   <xs:complexType name="TComments">
     <xs:sequence>
-      <xs:element name="comment" maxOccurs="unbounded" type="xs:string"/>
+      <xs:element name="comment" maxOccurs="unbounded" type="rvw:TComment"/>
     </xs:sequence>
   </xs:complexType>
 
+  <xs:complexType mixed="true" name="TComment">
+    <xs:choice maxOccurs="unbounded" minOccurs="0">
+      <xs:element maxOccurs="1" minOccurs="0" name="italic" type="xs:string"/>
+    </xs:choice>
+  </xs:complexType>
 </xs:schema>

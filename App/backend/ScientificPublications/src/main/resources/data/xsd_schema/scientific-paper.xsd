@@ -2,7 +2,7 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
     targetNamespace="http://www.ftn.uns.ac.rs/scientific-publication"
     xmlns:sp="http://www.ftn.uns.ac.rs/scientific-publication"
-    xmlns:cmn="http://www.ftn.uns.ac.rs/common">
+    xmlns:cmn="http://www.ftn.uns.ac.rs/common" xmlns:pred="http://www.ftn.uns.ac.rs/rdf/predicate/">
 
     <xs:import namespace="http://www.ftn.uns.ac.rs/common" schemaLocation="common.xsd"/>
     <xs:element name="scientific-paper">

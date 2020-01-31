@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sp:scientific-paper xmlns:cmn="http://www.ftn.uns.ac.rs/common"
+ xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+ xmlns:sp="http://www.ftn.uns.ac.rs/scientific-publication"
+ xmlns:pred="http://www.ftn.uns.ac.rs/rdf/predicate/"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.ftn.uns.ac.rs/scientific-publication file:/C:/Users/user/GitHub/ScientificPublications/App/backend/ScientificPublications/src/main/resources/data/xsd_schema/scientific-paper.xsd" received="2006-05-04" revised="2006-05-04" accepted="2006-05-04">
+    <sp:header>
+        <sp:title>title0</sp:title>
+        <sp:authors>
+            <cmn:author about="about0" rel="rel0" href="href0">
+                <cmn:meta property="property0" content="content0"/>
+                <cmn:first-name>first-name0</cmn:first-name>
+                <cmn:middle-name>middle-name0</cmn:middle-name>
+                <cmn:last-name>last-name0</cmn:last-name>
+                <cmn:institution>
+                    <cmn:name property="property1">name0</cmn:name>
+                    <cmn:location>
+                        <cmn:city property="property2">city0</cmn:city>
+                        <cmn:country property="property3">country0</cmn:country>
+                    </cmn:location>
+                </cmn:institution>
+            </cmn:author>
+            <cmn:author about="about1" rel="rel1" href="href1">
+                <cmn:meta property="property4" content="content1"/>
+                <cmn:first-name>first-name1</cmn:first-name>
+                <cmn:middle-name>middle-name1</cmn:middle-name>
+                <cmn:last-name>last-name1</cmn:last-name>
+                <cmn:institution>
+                    <cmn:name property="property5">name1</cmn:name>
+                    <cmn:location>
+                        <cmn:city property="property6">city1</cmn:city>
+                        <cmn:country property="property7">country1</cmn:country>
+                    </cmn:location>
+                </cmn:institution>
+            </cmn:author>
+        </sp:authors>
+    </sp:header>
+    <sp:abstract>
+        <sp:keywords>keywords0</sp:keywords>
+        <sp:purpose>
+            <cmn:bold>bold0</cmn:bold>
+            <cmn:bold>bold1</cmn:bold>
+        </sp:purpose>
+        <sp:paper-type>paper-type0</sp:paper-type>
+    </sp:abstract>
+    <sp:sections>
+        <cmn:section>
+            <cmn:header>header0</cmn:header>
+            <cmn:paragraphs>
+                <cmn:paragraph>
+                    <cmn:bold>bold2</cmn:bold>
+                    <cmn:italic>italic0</cmn:italic>
+                </cmn:paragraph>
+                <cmn:paragraph>
+                    <cmn:underline>underline0</cmn:underline>
+                    <cmn:underline>underline1</cmn:underline>
+                </cmn:paragraph>
+            </cmn:paragraphs>
+        </cmn:section>
+        <cmn:section>
+            <cmn:header>header1</cmn:header>
+            <cmn:paragraphs>
+                <cmn:paragraph>
+                    <cmn:underline>underline2</cmn:underline>
+                    <cmn:underline>underline3</cmn:underline>
+                </cmn:paragraph>
+                <cmn:paragraph>
+                    <cmn:italic>italic1</cmn:italic>
+                    <cmn:underline>underline4</cmn:underline>
+                </cmn:paragraph>
+            </cmn:paragraphs>
+        </cmn:section>
+    </sp:sections>
+    <sp:references>
+        <sp:reference>
+            <sp:authors>
+                <cmn:author about="about2" rel="rel2" href="href2">
+                    <cmn:meta property="property8" content="content2"/>
+                    <cmn:first-name>first-name2</cmn:first-name>
+                    <cmn:middle-name>middle-name2</cmn:middle-name>
+                    <cmn:last-name>last-name2</cmn:last-name>
+                    <cmn:institution>
+                        <cmn:name property="property9">name2</cmn:name>
+                        <cmn:location>
+                            <cmn:city property="property10">city2</cmn:city>
+                            <cmn:country property="property11">country2</cmn:country>
+                        </cmn:location>
+                    </cmn:institution>
+                </cmn:author>
+                <cmn:author about="about3" rel="rel3" href="href3">
+                    <cmn:meta property="property12" content="content3"/>
+                    <cmn:first-name>first-name3</cmn:first-name>
+                    <cmn:middle-name>middle-name3</cmn:middle-name>
+                    <cmn:last-name>last-name3</cmn:last-name>
+                    <cmn:institution>
+                        <cmn:name property="property13">name3</cmn:name>
+                        <cmn:location>
+                            <cmn:city property="property14">city3</cmn:city>
+                            <cmn:country property="property15">country3</cmn:country>
+                        </cmn:location>
+                    </cmn:institution>
+                </cmn:author>
+            </sp:authors>
+            <sp:year>50</sp:year>
+            <sp:paper-name>paper-name0</sp:paper-name>
+            <sp:journal>journal0</sp:journal>
+        </sp:reference>
+        <sp:reference>
+            <sp:authors>
+                <cmn:author about="about4" rel="rel4" href="href4">
+                    <cmn:meta property="property16" content="content4"/>
+                    <cmn:first-name>first-name4</cmn:first-name>
+                    <cmn:middle-name>middle-name4</cmn:middle-name>
+                    <cmn:last-name>last-name4</cmn:last-name>
+                    <cmn:institution>
+                        <cmn:name property="property17">name4</cmn:name>
+                        <cmn:location>
+                            <cmn:city property="property18">city4</cmn:city>
+                            <cmn:country property="property19">country4</cmn:country>
+                        </cmn:location>
+                    </cmn:institution>
+                </cmn:author>
+                <cmn:author about="about5" rel="rel5" href="href5">
+                    <cmn:meta property="property20" content="content5"/>
+                    <cmn:first-name>first-name5</cmn:first-name>
+                    <cmn:middle-name>middle-name5</cmn:middle-name>
+                    <cmn:last-name>last-name5</cmn:last-name>
+                    <cmn:institution>
+                        <cmn:name property="property21">name5</cmn:name>
+                        <cmn:location>
+                            <cmn:city property="property22">city5</cmn:city>
+                            <cmn:country property="property23">country5</cmn:country>
+                        </cmn:location>
+                    </cmn:institution>
+                </cmn:author>
+            </sp:authors>
+            <sp:year>50</sp:year>
+            <sp:paper-name>paper-name1</sp:paper-name>
+            <sp:journal>journal1</sp:journal>
+        </sp:reference>
+    </sp:references>
+</sp:scientific-paper>

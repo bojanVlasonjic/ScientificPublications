@@ -43,14 +43,11 @@ export class DocumentUploadComponent implements OnInit {
     if (this.type == 'document-review'){
       this.documentReviewService.validateFile(form).subscribe(
         data => {
-          if (data == true)
-          {
-            this.xmlFileIndicator = "Document is valid";
-          } else {
-            this.xmlFileIndicator = "Document is not valid";
-          }
+          this.xmlFileIndicator = "Document is valid";
+          console.log(data);
         },
         error => {
+          this.xmlFileIndicator = "Document is not valid";
           console.log(error);
         }
       );
@@ -58,14 +55,11 @@ export class DocumentUploadComponent implements OnInit {
     else if (this.type == 'scientific-paper') {
       this.scientificPaperService.validateFile(form).subscribe(
         data => {
-          if (data == true)
-          {
-            this.xmlFileIndicator = "Document is valid";
-          } else {
-            this.xmlFileIndicator = "Document is not valid";
-          }
+          this.xmlFileIndicator = "Document is valid";
+          console.log(data);
         },
         error => {
+          this.xmlFileIndicator = "Document is not valid";
           console.log(error);
         }
       );
@@ -73,14 +67,11 @@ export class DocumentUploadComponent implements OnInit {
     else if (this.type == 'cover-letter') {
       this.coverLetterService.validateFile(form).subscribe(
         data => {
-          if (data == true)
-          {
-            this.xmlFileIndicator = "Document is valid";
-          } else {
-            this.xmlFileIndicator = "Document is not valid";
-          }
+          this.xmlFileIndicator = "Document is valid";
+          console.log(data);
         },
         error => {
+          this.xmlFileIndicator = "Document is not valid";
           console.log(error);
         }
       );

@@ -26,7 +26,7 @@ import org.xml.sax.SAXException;
  * from Dialects of Languages) transformacije.
  * 
  */
-@SuppressWarnings("restriction")
+
 public class MetadataExtractor {
 	
 	private TransformerFactory transformerFactory;

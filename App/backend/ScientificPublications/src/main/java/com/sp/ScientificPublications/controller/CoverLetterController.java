@@ -51,6 +51,11 @@ public class CoverLetterController {
 	public ResponseEntity<Boolean> validateCoverLetterFile(@RequestParam("file") MultipartFile file) {
 		return new ResponseEntity<>(coverLetterService.validateCoverLetterXMLFile(file), HttpStatus.OK);
 	}
+    
+    @PostMapping("/upload-xml-file")
+    public ResponseEntity<DocumentDTO> uploadCoverLetterFile(@RequestParam("file") MultipartFile file) {
+        return new ResponseEntity<>(coverLetterService.uploadDocumentReviewXMLFile(file), HttpStatus.OK);
+    }
 
 
 

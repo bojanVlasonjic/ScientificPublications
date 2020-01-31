@@ -52,10 +52,20 @@ public class CoverLetterService {
         return templateDTO;
     }
 
-
+    // ================= File manipulation
+    
     public boolean validateCoverLetterXMLFile(MultipartFile file) {
     	return this.validateCoverLetter(domParserSvc.readMultipartXMLFile(file));
     }
+    
+    public DocumentDTO uploadDocumentReviewXMLFile(MultipartFile file) {
+    	String xmlContent = domParserSvc.readMultipartXMLFile(file);
+    	DocumentDTO document = new DocumentDTO();
+    	document.setDocumentContent(xmlContent);
+    	document = this.storeCoverLetterAsDocument(document);
+    	return document;
+    }
+    // =================
 
     public boolean validateCoverLetter(String documentContent) {
         return domParserSvc.validateXmlDocument(documentContent, schemaPath);

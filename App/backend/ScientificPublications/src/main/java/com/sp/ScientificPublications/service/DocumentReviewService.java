@@ -51,15 +51,25 @@ public class DocumentReviewService {
         return templateDTO;
     }
 
-
-    public boolean validateDocumentReviewXMLFile(MultipartFile file) {
-    	return this.validateDocumentReview(domParserSvc.readMultipartXMLFile(file));
-    }
-
     public boolean validateDocumentReview(String documentContent) {
         return domParserSvc.validateXmlDocument(documentContent, schemaPath);
     }
-
+    
+    // ================= File manipulation
+    
+    public boolean validateDocumentReviewXMLFile(MultipartFile file) {
+    	return this.validateDocumentReview(domParserSvc.readMultipartXMLFile(file));
+    }
+    
+    public DocumentDTO uploadDocumentReviewXMLFile(MultipartFile file) {
+    	String xmlContent = domParserSvc.readMultipartXMLFile(file);
+    	DocumentDTO document = new DocumentDTO();
+    	document.setDocumentContent(xmlContent);
+    	document = this.storeDocumentReviewAsDocument(document);
+    	return document;
+    }
+    
+    // =================
 
     public String generatePdf(String documentId) {
         return xmlTransformSvc.generatePdfFromXml(retrieveDocumentReviewAsDocument(documentId), xslFilePath);

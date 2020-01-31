@@ -2,6 +2,7 @@ package com.sp.ScientificPublications.service;
 
 import com.sp.ScientificPublications.dto.DocumentDTO;
 import com.sp.ScientificPublications.dto.SearchByAuthorsResponseDTO;
+import com.sp.ScientificPublications.dto.XmlFileUploadResponseDTO;
 import com.sp.ScientificPublications.exception.ApiBadRequestException;
 import com.sp.ScientificPublications.models.document_review.DocumentReview;
 import com.sp.ScientificPublications.models.scientific_paper.ScientificPaper;
@@ -64,9 +65,21 @@ public class ScientificPaperService {
         return templateDTO;
     }
 
+    // ================= File manipulation
+    
     public boolean validateScientificPaperXMLFile(MultipartFile file) {
     	return this.validateScientificPaper(domParserSvc.readMultipartXMLFile(file));
     }
+    
+    public DocumentDTO uploadScientificPaperXMLFile(MultipartFile file) {
+    	String xmlContent = domParserSvc.readMultipartXMLFile(file);
+    	DocumentDTO document = new DocumentDTO();
+    	document.setDocumentContent(xmlContent);
+    	document = this.storeScientificPaperAsDocument(document);
+    	return document;
+    }
+    
+    // =================
 
     public boolean validateScientificPaper(String documentContent) {
         return domParserSvc.validateXmlDocument(documentContent, schemaPath);

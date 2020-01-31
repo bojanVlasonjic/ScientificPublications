@@ -3,6 +3,7 @@ package com.sp.ScientificPublications.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.sp.ScientificPublications.dto.DocumentDTO;
 import com.sp.ScientificPublications.dto.SearchByAuthorsResponseDTO;
+import com.sp.ScientificPublications.dto.XmlFileUploadResponseDTO;
 import com.sp.ScientificPublications.models.scientific_paper.ScientificPaper;
 import com.sp.ScientificPublications.service.DomParserService;
 import com.sp.ScientificPublications.service.ScientificPaperService;
@@ -61,6 +62,11 @@ public class ScientificPaperController {
     @PostMapping("/validate-xml-file")
     public ResponseEntity<Boolean> validateScientificPaperFile(@RequestParam("file") MultipartFile file) {
         return new ResponseEntity<>(scPaperService.validateScientificPaperXMLFile(file), HttpStatus.OK);
+    }
+    
+    @PostMapping("/upload-xml-file")
+    public ResponseEntity<DocumentDTO> uploadScientificPaperFile(@RequestParam("file") MultipartFile file) {
+        return new ResponseEntity<>(scPaperService.uploadScientificPaperXMLFile(file), HttpStatus.OK);
     }
 
 

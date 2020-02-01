@@ -44,6 +44,7 @@ public class PaperReviewService {
     	document.setDocumentContent(xmlContent);
     	document = this.storePaperReviewAsDocument(document);
     	this.generatePdf(document.getDocumentId());
+    	this.generateHtml(document.getDocumentId());
     	return document;
     }
     
@@ -55,7 +56,7 @@ public class PaperReviewService {
     
     public String generateHtml(String documentId) {
     	DocumentDTO retrievedDTO = this.retrievePaperReviewAsDocument(documentId);
-    	retrievedDTO.setDocumentId("scientific-paper/" + retrievedDTO.getDocumentId());
+    	retrievedDTO.setDocumentId("paper-review/" + retrievedDTO.getDocumentId());
         return xmlTransformSvc.generateHtmlFromXml(retrievedDTO, xsltFilePath);
     }
     

@@ -84,10 +84,4 @@
         </fo:inline>  
     </xsl:template>
     
-    <xsl:template match="rvw:paper-review/rvw:comments-to-editor/rvw:comment/rvw:italic">
-        <fo:inline font-style="italic">
-            <xsl:apply-templates select="node()"/>
-        </fo:inline>  
-    </xsl:template>
-    
 </xsl:stylesheet>

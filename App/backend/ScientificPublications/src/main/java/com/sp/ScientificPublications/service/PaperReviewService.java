@@ -29,6 +29,7 @@ public class PaperReviewService {
     private static final String schemaPath = "src/main/resources/data/xsd_schema/paper-review.xsd";
     private static final String xslFilePath = "src/main/resources/data/xsl_fo/paper-review-fo.xsl";
     private static final String templatePath = "src/main/resources/templates/paper-review-template.xml";
+    private static final String xsltFilePath = "src/main/resources/data/xslt/paper-review-xslt.xsl";
 
     private static final String collectionId = "/db/scientific-publication/paper-reviews";
     private static final String modelPackage = "com.sp.ScientificPublications.models.paper_review";
@@ -50,6 +51,12 @@ public class PaperReviewService {
     	DocumentDTO retrievedDTO = this.retrievePaperReviewAsDocument(documentId);
     	retrievedDTO.setDocumentId("paper-review/" + retrievedDTO.getDocumentId());
         return xmlTransformSvc.generatePdfFromXml(retrievedDTO, xslFilePath);
+    }
+    
+    public String generateHtml(String documentId) {
+    	DocumentDTO retrievedDTO = this.retrievePaperReviewAsDocument(documentId);
+    	retrievedDTO.setDocumentId("scientific-paper/" + retrievedDTO.getDocumentId());
+        return xmlTransformSvc.generateHtmlFromXml(retrievedDTO, xsltFilePath);
     }
     
     public boolean validatePaperReview(String documentContent) {

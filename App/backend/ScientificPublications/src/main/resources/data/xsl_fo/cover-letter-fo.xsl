@@ -84,7 +84,7 @@
                         </fo:table-body>
                     </fo:table>
                     
-                    <fo:block margin-bottom="5">
+                    <fo:block margin-bottom="5px">
                         <xsl:value-of select="cl:cover-letter/cl:body/cl:salutation"></xsl:value-of>
                     </fo:block>
                     <fo:block margin-bottom="30px" margin-top="30px">

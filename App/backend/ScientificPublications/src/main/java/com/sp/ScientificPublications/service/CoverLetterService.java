@@ -59,12 +59,13 @@ public class CoverLetterService {
     	return this.validateCoverLetter(domParserSvc.readMultipartXMLFile(file));
     }
     
-    public DocumentDTO uploadDocumentReviewXMLFile(MultipartFile file) {
+    public DocumentDTO uploadCoverLetterXMLFile(MultipartFile file) {
     	String xmlContent = domParserSvc.readMultipartXMLFile(file);
     	DocumentDTO document = new DocumentDTO();
     	document.setDocumentContent(xmlContent);
     	document = this.storeCoverLetterAsDocument(document);
     	this.generatePdf(document.getDocumentId());
+    	this.generateHtml(document.getDocumentId());
     	return document;
     }
     // =================
@@ -81,7 +82,9 @@ public class CoverLetterService {
     }
 
     public String generateHtml(String documentId) {
-        return xmlTransformSvc.generateHtmlFromXml(retrieveCoverLetterAsDocument(documentId), xsltFilePath);
+    	DocumentDTO retrievedDTO = this.retrieveCoverLetterAsDocument(documentId);
+    	retrievedDTO.setDocumentId("cover-letter/" + retrievedDTO.getDocumentId());
+        return xmlTransformSvc.generateHtmlFromXml(retrievedDTO, xsltFilePath);
     }
 
 

@@ -90,7 +90,9 @@ public class ScientificPaperService {
     }
 
     public String generateHtml(String documentId) {
-        return xmlTransformSvc.generateHtmlFromXml(retrieveScientificPaperAsDocument(documentId), xsltFilePath);
+    	DocumentDTO retrievedDTO = this.retrieveScientificPaperAsDocument(documentId);
+    	retrievedDTO.setDocumentId("scientific-paper/" + retrievedDTO.getDocumentId());
+        return xmlTransformSvc.generateHtmlFromXml(retrievedDTO, xsltFilePath);
     }
     
     public SearchByAuthorsResponseDTO searchMetadataByAuthor(String author) throws IOException {

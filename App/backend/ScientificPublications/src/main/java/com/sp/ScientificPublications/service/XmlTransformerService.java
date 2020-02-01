@@ -120,10 +120,16 @@ public class XmlTransformerService {
             DOMSource source = new DOMSource(buildDocument(document.getDocumentContent()));
             String outputPath = outputDirectory + "html/" + document.getDocumentId() + ".html";
             createHtmlOutputDirectory(outputPath);
-
-            StreamResult result = new StreamResult(new FileOutputStream(outputPath));
+            
+            FileOutputStream fileOutputStream = new FileOutputStream(outputPath); 
+            StreamResult result = new StreamResult(fileOutputStream);
             transformer.transform(source, result);
-
+            try {
+				fileOutputStream.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+            
             return outputPath;
 
         } catch (FileNotFoundException | TransformerException e) {
@@ -146,6 +152,7 @@ public class XmlTransformerService {
     private Transformer generateTransformer(String xslFilePath) {
 
         StreamSource transformSrc = new StreamSource(new File(xslFilePath));
+        
         Transformer transformer = null;
         try {
             transformer = transformerFactory.newTransformer(transformSrc);
@@ -156,7 +163,8 @@ public class XmlTransformerService {
             e.printStackTrace();
             throw new ApiBadRequestException("Failed to transform document to html file");
         }
-
+        
+        
         return transformer;
 
     }
@@ -167,6 +175,7 @@ public class XmlTransformerService {
         Document doc = null;
 
         try {
+        	docBuilderFactory.setValidating(false);
             DocumentBuilder builder = docBuilderFactory.newDocumentBuilder();
             doc = builder.parse(new InputSource(new StringReader(documentContent)));
 

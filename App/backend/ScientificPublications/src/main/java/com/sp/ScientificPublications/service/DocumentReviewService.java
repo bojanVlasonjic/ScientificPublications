@@ -80,7 +80,9 @@ public class DocumentReviewService {
     }
 
     public String generateHtml(String documentId) {
-        return xmlTransformSvc.generateHtmlFromXml(retrieveDocumentReviewAsDocument(documentId), xsltFilePath);
+    	DocumentDTO retrievedDTO = this.retrieveDocumentReviewAsDocument(documentId);
+    	retrievedDTO.setDocumentId("document-review/" + retrievedDTO.getDocumentId());
+        return xmlTransformSvc.generateHtmlFromXml(retrievedDTO, xsltFilePath);
     }
 
 

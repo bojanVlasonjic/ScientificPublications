@@ -74,6 +74,7 @@ public class ScientificPaperService {
     	document.setDocumentContent(xmlContent);
     	document = this.storeScientificPaperAsDocument(document);
     	this.generatePdf(document.getDocumentId());
+    	this.generateHtml(document.getDocumentId());
     	return document;
     }
     

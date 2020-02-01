@@ -68,6 +68,7 @@ public class DocumentReviewService {
     	document.setDocumentContent(xmlContent);
     	document = this.storeDocumentReviewAsDocument(document);
     	this.generatePdf(document.getDocumentId());
+    	this.generateHtml(document.getDocumentId());
     	return document;
     }
     

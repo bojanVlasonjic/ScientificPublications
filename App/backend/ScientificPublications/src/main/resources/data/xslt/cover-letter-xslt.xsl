@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!DOCTYPE html>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:cmn="http://www.ftn.uns.ac.rs/common"
                 xmlns:cl="http://www.ftn.uns.ac.rs/scientific-publication" version="2.0">

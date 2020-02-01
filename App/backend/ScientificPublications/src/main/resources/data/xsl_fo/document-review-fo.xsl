@@ -71,6 +71,12 @@
         
     </xsl:template>
     
+    <xsl:template match="dr:document-review/dr:sections/cmn:section/cmn:paragraphs/cmn:paragraph/cmn:underline">
+        <fo:inline text-decoration="underline">
+            <xsl:apply-templates select="node()"/>
+        </fo:inline>  
+    </xsl:template>
+    
     <xsl:template match="dr:document-review/dr:sections/cmn:section/cmn:paragraphs/cmn:paragraph/cmn:bold">
         <fo:inline font-weight="bold">
             <xsl:apply-templates select="node()"/>

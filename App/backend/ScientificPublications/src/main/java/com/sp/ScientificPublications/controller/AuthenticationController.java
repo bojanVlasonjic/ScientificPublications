@@ -3,6 +3,7 @@ package com.sp.ScientificPublications.controller;
 import com.sp.ScientificPublications.dto.security.ChangePasswordRequestDTO;
 import com.sp.ScientificPublications.dto.security.LoginRequestDTO;
 import com.sp.ScientificPublications.dto.UserDTO;
+import com.sp.ScientificPublications.service.logic.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

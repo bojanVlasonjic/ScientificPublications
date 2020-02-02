@@ -4,7 +4,8 @@ public enum SubmitionStatus {
     NEW,
     CANCELED,
     REJECTED,
-    APPROVED,
+    IN_REVIEW_PROCESS,
+    REVIEWED,
     REVISIONS_REQUESTED,
     REVISED,
     PUBLISHED

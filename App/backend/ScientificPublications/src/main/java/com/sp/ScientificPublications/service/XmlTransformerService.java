@@ -22,6 +22,11 @@ import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Service
 public class XmlTransformerService {
@@ -189,6 +194,11 @@ public class XmlTransformerService {
 
         return doc;
 
+    }
+    
+    public byte[] loadFile(String sourcePath) throws URISyntaxException, IOException {
+    	Path path = Paths.get(new File(sourcePath).toURI());
+		return Files.readAllBytes(path);
     }
 
 }

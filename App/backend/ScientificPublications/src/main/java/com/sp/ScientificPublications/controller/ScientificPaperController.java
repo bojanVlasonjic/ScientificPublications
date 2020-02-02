@@ -3,6 +3,7 @@ package com.sp.ScientificPublications.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.sp.ScientificPublications.dto.DocumentDTO;
 import com.sp.ScientificPublications.dto.SearchByAuthorsResponseDTO;
+import com.sp.ScientificPublications.dto.SendEmailDTO;
 import com.sp.ScientificPublications.models.scientific_paper.ScientificPaper;
 import com.sp.ScientificPublications.service.DomParserService;
 import com.sp.ScientificPublications.service.ScientificPaperService;
@@ -68,7 +69,10 @@ public class ScientificPaperController {
         return new ResponseEntity<>(scPaperService.uploadScientificPaperXMLFile(file), HttpStatus.OK);
     }
 
-
+    @PostMapping("/send-email")
+    public ResponseEntity<Boolean> sendEmail(@RequestBody SendEmailDTO sendEmailDTO) {
+    	return new ResponseEntity<>(scPaperService.sendEmail(sendEmailDTO), HttpStatus.OK);
+    }
 
     @GetMapping("/pdf/{id}")
     public ResponseEntity<String> generatePdf(@PathVariable String id) {

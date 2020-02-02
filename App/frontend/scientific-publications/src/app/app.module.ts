@@ -8,9 +8,8 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { HttpClientModule } from '@angular/common/http';
 import { DocumentUploadComponent } from './components/document-upload/document-upload.component';
-import { XmlEditorComponent } from './components/xml-editor/xml-editor.component';
-import { AceEditorModule } from 'ng2-ace-editor';
-import { DocumentEditorComponent } from './components/document-editor/document-editor.component';
+import { EditorModule } from './components/editor/editor.module';
+import { DocumentsComponent } from './components/documents/documents.component';
 
 @NgModule({
   declarations: [
@@ -19,14 +18,14 @@ import { DocumentEditorComponent } from './components/document-editor/document-e
     LoginComponent,
     RegisterComponent,
     DocumentUploadComponent,
-    XmlEditorComponent,
-    DocumentEditorComponent
+    DocumentsComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
-    AceEditorModule
+    EditorModule
+
   ],
   providers: [],
   bootstrap: [AppComponent]

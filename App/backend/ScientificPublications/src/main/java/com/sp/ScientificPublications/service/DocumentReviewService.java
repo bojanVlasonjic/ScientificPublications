@@ -5,6 +5,7 @@ import com.sp.ScientificPublications.exception.ApiBadRequestException;
 import com.sp.ScientificPublications.models.document_review.DocumentReview;
 import com.sp.ScientificPublications.repository.exist.ExistDocumentRepository;
 import com.sp.ScientificPublications.repository.exist.ExistJaxbRepository;
+import com.sp.ScientificPublications.utility.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,6 +13,8 @@ import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.XMLResource;
 
 import javax.xml.bind.JAXBException;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 @Service
 public class DocumentReviewService {
@@ -30,8 +33,23 @@ public class DocumentReviewService {
 	
     private static final String schemaPath = "src/main/resources/data/xsd_schema/document-review.xsd";
     private static final String xslFilePath = "src/main/resources/data/xsl_fo/document-review-fo.xsl";
+    private static final String templatePath = "src/main/resources/templates/document-review-template.xml";
+
     private static final String collectionId = "/db/scientific-publication/document-reviews";
     private static final String modelPackage = "com.sp.ScientificPublications.models.document_review";
+
+
+    public DocumentDTO getTemplate() {
+
+        DocumentDTO templateDTO = new DocumentDTO();
+        try {
+            templateDTO.setDocumentContent(FileUtil.readFile(templatePath, StandardCharsets.UTF_8));
+        } catch (IOException e) {
+            throw new ApiBadRequestException("Failed to generate document review template");
+        }
+
+        return templateDTO;
+    }
 
 
     public boolean validateDocumentReviewXMLFile(MultipartFile file) {
@@ -50,18 +68,12 @@ public class DocumentReviewService {
 
     public DocumentReview retrieveDocumentReviewAsObject(String documentId) {
 
-        DocumentReview documentReview = null;
-
         try {
-            documentReview = existJaxbRepo.retrieveDocumentReview(collectionId, documentId, modelPackage);
-        } catch (XMLDBException e) {
+            return (DocumentReview) existJaxbRepo.retrieveObject(collectionId, documentId, modelPackage);
+        } catch (XMLDBException | JAXBException e) {
             e.printStackTrace();
             throw new ApiBadRequestException("Failed to retrieve document review");
-        } catch (JAXBException e) {
-            e.printStackTrace();
         }
-
-        return documentReview;
 
     }
 
@@ -79,6 +91,23 @@ public class DocumentReviewService {
         }
 
         return document;
+
+    }
+
+
+    // TODO: implement an update method, change method name
+    public DocumentReview storeDocumentReviewAsObject(String documentId) {
+
+        DocumentReview docReview = retrieveDocumentReviewAsObject(documentId);
+
+        //TODO: update data
+        docReview.setTitle("Say no to lombok");
+
+        try {
+            return (DocumentReview) existJaxbRepo.storeObject(collectionId, documentId, modelPackage, docReview);
+        } catch (XMLDBException | JAXBException ex) {
+            throw new ApiBadRequestException("Failed to store document review");
+        }
 
     }
 

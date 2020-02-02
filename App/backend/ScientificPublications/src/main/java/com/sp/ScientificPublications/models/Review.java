@@ -10,7 +10,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class Review extends User {
+public class Review {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,11 +21,10 @@ public class Review extends User {
     private String reviewId;
 
     @NonNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Reviewer reviewer;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Author reviewer;
 
     @NonNull
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Submition submition;
-
 }

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cl:cover-letter xmlns:cl="http://www.ftn.uns.ac.rs/scientific-publication"
+ xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+ xmlns:cmn="http://www.ftn.uns.ac.rs/common">
+    <cl:sender-contact>
+        <cl:name>name0</cl:name>
+        <cmn:location>
+            <cmn:city>city0</cmn:city>
+            <cmn:country>country0</cmn:country>
+        </cmn:location>
+        <cl:phone-number>000000000</cl:phone-number>
+        <cl:email>a@a.aa</cl:email>
+    </cl:sender-contact>
+    <cl:employer-contact>
+        <cl:name>name1</cl:name>
+        <cmn:location>
+            <cmn:city>city1</cmn:city>
+            <cmn:country>country1</cmn:country>
+        </cmn:location>
+        <cl:phone-number>000000000</cl:phone-number>
+        <cl:email>a@a.aa</cl:email>
+    </cl:employer-contact>
+    <cl:body>
+        <cl:salutation>salutation0</cl:salutation>
+        <cl:paragraphs>
+            <cmn:paragraph>
+            </cmn:paragraph>
+        </cl:paragraphs>
+        <cl:closure>
+            <cl:compliment>compliment0</cl:compliment>
+            <cl:signature>signature0</cl:signature>
+        </cl:closure>
+    </cl:body>
+</cl:cover-letter>

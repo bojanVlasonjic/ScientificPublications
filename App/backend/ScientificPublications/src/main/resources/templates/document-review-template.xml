@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dr:document-review xmlns:dr="http://www.ftn.uns.ac.rs/scientific-publication"
+                    xmlns:cmn="http://www.ftn.uns.ac.rs/common">
+    <dr:title></dr:title>
+    <dr:authors>
+        <cmn:author>
+            <cmn:first-name></cmn:first-name>
+            <cmn:last-name>l</cmn:last-name>
+        </cmn:author>
+    </dr:authors>
+    <dr:reviewer>
+        <dr:first-name></dr:first-name>
+        <dr:last-name></dr:last-name>
+    </dr:reviewer>
+    <dr:sections>
+        <cmn:section>
+            <cmn:header></cmn:header>
+            <cmn:paragraphs>
+                <cmn:paragraph>
+                </cmn:paragraph>
+            </cmn:paragraphs>
+        </cmn:section>
+    </dr:sections>
+</dr:document-review>

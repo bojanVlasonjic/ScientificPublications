@@ -1,6 +1,6 @@
 package com.sp.ScientificPublications.repository.exist;
 
-import com.sp.ScientificPublications.config.ConnectionProperties;
+import com.sp.ScientificPublications.models.ExistConnectionProperties;
 import org.exist.xmldb.EXistResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import org.xmldb.api.modules.XMLResource;
 public class ExistUtilityService {
 
     @Autowired
-    ConnectionProperties connProperties;
+    ExistConnectionProperties connProperties;
 
 
     public void cleanUp(Collection col, XMLResource res) {

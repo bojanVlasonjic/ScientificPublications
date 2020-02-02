@@ -6,6 +6,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -29,9 +31,16 @@ public abstract class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Authority> authorities = new HashSet<>();
+
+    public Set<Authority> getCollectionOfAuthorities() {
+        return authorities;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return authorities;
     }
 
     @Override

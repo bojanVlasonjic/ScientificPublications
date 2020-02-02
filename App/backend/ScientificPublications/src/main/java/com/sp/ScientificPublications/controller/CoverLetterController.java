@@ -18,6 +18,11 @@ public class CoverLetterController {
     private CoverLetterService coverLetterService;
 
 
+    @GetMapping("/template")
+    public ResponseEntity<DocumentDTO> getCoverLetterTemplate() {
+        return new ResponseEntity<>(coverLetterService.getTemplate(), HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public  ResponseEntity<DocumentDTO> getCoverLetterById(@PathVariable String id) {
         return new ResponseEntity<>(coverLetterService.retrieveCoverLetterAsDocument(id), HttpStatus.OK);

@@ -1,0 +1,197 @@
+package com.sp.ScientificPublications.service.logic;
+
+import com.sp.ScientificPublications.dto.DocumentDTO;
+import com.sp.ScientificPublications.dto.PageableResultsDTO;
+import com.sp.ScientificPublications.dto.submitions.AuthorSubmitionDTO;
+import com.sp.ScientificPublications.dto.submitions.CreateSubmitionDTO;
+import com.sp.ScientificPublications.dto.submitions.EditorSubmitionDTO;
+import com.sp.ScientificPublications.exception.ApiAuthException;
+import com.sp.ScientificPublications.exception.ApiBadRequestException;
+import com.sp.ScientificPublications.exception.ApiNotFoundException;
+import com.sp.ScientificPublications.models.Author;
+import com.sp.ScientificPublications.models.Submition;
+import com.sp.ScientificPublications.models.SubmitionStatus;
+import com.sp.ScientificPublications.repository.AuthorRepository;
+import com.sp.ScientificPublications.repository.SubmitionRepository;
+import com.sp.ScientificPublications.service.CoverLetterService;
+import com.sp.ScientificPublications.service.ScientificPaperService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+@Service
+public class SubmitionService {
+
+    @Autowired
+    private AuthorRepository authorRepository;
+
+    @Autowired
+    private SubmitionRepository submitionRepository;
+
+    @Autowired
+    private CoverLetterService coverLetterService;
+
+    @Autowired
+    private ScientificPaperService scientificPaperService;
+
+    @Autowired
+    private AccessControlService accessControlService;
+
+    @Autowired
+    private AuthenticationService authenticationService;
+
+    public PageableResultsDTO<EditorSubmitionDTO> getSubmitions(Pageable pageable) {
+        authenticationService.getCurrentEditor();
+        Page<Submition> submitionPage = submitionRepository.findAll(pageable);
+        List<EditorSubmitionDTO> editorsSubmitionDTOS = submitionPage.get().map(EditorSubmitionDTO::new).collect(Collectors.toList());
+        return new PageableResultsDTO<>(editorsSubmitionDTOS, submitionPage.getTotalPages());
+    }
+
+    public AuthorSubmitionDTO createSubmition(CreateSubmitionDTO createSubmitionDTO) {
+        Author author = authenticationService.getCurrentAuthor();
+        DocumentDTO paper = new DocumentDTO(null, createSubmitionDTO.getPaperContent());
+        DocumentDTO coverLetter = new DocumentDTO(null, createSubmitionDTO.getCoverLetterContnet());
+        paper = scientificPaperService.storeScientificPaperAsDocument(paper);
+        coverLetter = coverLetterService.storeCoverLetterAsDocument(coverLetter);
+        String title = scientificPaperService.retrieveScientificPaperAsObject(paper.getDocumentId()).getHeader().getTitle();
+
+        Submition submition = new Submition(paper.getDocumentId(), title, coverLetter.getDocumentId(), SubmitionStatus.NEW);
+        author.getSubmitions().add(submition);
+        submition.setAuthor(author);
+
+        return new AuthorSubmitionDTO(submitionRepository.save(submition));
+    }
+
+    public void cancelSubmition(Long id) {
+        Optional<Submition> optionalSubmition = submitionRepository.findById(id);
+        if (optionalSubmition.isPresent()) {
+            Author user = authenticationService.getCurrentAuthor();
+            Submition submition = optionalSubmition.get();
+            if (accessControlService.userOwnSubmition(user, submition)) {
+                submition.setStatus(SubmitionStatus.CANCELED);
+                submitionRepository.save(submition);
+            } else {
+                throw new ApiAuthException("You are unauthorized to cancel this submition.");
+            }
+        } else {
+            throw new ApiNotFoundException("Submition doesnt exist.");
+        }
+    }
+
+    public List<AuthorSubmitionDTO> mySubmitions() {
+        Author author = authenticationService.getCurrentAuthor();
+        return author.getSubmitions().stream().map(AuthorSubmitionDTO::new).collect(Collectors.toList());
+    }
+
+    public void approveSubmition(Long id) {
+        authenticationService.getCurrentEditor();
+
+        Optional<Submition> optionalSubmition = submitionRepository.findById(id);
+        if (optionalSubmition.isPresent()) {
+            Submition submition = optionalSubmition.get();
+            if (submition.getStatus().equals(SubmitionStatus.NEW)) {
+                submition.setStatus(SubmitionStatus.APPROVED);
+                submitionRepository.save(submition);
+                //TODO: SEND APPROVED EMAIL TO AUTHOR
+            } else {
+                throw new ApiBadRequestException("Submition was already approved.");
+            }
+        } else {
+            throw new ApiNotFoundException("Submition doesnt exist.");
+        }
+    }
+
+    public void rejectSubmition(Long id) {
+        authenticationService.getCurrentEditor();
+
+        Optional<Submition> optionalSubmition = submitionRepository.findById(id);
+        if (optionalSubmition.isPresent()) {
+            Submition submition = optionalSubmition.get();
+            submition.setStatus(SubmitionStatus.REJECTED);
+            //TODO: SEND REJECTION EMAIL
+            //TODO: NOTIFY REVIEWES THAT SUBMITION IS REJECTED
+            cleanSubmitionFromReviewers(submition);
+            submitionRepository.save(submition);
+        } else {
+            throw new ApiNotFoundException("Submition doesnt exist.");
+        }
+    }
+
+    public void cleanSubmitionFromReviewers(Submition submition) {
+        // remove this submition from all reviewers
+        submition.getReviewers().stream().forEach(reviewer -> reviewer.getSubmitions().removeIf(s -> s.getId() == submition.getId()));
+
+        // remove this submition from all requested reviewers
+        submition.getRequestedReviewers().stream().forEach(requestReviewer -> requestReviewer.getRequestedSubmitions().removeIf(rs -> rs.getId() == submition.getId()));
+
+        // remove reviewers from submitions
+        submition.setRequestedReviewers(new HashSet<>());
+        submition.setReviewers(new HashSet<>());
+    }
+
+
+    public void requestRevision(Long id) {
+        Optional<Submition> optionalSubmition = submitionRepository.findById(id);
+        if (optionalSubmition.isPresent()) {
+            Submition submition = optionalSubmition.get();
+            submition.setStatus(SubmitionStatus.REVISIONS_REQUESTED);
+            submitionRepository.save(submition);
+            //TODO: SEND REVISION REQUESTED EMAIL
+            //TODO: NOTIFY REVIEWERS THAT REVISION IS REQUESTED
+        } else {
+            throw new ApiNotFoundException("Submition doesnt exist.");
+        }
+    }
+
+    public void reviseSubmition(Long id, CreateSubmitionDTO revisedSubmitonDTO) {
+        Optional<Submition> optionalSubmition = submitionRepository.findById(id);
+        if (optionalSubmition.isPresent()) {
+            Submition submition = optionalSubmition.get();
+            if (submition.getStatus().equals(SubmitionStatus.REVISIONS_REQUESTED)) {
+                submition.setStatus(SubmitionStatus.REVISED);
+                //TODO: SAVE REVISED DOCUMENT TO XML DATABASE
+                //TODO: SEND REVISED NOTIFICATION EMAIL TO REVIEWERS AND EDITOR
+                submitionRepository.save(submition);
+            } else {
+                throw new ApiBadRequestException("Revision is not requested.");
+            }
+        } else {
+            throw new ApiNotFoundException("Submition doesnt exist.");
+        }
+    }
+
+    public void publishSubmition(Long id) {
+        Optional<Submition> optionalSubmition = submitionRepository.findById(id);
+        if (optionalSubmition.isPresent()) {
+            Submition submition = optionalSubmition.get();
+            submition.setStatus(SubmitionStatus.PUBLISHED);
+            submitionRepository.save(submition);
+            //TODO: SEND PUBLISHED NOTIFICATION EMAIL TO AUTHOR
+        } else {
+            throw new ApiNotFoundException("Submition doesnt exist.");
+        }
+    }
+
+    public void requestReview(Long submitionId, Long reviewerId) {
+        Optional<Submition> optionalSubmition = submitionRepository.findById(submitionId);
+        Optional<Author> optionalReviewer = authorRepository.findById(reviewerId);
+
+        if (optionalSubmition.isPresent() && optionalReviewer.isPresent()) {
+            Submition submition = optionalSubmition.get();
+            Author reviewer = optionalReviewer.get();
+
+            submition.getRequestedReviewers().add(reviewer);
+            reviewer.getRequestedSubmitions().add(submition);
+            submitionRepository.save(submition);
+            //TODO: SEND REQUESTED REVIEW EMAIL TO REVIEWER
+        } else {
+            throw new ApiNotFoundException("Submition and/or reviewer doesnt exist.");
+        }
+    }
+}

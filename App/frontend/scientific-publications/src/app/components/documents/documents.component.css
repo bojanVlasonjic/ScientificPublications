@@ -1,0 +1,36 @@
+.search-documents {
+    height: 50px;
+}
+
+.search-documents > ul {
+    list-style: none;
+}
+
+.search-documents > ul > li {
+    float: left;
+    margin-right: 20px;
+}
+
+.search {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid black;
+    font-family: Montserrat;
+    font-weight: 600;
+    letter-spacing: 1px;
+    padding: 10px 20px;
+    outline: none;
+    width: 400px;
+}
+
+.search-type {
+    background: transparent;
+    padding: 10px 20px;
+    border: none;
+    outline: none;
+    border-bottom: 2px solid black;
+    font-family: Montserrat;
+    font-weight: 600;
+    letter-spacing: 1px;
+    height: 46px;
+}

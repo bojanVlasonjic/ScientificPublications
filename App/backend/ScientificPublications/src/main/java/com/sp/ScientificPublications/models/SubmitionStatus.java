@@ -2,8 +2,10 @@ package com.sp.ScientificPublications.models;
 
 public enum SubmitionStatus {
     NEW,
+    CANCELED,
     REJECTED,
-    CURRENTLY_REVIEWED,
+    APPROVED,
     REVISIONS_REQUESTED,
-    ACCEPTED
+    REVISED,
+    PUBLISHED
 }

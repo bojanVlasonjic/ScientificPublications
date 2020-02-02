@@ -2,7 +2,7 @@ package com.sp.ScientificPublications.repository.exist;
 
 import com.sp.ScientificPublications.dto.DocumentDTO;
 import com.sp.ScientificPublications.exception.ApiNotFoundException;
-import com.sp.ScientificPublications.config.ConnectionProperties;
+import com.sp.ScientificPublications.models.ExistConnectionProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.xmldb.api.base.Collection;
@@ -17,7 +17,7 @@ import java.util.UUID;
 public class ExistDocumentRepository {
 
     @Autowired
-    ConnectionProperties connProperties;
+    ExistConnectionProperties connProperties;
 
     @Autowired
     Database database;

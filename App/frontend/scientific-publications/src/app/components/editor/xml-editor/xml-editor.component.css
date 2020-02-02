@@ -1,0 +1,68 @@
+#xml-editor {
+    min-height: 600px;
+    font-size: 20px;
+    width:100%;
+    overflow: auto;
+    margin-bottom: 2ex;
+    border-radius: 10px;
+}
+
+.error {
+    border-style: solid;
+    border-color: red;
+    border-width: 5px;
+}
+
+.valid {
+    border-style: none;
+}
+
+/* Toolbar */
+
+.editor-header {
+    background-color: #333;
+    color: white;
+    border-radius: 10px;
+    margin-bottom: 1ex;
+}
+
+#left-selection {
+    position: absolute;
+    left: 1ex;
+}
+
+#right-selection {
+    position: absolute;
+    right: 1ex;
+}
+
+#editor-toolbar-holder {
+    height: 8ex;
+}
+
+#editor-toolbar {
+    list-style-type: none;
+}
+
+#editor-toolbar li {
+    display: inline-block;
+    margin: 1ex;
+    padding: 1ex;
+    font-size: 18px;
+}
+
+#editor-toolbar li:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#editor-log-holder {
+    min-height: 4ex;
+    font-size: 18px;
+}
+
+.log-content {
+    position: relative;
+    margin: 1ex;
+}
+

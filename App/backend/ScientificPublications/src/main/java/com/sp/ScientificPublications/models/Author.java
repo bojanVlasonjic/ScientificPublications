@@ -13,10 +13,24 @@ import java.util.Set;
 @NoArgsConstructor
 public class Author extends User {
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-        name = "author_submitions",
-        joinColumns = @JoinColumn(name = "author_id"),
-        inverseJoinColumns = @JoinColumn(name = "submition_id"))
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Submition> submitions = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "reviewer_submitions",
+            joinColumns = @JoinColumn(name = "reviewer_id"),
+            inverseJoinColumns = @JoinColumn(name = "submition_id"))
+    private Set<Submition> reviewedSubmitions = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "reviewer_requested_submitions",
+            joinColumns = @JoinColumn(name = "reviewer_id"),
+            inverseJoinColumns = @JoinColumn(name = "submition_id"))
+    private Set<Submition> requestedSubmitions = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Review> reviews = new HashSet<>();
+
 }

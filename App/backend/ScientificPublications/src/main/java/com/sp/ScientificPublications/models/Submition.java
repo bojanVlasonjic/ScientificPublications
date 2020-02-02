@@ -24,6 +24,10 @@ public class Submition {
 
     @NonNull
     @Column(nullable = false)
+    private String paperTitle;
+
+    @NonNull
+    @Column(nullable = false)
     private String coverLetterId;
 
     @NonNull
@@ -31,12 +35,15 @@ public class Submition {
     @Column(nullable = false)
     private SubmitionStatus status;
 
-    @ManyToMany(mappedBy = "submitions", fetch = FetchType.LAZY)
-    private Set<Author> authors = new HashSet<>();
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Author author;
 
-    @ManyToMany(mappedBy = "submitions", fetch = FetchType.LAZY)
-    private Set<Reviewer> reviewers = new HashSet<>();
+    @ManyToMany(mappedBy = "submitions", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Author> reviewers = new HashSet<>();
 
-    @OneToMany(mappedBy = "submition",fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "requestedSubmitions", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Author> requestedReviewers = new HashSet<>();
+
+    @OneToMany(mappedBy = "submition",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Review> reviews = new HashSet<>();
 }

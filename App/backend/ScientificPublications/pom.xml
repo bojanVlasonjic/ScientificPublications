@@ -84,7 +84,26 @@
 			<artifactId>exist-core</artifactId>
 			<version>5.0.0</version>
 		</dependency>
-
+		
+		<dependency>
+		    <groupId>org.apache.jena</groupId>
+		    <artifactId>apache-jena-libs</artifactId>
+		    <type>pom</type>
+		    <version>3.9.0</version>
+		  </dependency>
+		  
+		  <dependency>
+			  <groupId>org.apache.jena</groupId>
+			  <artifactId>jena-fuseki-main</artifactId>
+			  <version>3.9.0</version> <!-- Set the version -->
+			</dependency>
+		
+		<dependency>
+		    <groupId>org.slf4j</groupId>
+		    <artifactId>slf4j-api</artifactId>
+		    <version>1.7.25</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>com.fasterxml.jackson.dataformat</groupId>
 			<artifactId>jackson-dataformat-xml</artifactId>
@@ -109,6 +128,34 @@
 			<version>2.4</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/xalan/xalan -->
+		<dependency>
+			<groupId>xalan</groupId>
+			<artifactId>xalan</artifactId>
+			<version>2.7.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-api</artifactId>
+			<version>0.10.7</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-impl</artifactId>
+			<version>0.10.7</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-jackson</artifactId>
+			<version>0.10.7</version>
+			<scope>runtime</scope>
+		</dependency>
+
+
 		<!-- https://mvnrepository.com/artifact/com.sun.xml.bind/jaxb-xjc -->
 		<dependency>
 			<groupId>com.sun.xml.bind</groupId>
@@ -127,7 +174,6 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
 	</dependencies>
 
 	<build>
@@ -139,7 +185,7 @@
 
 			<!-- Plugin for generating classes from schemas -->
 			<!-- The output directory is by default in target/generated-sources/jaxb -->
-			<!-- I would recommend generating one schema at a time, append in to the source path -->
+			<!-- I would recommend generating one schema at a time -> append in to the source path -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>jaxb2-maven-plugin</artifactId>

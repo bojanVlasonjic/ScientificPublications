@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { Document } from '../models/document';
+import { DocumentDTO } from '../models/documentDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -10,15 +10,19 @@ export class CoverLetterService {
 
   constructor(private http: HttpClient) { }
 
-  storeDocument(document: Document): Observable<any> {
+  storeDocument(document: DocumentDTO): Observable<any> {
     return this.http.post<any>('api/cover-letter', document);
   }
 
-  validate(data: Document): Observable<any> {
+  validate(data: DocumentDTO): Observable<any> {
     return this.http.post<any>('api/cover-letter/validate', data);
   }
 
   validateFile(form: FormData): Observable<any> {
     return this.http.post<any>('api/cover-letter/validate-xml-file', form);
+  }
+
+  generateTemplate(): Observable<any> {
+    return this.http.get('api/cover-letter/template');
   }
 }

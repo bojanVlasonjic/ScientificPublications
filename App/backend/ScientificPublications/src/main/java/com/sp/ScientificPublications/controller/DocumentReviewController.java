@@ -22,6 +22,12 @@ public class DocumentReviewController {
 	@Autowired
 	DocumentReviewService documentReviewService;
 
+
+	@GetMapping("/template")
+	public ResponseEntity<DocumentDTO> getDocumentReviewTemplate() {
+		return new ResponseEntity<>(documentReviewService.getTemplate(), HttpStatus.OK);
+	}
+
 	@GetMapping("/{id}")
 	public ResponseEntity<DocumentDTO> getDocumentReviewById(@PathVariable String id) {
 		return new ResponseEntity<>(documentReviewService.retrieveDocumentReviewAsDocument(id), HttpStatus.OK);
@@ -38,7 +44,6 @@ public class DocumentReviewController {
 		return new ResponseEntity<>(documentReviewService.storeDocumentReviewAsDocument(documentDTO),
 				HttpStatus.CREATED);
 	}
-
 
 
 

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.sp.ScientificPublications.dto.SearchByAuthorsResponseDTO;
 import com.sp.ScientificPublications.models.FusekiConnectionProperties;
+import com.sp.ScientificPublications.models.MetadataStatus;
 import com.sp.ScientificPublications.utility.FileUtil;
 import org.apache.jena.query.*;
 import org.apache.jena.rdf.model.Model;
@@ -145,6 +146,26 @@ public class FusekiDocumentRepository {
 		return dto;
 	}
 	
+	public MetadataStatus validateMetadata(String xmlContent) throws TransformerException, SAXException, IOException {
+		System.out.println("[INFO] Validating XML metadata");
+		MetadataExtractor metadataExtractor = new MetadataExtractor();
+		
+		InputStream inputStream = new ByteArrayInputStream(xmlContent.getBytes());
+		
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		
+		System.out.println("[INFO] Extracting metadata from RDFa attributes...");
+		metadataExtractor.extractMetadata(
+				inputStream, 
+				outputStream);
+				
+		String os = new String(outputStream.toByteArray());
+		if (os.contains("<!--Could not produce the triple for:")) return MetadataStatus.INVALID;
+		if (!os.contains("rdf:Description")) return MetadataStatus.NOMETADATA;
+		
+		return MetadataStatus.VALID;
+	}
+	
 	public void extractMetadata(String xmlContent, String fileName) throws IOException, SAXException, TransformerException {
 		
 		if (connected == 0) {
@@ -153,6 +174,16 @@ public class FusekiDocumentRepository {
 		}
 	
 		System.out.println("[INFO] " + FusekiDocumentRepository.class.getSimpleName());
+		
+		MetadataStatus status = this.validateMetadata(xmlContent);
+		if (status == MetadataStatus.INVALID) {
+			System.out.println("[ERROR] Extracting metadata from RDFa attributes...");
+			return;
+		}
+		else if (status == MetadataStatus.NOMETADATA) {
+			System.out.println("[INFO] No metadata");
+			return;
+		}
 		
 		
 		
@@ -170,7 +201,8 @@ public class FusekiDocumentRepository {
 				inputStream, 
 				outputStream);
 				
-		
+		String os = new String(outputStream.toByteArray());
+		System.out.println("OS : " + os);
 		
 		// Loading a default model with extracted metadata
 		Model model = ModelFactory.createDefaultModel();
@@ -183,8 +215,6 @@ public class FusekiDocumentRepository {
 		model.write(outXml, SparqlUtil.RDF_XML);
 		
 		XmlMapper xmlMapper = new XmlMapper();
-		//JsonNode node = xmlMapper.readValue(outXml.toByteArray(), JsonNode.class);
-		//System.out.println(node.toString());
 		ArrayNode json = xmlMapper.readValue(outXml.toByteArray(), ArrayNode.class);
 		System.out.println(json.toString());
 		this.saveToJSONFile(fileName + ".json", json);

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sp:scientific-paper xmlns:cmn="http://www.ftn.uns.ac.rs/common"
-                     xmlns:sp="http://www.ftn.uns.ac.rs/scientific-publication">
+                     xmlns:sp="http://www.ftn.uns.ac.rs/scientific-publication"
+                     xmlns:pred="http://www.ftn.uns.ac.rs/rdf/predicate/">
     <sp:header>
         <sp:title></sp:title>
         <sp:authors>

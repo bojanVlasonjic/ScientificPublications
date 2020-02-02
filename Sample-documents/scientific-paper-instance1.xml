@@ -22,6 +22,7 @@
     </sp:header>
     <sp:abstract>
         <sp:keywords>keywords0</sp:keywords>
+        <sp:paper-type>type</sp:paper-type>
         <sp:purpose>
             blablabla 
             <cmn:bold>blablalba</cmn:bold>

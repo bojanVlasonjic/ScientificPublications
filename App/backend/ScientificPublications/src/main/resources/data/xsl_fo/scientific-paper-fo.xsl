@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:sp="http://www.ftn.uns.ac.rs/scientific-publication"
+                xmlns:cmn="http://www.ftn.uns.ac.rs/common"
                 xmlns:fo="http://www.w3.org/1999/XSL/Format" version="2.0">
     
     <xsl:template match="/">
@@ -36,15 +37,15 @@
                                 <xsl:value-of select="sp:scientific-paper/sp:header/sp:title"></xsl:value-of>
                             </fo:block>
                             <fo:block>
-                                <xsl:for-each select="sp:scientific-paper/sp:header/sp:authors/sp:author">
+                                <xsl:for-each select="sp:scientific-paper/sp:header/sp:authors/cmn:author">
                                     <fo:block>
-                                        <xsl:value-of select="sp:first-name"></xsl:value-of>&#160;<xsl:value-of select="sp:last-name"></xsl:value-of>
+                                        <xsl:value-of select="cmn:first-name"></xsl:value-of>&#160;<xsl:value-of select="cmn:last-name"></xsl:value-of>
                                     </fo:block>
                                     <fo:block font-style="italic" font-size="10px">
-                                        <xsl:value-of select="sp:institution/sp:name"></xsl:value-of>,
-                                        <xsl:value-of select="sp:institution/sp:location/sp:city"></xsl:value-of>
-                                        <xsl:value-of select="sp:institution/sp:location/sp:state"></xsl:value-of>
-                                        <xsl:value-of select="sp:institution/sp:location/sp:country"></xsl:value-of>
+                                        <xsl:value-of select="cmn:institution/sp:name"></xsl:value-of>,
+                                        <xsl:value-of select="cmn:institution/sp:location/sp:city"></xsl:value-of>
+                                        <xsl:value-of select="cmn:institution/sp:location/sp:state"></xsl:value-of>
+                                        <xsl:value-of select="cmn:institution/sp:location/sp:country"></xsl:value-of>
                                     </fo:block>
                                     <fo:block margin="2px"> </fo:block>
                                 </xsl:for-each>
@@ -62,11 +63,11 @@
                                 <fo:inline font-weight="bold">Paper type</fo:inline> - <xsl:value-of select="sp:scientific-paper/sp:abstract/sp:paper-type"></xsl:value-of>
                             </fo:block>
                         </fo:block>
-                        <xsl:for-each select="sp:scientific-paper/sp:sections/sp:section">
+                        <xsl:for-each select="sp:scientific-paper/sp:sections/cmn:section">
                             <fo:block font-weight="bold" font-size="14px" margin-bottom="10px" margin-top="20px">
-                                <xsl:value-of select="@heading"></xsl:value-of>
+                                <xsl:value-of select="cmn:header"></xsl:value-of>
                             </fo:block>
-                            <xsl:for-each select="sp:paragraph">
+                            <xsl:for-each select="cmn:paragraphs/cmn:paragraph">
                                 <fo:block text-indent="20px" font-size="12px" margin-bottom="5px" text-align="justify">
                                     <xsl:apply-templates />
                                 </fo:block>
@@ -76,8 +77,8 @@
                             <fo:block font-weight="bold" font-size="12px" margin-bottom="5px" margin-top="30px">References</fo:block>
                             <xsl:for-each select="sp:scientific-paper/sp:references/sp:reference">
                                 <fo:block margin-bottom="5px" font-size="10px">
-                                    <xsl:for-each select="sp:authors/sp:author">
-                                        <xsl:value-of select="sp:first-name"></xsl:value-of>&#160;<xsl:value-of select="sp:last-name"></xsl:value-of>
+                                    <xsl:for-each select="sp:authors/cmn:author">
+                                        <xsl:value-of select="cmn:first-name"></xsl:value-of>&#160;<xsl:value-of select="cmn:last-name"></xsl:value-of>
                                     </xsl:for-each>
                                     <xsl:value-of select="sp:year"></xsl:value-of>&#160;
                                     <xsl:value-of select="sp:paper-name"></xsl:value-of>&#160;
@@ -93,13 +94,13 @@
         </fo:root>
     </xsl:template>
     
-    <xsl:template match="sp:scientific-paper/sp:sections/sp:section/sp:paragraph/sp:bold">
+    <xsl:template match="sp:scientific-paper/sp:sections/cmn:section/cmn:paragraphs/cmn:paragraph/cmn:bold">
         <fo:inline font-weight="bold">
             <xsl:apply-templates select="node()"/>
         </fo:inline>  
     </xsl:template>
     
-    <xsl:template match="sp:scientific-paper/sp:sections/sp:section/sp:paragraph/sp:italic">
+    <xsl:template match="sp:scientific-paper/sp:sections/cmn:section/cmn:paragraphs/cmn:paragraph/cmn:italic">
         <fo:inline font-style="italic">
             <xsl:apply-templates select="node()"/>
         </fo:inline>  

@@ -1,21 +1,6 @@
 [ {
-  "about" : "http://www.ftn.uns.ac.rs/rdf/examples/person/Kiersten",
-  "state" : {
-    "parseType" : "Literal",
-    "" : "Ohio"
-  },
-  "city" : {
-    "parseType" : "Literal",
-    "" : "Kent "
-  },
-  "authorTo" : {
-    "datatype" : "http://www.ftn.uns.ac.rs/scientific-paper",
-    "" : "Document phenomenology: a framework for holistic analysis"
-  }
-}, {
-  "about" : "http://www.ftn.uns.ac.rs/rdf/examples/person/Tim_Gorichanaz",
-  "authorTo" : {
-    "datatype" : "http://www.ftn.uns.ac.rs/scientific-paper",
-    "" : "Document phenomenology: a framework for holistic analysis"
+  "about" : "file:///C:/Users/user/GitHub/ScientificPublications/App/backend/ScientificPublications/about0",
+  "rel0" : {
+    "resource" : "file:///C:/Users/user/GitHub/ScientificPublications/App/backend/ScientificPublications/href0"
   }
 } ]

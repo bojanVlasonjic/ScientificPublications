@@ -2,8 +2,8 @@ package com.sp.ScientificPublications.service;
 
 import com.sp.ScientificPublications.dto.DocumentDTO;
 import com.sp.ScientificPublications.dto.SearchByAuthorsResponseDTO;
+import com.sp.ScientificPublications.dto.SendEmailDTO;
 import com.sp.ScientificPublications.exception.ApiBadRequestException;
-import com.sp.ScientificPublications.models.document_review.DocumentReview;
 import com.sp.ScientificPublications.models.scientific_paper.ScientificPaper;
 import com.sp.ScientificPublications.repository.exist.ExistDocumentRepository;
 import com.sp.ScientificPublications.repository.exist.ExistJaxbRepository;
@@ -11,6 +11,7 @@ import com.sp.ScientificPublications.repository.rdf.FusekiDocumentRepository;
 
 import com.sp.ScientificPublications.utility.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
@@ -18,11 +19,13 @@ import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.XMLResource;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 import javax.xml.bind.JAXBException;
-import java.io.File;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.xml.transform.TransformerException;
 
 @Service
@@ -42,10 +45,17 @@ public class ScientificPaperService {
     
     @Autowired
     FusekiDocumentRepository fusekiDocumentRepository;
+    
+    @Autowired
+    EmailSenderService emailSenderService;
 
     private static final String schemaPath = "src/main/resources/data/xsd_schema/scientific-paper.xsd";
-    private static final String xslFilePath = "src/main/resources/data/xsl_fo/scientific-paper-fo.xsl";
+    private static final String xslFoFilePath = "src/main/resources/data/xsl_fo/scientific-paper-fo.xsl";
+    private static final String xsltFilePath = "src/main/resources/data/xslt/scientific-paper-xslt.xsl";
     private static final String templatePath = "src/main/resources/templates/scientific-paper-template.xml";
+    
+    private static final String PDF_DIRECTORY_PATH = "src/main/resources/output/pdf/scientific-paper/";
+    private static final String HTML_DIRECTORY_PATH = "src/main/resources/output/html/scientific-paper/";
 
     private static final String collectionId = "/db/scientific-publication/scientific-papers";
     private static final String modelPackage = "com.sp.ScientificPublications.models.scientific_paper";
@@ -63,18 +73,67 @@ public class ScientificPaperService {
 
         return templateDTO;
     }
+    
+    public boolean sendEmail(SendEmailDTO dto) {
+    	
+    	String pdfPath = PDF_DIRECTORY_PATH + dto.getPdfGUID() + ".pdf";
+    	String htmlPath = HTML_DIRECTORY_PATH + dto.getHtmlGUID() + ".html";
+    	
+    	byte[] pdfBytes = null;
+    	byte[] htmlBytes = null;
+    	
+    	try {
+			pdfBytes = xmlTransformSvc.loadFile(pdfPath);
+			htmlBytes = xmlTransformSvc.loadFile(htmlPath);
+		} catch (URISyntaxException | IOException e) {
+			e.printStackTrace();
+		}
+    	
+    	
+    	Map<String, ByteArrayResource> attachmentNameAndByteResource = new HashMap<String, ByteArrayResource>();
+    	attachmentNameAndByteResource.put("ScientificPaper.pdf", new ByteArrayResource(pdfBytes));
+    	attachmentNameAndByteResource.put("ScientificPaper.html", new ByteArrayResource(htmlBytes));
+    	
+    	emailSenderService.sendMessageWithAttachments(
+    			dto.getTo(), 
+    			dto.getSubject(),
+    			dto.getMessage(), 
+    			attachmentNameAndByteResource);
+    	return true;
+    }
 
+    // ================= File manipulation
+    
     public boolean validateScientificPaperXMLFile(MultipartFile file) {
     	return this.validateScientificPaper(domParserSvc.readMultipartXMLFile(file));
     }
+    
+    public DocumentDTO uploadScientificPaperXMLFile(MultipartFile file) {
+    	String xmlContent = domParserSvc.readMultipartXMLFile(file);
+    	DocumentDTO document = new DocumentDTO();
+    	document.setDocumentContent(xmlContent);
+    	document = this.storeScientificPaperAsDocument(document);
+    	this.generatePdf(document.getDocumentId());
+    	this.generateHtml(document.getDocumentId());
+    	return document;
+    }
+    
+    // =================
 
     public boolean validateScientificPaper(String documentContent) {
         return domParserSvc.validateXmlDocument(documentContent, schemaPath);
     }
 
-
     public String generatePdf(String documentId) {
-        return xmlTransformSvc.generatePdfFromXml(retrieveScientificPaperAsDocument(documentId), xslFilePath);
+    	DocumentDTO retrievedDTO = this.retrieveScientificPaperAsDocument(documentId);
+    	retrievedDTO.setDocumentId("scientific-paper/" + retrievedDTO.getDocumentId());
+        return xmlTransformSvc.generatePdfFromXml(retrievedDTO, xslFoFilePath);
+    }
+
+    public String generateHtml(String documentId) {
+    	DocumentDTO retrievedDTO = this.retrieveScientificPaperAsDocument(documentId);
+    	retrievedDTO.setDocumentId("scientific-paper/" + retrievedDTO.getDocumentId());
+        return xmlTransformSvc.generateHtmlFromXml(retrievedDTO, xsltFilePath);
     }
     
     public SearchByAuthorsResponseDTO searchMetadataByAuthor(String author) throws IOException {

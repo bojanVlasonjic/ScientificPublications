@@ -9,24 +9,39 @@ import org.apache.fop.apps.FopFactory;
 import org.apache.fop.apps.MimeConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
-import javax.xml.transform.Result;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXResult;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Service
 public class XmlTransformerService {
 
     @Autowired
-    private FopFactory fopFactory;
+    private FopFactory fopFactory; // used for pdf transformations
+
+    @Autowired
+    DocumentBuilderFactory docBuilderFactory; // used for html transformations
 
     @Autowired
     private TransformerFactory transformerFactory;
 
-    private static final String outputDirectory = "src/main/resources/output/pdf/";
+
+    private static final String outputDirectory = "src/main/resources/output/";
 
 
     /** Transforms .xml file to .pdf, using the .xsl file. Each file type has it's matching .xsl file.
@@ -87,7 +102,7 @@ public class XmlTransformerService {
     private File createPdfFile(String documentId) {
 
         // generating pdf file name based on the input file name
-        String outputFilePath = outputDirectory + documentId + ".pdf";
+        String outputFilePath = outputDirectory + "pdf/" + documentId + ".pdf";
 
         File pdfFile = new File(outputFilePath);
         if(!pdfFile.getParentFile().exists()) {
@@ -99,6 +114,91 @@ public class XmlTransformerService {
     }
 
 
-    // TODO: html generator
+    /** returns path to html file for now */
+    public String generateHtmlFromXml(DocumentDTO document, String xslFilePath) {
+
+        try {
+
+            Transformer transformer = generateTransformer(xslFilePath);
+
+            // transform dom to html
+            DOMSource source = new DOMSource(buildDocument(document.getDocumentContent()));
+            String outputPath = outputDirectory + "html/" + document.getDocumentId() + ".html";
+            createHtmlOutputDirectory(outputPath);
+            
+            FileOutputStream fileOutputStream = new FileOutputStream(outputPath); 
+            StreamResult result = new StreamResult(fileOutputStream);
+            transformer.transform(source, result);
+            try {
+				fileOutputStream.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+            
+            return outputPath;
+
+        } catch (FileNotFoundException | TransformerException e) {
+            e.printStackTrace();
+            throw new ApiBadRequestException("Failed to generate html file");
+        }
+
+    }
+
+    private void createHtmlOutputDirectory(String filePath) {
+
+        File htmlFile = new File(filePath);
+
+        if(!htmlFile.getParentFile().exists()) {
+            htmlFile.getParentFile().mkdir();
+        }
+
+    }
+
+    private Transformer generateTransformer(String xslFilePath) {
+
+        StreamSource transformSrc = new StreamSource(new File(xslFilePath));
+        
+        Transformer transformer = null;
+        try {
+            transformer = transformerFactory.newTransformer(transformSrc);
+            transformer.setOutputProperty("{http://xml.apache.org/xalan}indent-amount", "2");
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty(OutputKeys.METHOD, "xhtml");
+        } catch (TransformerConfigurationException e) {
+            e.printStackTrace();
+            throw new ApiBadRequestException("Failed to transform document to html file");
+        }
+        
+        
+        return transformer;
+
+    }
+
+
+    private Document buildDocument(String documentContent) {
+
+        Document doc = null;
+
+        try {
+        	docBuilderFactory.setValidating(false);
+            DocumentBuilder builder = docBuilderFactory.newDocumentBuilder();
+            doc = builder.parse(new InputSource(new StringReader(documentContent)));
+
+        } catch (ParserConfigurationException | SAXException | IOException e) {
+            e.printStackTrace();
+        }
+
+        if(doc == null) {
+            throw new ApiBadRequestException("Failed to build html");
+        }
+
+        return doc;
+
+    }
+    
+    public byte[] loadFile(String sourcePath) throws URISyntaxException, IOException {
+    	Path path = Paths.get(new File(sourcePath).toURI());
+		return Files.readAllBytes(path);
+    }
 
 }

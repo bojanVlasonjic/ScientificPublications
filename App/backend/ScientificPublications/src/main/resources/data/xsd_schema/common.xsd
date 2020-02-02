@@ -16,17 +16,35 @@
     <xs:element name="author">
         <xs:complexType>
             <xs:sequence>
+                <xs:element maxOccurs="1" minOccurs="0" name="meta">
+                    <xs:complexType>
+                        <xs:attribute name="property" use="required"/>
+                        <xs:attribute name="content" use="required"/>
+                    </xs:complexType>
+                </xs:element>
                 <xs:element name="first-name" type="xs:string"/>
                 <xs:element minOccurs="0" name="middle-name" type="xs:string"/>
                 <xs:element name="last-name" type="xs:string"/>
                 <xs:element minOccurs="0" ref="cmn:institution"/>
+                <xs:element minOccurs="0" name="expertise" type="xs:string"/>
             </xs:sequence>
+            <xs:attribute name="about"/>
+            <xs:attribute name="rel"/>
+            <xs:attribute name="href"/>
         </xs:complexType>
     </xs:element>
     <xs:element name="institution">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="name" type="xs:string"/>
+                <xs:element name="name">
+                    <xs:complexType>
+                        <xs:simpleContent>
+                            <xs:extension base="xs:string">
+                                <xs:attribute name="property"/>
+                            </xs:extension>
+                        </xs:simpleContent>
+                    </xs:complexType>
+                </xs:element>
                 <xs:element ref="cmn:location"/>
             </xs:sequence>
         </xs:complexType>
@@ -34,9 +52,33 @@
     <xs:element name="location">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="city" type="xs:string"/>
-                <xs:element minOccurs="0" name="state" type="xs:string"/>
-                <xs:element name="country" type="xs:string"/>
+                <xs:element name="city">
+                    <xs:complexType>
+                        <xs:simpleContent>
+                            <xs:extension base="xs:string">
+                                <xs:attribute name="property"/>
+                            </xs:extension>
+                        </xs:simpleContent>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" name="state">
+                    <xs:complexType>
+                        <xs:simpleContent>
+                            <xs:extension base="xs:string">
+                                <xs:attribute name="property"/>
+                            </xs:extension>
+                        </xs:simpleContent>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="country">
+                    <xs:complexType>
+                        <xs:simpleContent>
+                            <xs:extension base="xs:string">
+                                <xs:attribute name="property"/>
+                            </xs:extension>
+                        </xs:simpleContent>
+                    </xs:complexType>
+                </xs:element>
             </xs:sequence>
         </xs:complexType>
     </xs:element>

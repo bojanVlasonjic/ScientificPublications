@@ -57,11 +57,21 @@ public class DocumentReviewController {
 		return new ResponseEntity<>(documentReviewService.validateDocumentReviewXMLFile(file), HttpStatus.OK);
 	}
 	
+	@PostMapping("/upload-xml-file")
+    public ResponseEntity<DocumentDTO> uploadDocumentReviewFile(@RequestParam("file") MultipartFile file) {
+        return new ResponseEntity<>(documentReviewService.uploadDocumentReviewXMLFile(file), HttpStatus.OK);
+    }
+	
 
 
-	@PostMapping("/pdf/{id}")
+	@GetMapping("/pdf/{id}")
   	public ResponseEntity<String> generatePdf(@PathVariable String id) {
 		return new ResponseEntity<>(documentReviewService.generatePdf(id), HttpStatus.OK);
   	}
+
+	@GetMapping("/html/{id}")
+	public ResponseEntity<String> generateHtml(@PathVariable String id) {
+		return new ResponseEntity<>(documentReviewService.generateHtml(id), HttpStatus.OK);
+	}
   
 }

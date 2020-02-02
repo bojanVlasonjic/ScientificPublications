@@ -3,6 +3,7 @@ package com.sp.ScientificPublications.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.sp.ScientificPublications.dto.DocumentDTO;
 import com.sp.ScientificPublications.dto.SearchByAuthorsResponseDTO;
+import com.sp.ScientificPublications.dto.SendEmailDTO;
 import com.sp.ScientificPublications.models.scientific_paper.ScientificPaper;
 import com.sp.ScientificPublications.service.DomParserService;
 import com.sp.ScientificPublications.service.ScientificPaperService;
@@ -58,10 +59,25 @@ public class ScientificPaperController {
     public ResponseEntity<Boolean> validateScientificPaperFile(@RequestParam("file") MultipartFile file) {
         return new ResponseEntity<>(scPaperService.validateScientificPaperXMLFile(file), HttpStatus.OK);
     }
+    
+    @PostMapping("/upload-xml-file")
+    public ResponseEntity<DocumentDTO> uploadScientificPaperFile(@RequestParam("file") MultipartFile file) {
+        return new ResponseEntity<>(scPaperService.uploadScientificPaperXMLFile(file), HttpStatus.OK);
+    }
 
-    @PostMapping("/pdf/{id}")
+    @PostMapping("/send-email")
+    public ResponseEntity<Boolean> sendEmail(@RequestBody SendEmailDTO sendEmailDTO) {
+    	return new ResponseEntity<>(scPaperService.sendEmail(sendEmailDTO), HttpStatus.OK);
+    }
+
+    @GetMapping("/pdf/{id}")
     public ResponseEntity<String> generatePdf(@PathVariable String id) {
         return new ResponseEntity<>(scPaperService.generatePdf(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/html/{id}")
+    public ResponseEntity<String> generateHtml(@PathVariable String id) {
+        return new ResponseEntity<>(scPaperService.generateHtml(id), HttpStatus.OK);
     }
   
     @PostMapping("/rdf/extract")

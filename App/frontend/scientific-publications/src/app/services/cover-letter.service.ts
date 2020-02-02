@@ -22,6 +22,10 @@ export class CoverLetterService {
     return this.http.post<any>('api/cover-letter/validate-xml-file', form);
   }
 
+  uploadFile(form: FormData): Observable<any> {
+    return this.http.post<any>('api/cover-letter/upload-xml-file', form);
+  }
+
   generateTemplate(): Observable<any> {
     return this.http.get('api/cover-letter/template');
   }

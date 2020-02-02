@@ -21,7 +21,7 @@ import java.io.*;
  * from Dialects of Languages) transformacije.
  * 
  */
-@SuppressWarnings("restriction")
+
 public class MetadataExtractor {
 	
 	private TransformerFactory transformerFactory;

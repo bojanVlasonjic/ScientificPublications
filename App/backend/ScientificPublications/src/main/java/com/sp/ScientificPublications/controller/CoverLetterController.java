@@ -51,15 +51,25 @@ public class CoverLetterController {
 	public ResponseEntity<Boolean> validateCoverLetterFile(@RequestParam("file") MultipartFile file) {
 		return new ResponseEntity<>(coverLetterService.validateCoverLetterXMLFile(file), HttpStatus.OK);
 	}
+    
+    @PostMapping("/upload-xml-file")
+    public ResponseEntity<DocumentDTO> uploadCoverLetterFile(@RequestParam("file") MultipartFile file) {
+        return new ResponseEntity<>(coverLetterService.uploadCoverLetterXMLFile(file), HttpStatus.OK);
+    }
 
 
 
-    @PostMapping("/pdf/{id}")
+    @GetMapping("/pdf/{id}")
     public ResponseEntity<String> generatePdf(@PathVariable String id) {
 
         return new ResponseEntity<>(
                 coverLetterService.generatePdf(id),
                 HttpStatus.OK);
+    }
+
+    @GetMapping("/html/{id}")
+    public ResponseEntity<String> generateHtml(@PathVariable String id) {
+        return new ResponseEntity<>(coverLetterService.generateHtml(id), HttpStatus.OK);
     }
 
 

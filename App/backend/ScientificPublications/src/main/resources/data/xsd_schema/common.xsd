@@ -18,8 +18,8 @@
             <xs:sequence>
                 <xs:element maxOccurs="1" minOccurs="0" name="meta">
                     <xs:complexType>
-                        <xs:attribute name="property"/>
-                        <xs:attribute name="content"/>
+                        <xs:attribute name="property" use="required"/>
+                        <xs:attribute name="content" use="required"/>
                     </xs:complexType>
                 </xs:element>
                 <xs:element name="first-name" type="xs:string"/>

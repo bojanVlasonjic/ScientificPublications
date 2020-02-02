@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rvw:paper-review xmlns:cmn="http://www.ftn.uns.ac.rs/common"
+ xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+ xmlns:rvw="http://www.ftn.uns.ac.rs/scientific-publication"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.ftn.uns.ac.rs/scientific-publication file:/C:\Users\user\GitHub\ScientificPublications\App\backend\ScientificPublications\src\main\resources\data\xsd_schema/paper-review.xsd" id="50" paper-id="50">
+    <rvw:recommendation>Accept</rvw:recommendation>
+    <rvw:questionare>
+        <rvw:question>
+            <rvw:question-text>question-text0</rvw:question-text>
+            <rvw:selected>Strongly disagree</rvw:selected>
+        </rvw:question>
+        <rvw:question>
+            <rvw:question-text>question-text0</rvw:question-text>
+            <rvw:selected>Strongly disagree</rvw:selected>
+        </rvw:question>
+        <rvw:question>
+            <rvw:question-text>question-text0</rvw:question-text>
+            <rvw:selected>Strongly disagree</rvw:selected>
+        </rvw:question>
+        <rvw:question>
+            <rvw:question-text>question-text0</rvw:question-text>
+            <rvw:selected>Strongly disagree</rvw:selected>
+        </rvw:question>
+        <rvw:question>
+            <rvw:question-text>question-text0</rvw:question-text>
+            <rvw:selected>Strongly disagree</rvw:selected>
+        </rvw:question>
+        <rvw:question>
+            <rvw:question-text>question-text0</rvw:question-text>
+            <rvw:selected>Strongly disagree</rvw:selected>
+        </rvw:question>
+        <rvw:question>
+            <rvw:question-text>question-text0</rvw:question-text>
+            <rvw:selected>Strongly disagree</rvw:selected>
+        </rvw:question>
+    </rvw:questionare>
+    <rvw:comments-to-author>
+        <rvw:comment><rvw:italic>dsadasda</rvw:italic> comment0</rvw:comment>
+    </rvw:comments-to-author>
+    <rvw:comments-to-editor>
+        <rvw:comment><rvw:italic>dsadasda</rvw:italic> comment1</rvw:comment>
+    </rvw:comments-to-editor>
+</rvw:paper-review>

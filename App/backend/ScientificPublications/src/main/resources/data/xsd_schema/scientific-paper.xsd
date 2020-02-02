@@ -20,6 +20,7 @@
     </xs:element>
     <xs:complexType name="THeader">
         <xs:sequence>
+            <xs:element minOccurs="0" name="metas" type="sp:TMetas"/>
             <xs:element name="title" type="xs:string"/>
             <xs:element name="authors" type="cmn:TAuthors"/>
         </xs:sequence>
@@ -43,6 +44,20 @@
             <xs:element name="year" type="xs:nonNegativeInteger"/>
             <xs:element name="paper-name" type="xs:string"/>
             <xs:element name="journal" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="TMetas">
+        <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="meta">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:string">
+                            <xs:attribute name="property" use="required"/>
+                            <xs:attribute name="content" use="required"/>
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
         </xs:sequence>
     </xs:complexType>
 </xs:schema>

@@ -1,9 +1,9 @@
-<div>Send {{type}} XML for validation here</div>
-<div style="width: 500px;">
+<div>Send {{type}} XML file</div>
+<div style="width: 560px;">
     <input [id]="cid" class="hide-file-input" type="file" #xmlFile accept=".xml" (change)="newFileSelected($event)"/>
     <label class="choose-file-label" [for]="cid">Choose</label>
     <label class="choose-file-label-indicator" [for]="cid">{{fileName}}</label>
-    <button class="simple-button" (click)="sendDocumentForValidation()">Send</button>
+    <button class="simple-button" (click)="sendDocument()">Send</button>
     <div>{{xmlFileIndicator}}</div>
 </div>
 

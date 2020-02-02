@@ -57,6 +57,11 @@ public class DocumentReviewController {
 		return new ResponseEntity<>(documentReviewService.validateDocumentReviewXMLFile(file), HttpStatus.OK);
 	}
 	
+	@PostMapping("/upload-xml-file")
+    public ResponseEntity<DocumentDTO> uploadDocumentReviewFile(@RequestParam("file") MultipartFile file) {
+        return new ResponseEntity<>(documentReviewService.uploadDocumentReviewXMLFile(file), HttpStatus.OK);
+    }
+	
 
 
 	@GetMapping("/pdf/{id}")

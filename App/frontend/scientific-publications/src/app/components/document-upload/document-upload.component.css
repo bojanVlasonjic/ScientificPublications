@@ -16,4 +16,8 @@
     border-bottom: 2px solid black;
     padding: 8px 10px;
     min-width: 200px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 300px;
+    
 }

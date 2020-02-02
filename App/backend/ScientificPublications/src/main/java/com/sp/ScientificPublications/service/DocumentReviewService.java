@@ -52,22 +52,38 @@ public class DocumentReviewService {
         return templateDTO;
     }
 
-
-    public boolean validateDocumentReviewXMLFile(MultipartFile file) {
-    	return this.validateDocumentReview(domParserSvc.readMultipartXMLFile(file));
-    }
-
     public boolean validateDocumentReview(String documentContent) {
         return domParserSvc.validateXmlDocument(documentContent, schemaPath);
     }
-
+    
+    // ================= File manipulation
+    
+    public boolean validateDocumentReviewXMLFile(MultipartFile file) {
+    	return this.validateDocumentReview(domParserSvc.readMultipartXMLFile(file));
+    }
+    
+    public DocumentDTO uploadDocumentReviewXMLFile(MultipartFile file) {
+    	String xmlContent = domParserSvc.readMultipartXMLFile(file);
+    	DocumentDTO document = new DocumentDTO();
+    	document.setDocumentContent(xmlContent);
+    	document = this.storeDocumentReviewAsDocument(document);
+    	this.generatePdf(document.getDocumentId());
+    	this.generateHtml(document.getDocumentId());
+    	return document;
+    }
+    
+    // =================
 
     public String generatePdf(String documentId) {
-        return xmlTransformSvc.generatePdfFromXml(retrieveDocumentReviewAsDocument(documentId), xslFoFilePath);
+    	DocumentDTO retrievedDTO = this.retrieveDocumentReviewAsDocument(documentId);
+    	retrievedDTO.setDocumentId("document-review/" + retrievedDTO.getDocumentId());
+        return xmlTransformSvc.generatePdfFromXml(retrievedDTO, xslFoFilePath);
     }
 
     public String generateHtml(String documentId) {
-        return xmlTransformSvc.generateHtmlFromXml(retrieveDocumentReviewAsDocument(documentId), xsltFilePath);
+    	DocumentDTO retrievedDTO = this.retrieveDocumentReviewAsDocument(documentId);
+    	retrievedDTO.setDocumentId("document-review/" + retrievedDTO.getDocumentId());
+        return xmlTransformSvc.generateHtmlFromXml(retrievedDTO, xsltFilePath);
     }
 
 

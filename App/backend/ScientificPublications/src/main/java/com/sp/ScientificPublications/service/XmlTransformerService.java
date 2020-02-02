@@ -22,6 +22,11 @@ import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Service
 public class XmlTransformerService {
@@ -120,10 +125,16 @@ public class XmlTransformerService {
             DOMSource source = new DOMSource(buildDocument(document.getDocumentContent()));
             String outputPath = outputDirectory + "html/" + document.getDocumentId() + ".html";
             createHtmlOutputDirectory(outputPath);
-
-            StreamResult result = new StreamResult(new FileOutputStream(outputPath));
+            
+            FileOutputStream fileOutputStream = new FileOutputStream(outputPath); 
+            StreamResult result = new StreamResult(fileOutputStream);
             transformer.transform(source, result);
-
+            try {
+				fileOutputStream.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+            
             return outputPath;
 
         } catch (FileNotFoundException | TransformerException e) {
@@ -146,6 +157,7 @@ public class XmlTransformerService {
     private Transformer generateTransformer(String xslFilePath) {
 
         StreamSource transformSrc = new StreamSource(new File(xslFilePath));
+        
         Transformer transformer = null;
         try {
             transformer = transformerFactory.newTransformer(transformSrc);
@@ -156,7 +168,8 @@ public class XmlTransformerService {
             e.printStackTrace();
             throw new ApiBadRequestException("Failed to transform document to html file");
         }
-
+        
+        
         return transformer;
 
     }
@@ -167,6 +180,7 @@ public class XmlTransformerService {
         Document doc = null;
 
         try {
+        	docBuilderFactory.setValidating(false);
             DocumentBuilder builder = docBuilderFactory.newDocumentBuilder();
             doc = builder.parse(new InputSource(new StringReader(documentContent)));
 
@@ -180,6 +194,11 @@ public class XmlTransformerService {
 
         return doc;
 
+    }
+    
+    public byte[] loadFile(String sourcePath) throws URISyntaxException, IOException {
+    	Path path = Paths.get(new File(sourcePath).toURI());
+		return Files.readAllBytes(path);
     }
 
 }

@@ -3,6 +3,7 @@
  xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
  xmlns:sp="http://www.ftn.uns.ac.rs/scientific-publication"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:pred="http://www.ftn.uns.ac.rs/test/"
  xsi:schemaLocation="http://www.ftn.uns.ac.rs/scientific-publication file:/C:/Users/bojan/Desktop/SIIT/VII_semestar/XML-Projekat/ScientificPublications/Schemas/scientific-paper.xsd">
     <sp:header>
         <sp:title>title0</sp:title>

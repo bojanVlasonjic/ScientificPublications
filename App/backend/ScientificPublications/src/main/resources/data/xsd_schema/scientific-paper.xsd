@@ -20,7 +20,15 @@
     </xs:element>
     <xs:complexType name="THeader">
         <xs:sequence>
-            <xs:element minOccurs="0" name="metas" type="sp:TMetas"/>
+            <xs:element minOccurs="0" name="metas">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="sp:TMetas">
+                            <xs:attribute name="about"/>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
             <xs:element name="title" type="xs:string"/>
             <xs:element name="authors" type="cmn:TAuthors"/>
         </xs:sequence>
@@ -38,6 +46,8 @@
                 <xs:complexType>
                     <xs:complexContent>
                         <xs:extension base="sp:TReference">
+                            <xs:attribute name="about"/>
+                            <xs:attribute name="rel"/>
                             <xs:attribute name="href"/>
                         </xs:extension>
                     </xs:complexContent>

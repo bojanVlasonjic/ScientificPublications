@@ -1,10 +1,6 @@
 package com.sp.ScientificPublications.repository.rdf;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.ConnectException;
-import java.util.Properties;
-
+import com.sp.ScientificPublications.models.FusekiConnectionProperties;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -14,7 +10,10 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import com.sp.ScientificPublications.models.FusekiConnectionProperties;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.ConnectException;
+import java.util.Properties;
 
 /**
  * Utilities to support and simplify examples.

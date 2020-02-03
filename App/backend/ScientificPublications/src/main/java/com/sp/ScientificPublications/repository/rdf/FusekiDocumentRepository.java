@@ -1,28 +1,13 @@
 package com.sp.ScientificPublications.repository.rdf;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.PostConstruct;
-import javax.xml.transform.TransformerException;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.sp.ScientificPublications.dto.SearchByAuthorsResponseDTO;
+import com.sp.ScientificPublications.models.FusekiConnectionProperties;
+import com.sp.ScientificPublications.models.MetadataStatus;
 import com.sp.ScientificPublications.utility.FileUtil;
-import org.apache.jena.query.QueryExecution;
-import org.apache.jena.query.QueryExecutionFactory;
-import org.apache.jena.query.QuerySolution;
-import org.apache.jena.query.ResultSet;
-import org.apache.jena.query.ResultSetFormatter;
+import org.apache.jena.query.*;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.RDFNode;
@@ -34,12 +19,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.xml.sax.SAXException;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.sp.ScientificPublications.dto.SearchByAuthorsResponseDTO;
-import com.sp.ScientificPublications.models.FusekiConnectionProperties;
-import com.sp.ScientificPublications.models.MetadataStatus;
+import javax.annotation.PostConstruct;
+import javax.xml.transform.TransformerException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 @Repository
 public class FusekiDocumentRepository {

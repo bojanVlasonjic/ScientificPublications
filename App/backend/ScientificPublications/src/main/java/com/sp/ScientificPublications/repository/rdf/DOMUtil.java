@@ -1,17 +1,11 @@
 package com.sp.ScientificPublications.repository.rdf;
 
-import java.io.OutputStream;
+import org.w3c.dom.Node;
 
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.TransformerFactoryConfigurationError;
+import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
-import org.w3c.dom.Node;
+import java.io.OutputStream;
 
 public class DOMUtil {
 

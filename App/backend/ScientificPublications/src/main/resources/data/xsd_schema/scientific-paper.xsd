@@ -34,8 +34,15 @@
     </xs:complexType>
     <xs:complexType name="TReferences">
         <xs:sequence>
-            <xs:element maxOccurs="unbounded" name="reference" nillable="false" type="sp:TReference"
-            />
+            <xs:element maxOccurs="unbounded" name="reference" nillable="false">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="sp:TReference">
+                            <xs:attribute name="href"/>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
         </xs:sequence>
     </xs:complexType>
     <xs:complexType name="TReference">

@@ -26,7 +26,15 @@
                 <xs:element minOccurs="0" name="middle-name" type="xs:string"/>
                 <xs:element name="last-name" type="xs:string"/>
                 <xs:element minOccurs="0" ref="cmn:institution"/>
-                <xs:element minOccurs="0" name="expertise" type="xs:string"/>
+                <xs:element minOccurs="0" name="expertise">
+                    <xs:complexType>
+                        <xs:simpleContent>
+                            <xs:extension base="xs:string">
+                                <xs:attribute name="property"/>
+                            </xs:extension>
+                        </xs:simpleContent>
+                    </xs:complexType>
+                </xs:element>
             </xs:sequence>
             <xs:attribute name="about"/>
             <xs:attribute name="rel"/>

@@ -1,11 +1,8 @@
 package com.sp.ScientificPublications.repository.rdf;
 
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import org.apache.xalan.xsltc.trax.TransformerFactoryImpl;
+import org.xml.sax.SAXException;
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
@@ -13,9 +10,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-
-import org.apache.xalan.xsltc.trax.TransformerFactoryImpl;
-import org.xml.sax.SAXException;
+import java.io.*;
 
 //import com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl;
 

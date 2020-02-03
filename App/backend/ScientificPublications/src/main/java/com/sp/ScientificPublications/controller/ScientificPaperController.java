@@ -44,14 +44,10 @@ public class ScientificPaperController {
         return new ResponseEntity<>(scPaperService.retrieveScientificPaperAsObject(id), HttpStatus.OK);
     }
 
-
-
     @PostMapping
     public ResponseEntity<DocumentDTO> storeScientificPaper(@RequestBody DocumentDTO documentDTO) {
         return new ResponseEntity<>(scPaperService.storeScientificPaperAsDocument(documentDTO), HttpStatus.CREATED);
     }
-
-
 
     @PostMapping("/validate")
     public ResponseEntity<Boolean> validateScientificPaper(@RequestBody DocumentDTO document) {
@@ -97,10 +93,7 @@ public class ScientificPaperController {
 					node.get("author").asText()),
 					HttpStatus.OK);
 		} catch (IOException e) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-    	
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
-    
-    
 }

@@ -5,8 +5,6 @@ import com.sp.ScientificPublications.dto.PageableResultsDTO;
 import com.sp.ScientificPublications.dto.submitions.AuthorSubmitionDTO;
 import com.sp.ScientificPublications.dto.submitions.CreateSubmitionDTO;
 import com.sp.ScientificPublications.dto.submitions.EditorSubmitionDTO;
-import com.sp.ScientificPublications.exception.ApiAuthException;
-import com.sp.ScientificPublications.exception.ApiBadRequestException;
 import com.sp.ScientificPublications.exception.ApiNotFoundException;
 import com.sp.ScientificPublications.models.Author;
 import com.sp.ScientificPublications.models.Submition;

@@ -3,7 +3,6 @@ package com.sp.ScientificPublications.service.logic;
 import com.sp.ScientificPublications.dto.PageableResultsDTO;
 import com.sp.ScientificPublications.dto.reviews.CreateReviewDTO;
 import com.sp.ScientificPublications.dto.submitions.AuthorSubmitionDTO;
-import com.sp.ScientificPublications.exception.ApiAuthException;
 import com.sp.ScientificPublications.exception.ApiNotFoundException;
 import com.sp.ScientificPublications.models.Author;
 import com.sp.ScientificPublications.models.Submition;
@@ -43,17 +42,13 @@ public class ReviewerService {
         if (optionalSubmition.isPresent()) {
             Submition submition = optionalSubmition.get();
             Author reviewer = authenticationService.getCurrentAuthor();
-
-            if (accessControlService.userIsRequestedToReviewSubmition(reviewer, submition)) {
-                submition.getRequestedReviewers().removeIf(requestedReviewer -> requestedReviewer.getId() == reviewer.getId());
-                reviewer.getRequestedSubmitions().removeIf(submitionRequest -> submitionRequest.getId() == submition.getId());
-                submition.getReviewers().add(reviewer);
-                reviewer.getSubmitions().add(submition);
-                submitionRepository.save(submition);
-                //TODO: SEND REVIEWER ACCEPTED TO EDITOR
-            } else {
-                throw new ApiAuthException("You are unauthorized to accept/reject review requests for this submition.");
-            }
+            accessControlService.checkIfUserIsRequestedToReviewSubmition(reviewer, submition);
+            submition.getRequestedReviewers().removeIf(requestedReviewer -> requestedReviewer.getId() == reviewer.getId());
+            reviewer.getRequestedSubmitions().removeIf(submitionRequest -> submitionRequest.getId() == submition.getId());
+            submition.getReviewers().add(reviewer);
+            reviewer.getSubmitions().add(submition);
+            submitionRepository.save(submition);
+            //TODO: SEND REVIEWER ACCEPTED TO EDITOR
         } else {
             throw new ApiNotFoundException("Submition doesnt exist");
         }
@@ -64,15 +59,11 @@ public class ReviewerService {
         if (optionalSubmition.isPresent()) {
             Submition submition = optionalSubmition.get();
             Author reviewer = authenticationService.getCurrentAuthor();
-
-            if (accessControlService.userIsRequestedToReviewSubmition(reviewer, submition)) {
-                submition.getRequestedReviewers().removeIf(requestedReviewer -> requestedReviewer.getId() == reviewer.getId());
-                reviewer.getRequestedSubmitions().removeIf(submitionRequest -> submitionRequest.getId() == submition.getId());
-                submitionRepository.save(submition);
-                //TODO: SEND REVIEWER REJECT TO EDITOR
-            } else {
-                throw new ApiAuthException("You are unauthorized to accept/reject review requests for this submition.");
-            }
+            accessControlService.checkIfUserIsRequestedToReviewSubmition(reviewer, submition);
+            submition.getRequestedReviewers().removeIf(requestedReviewer -> requestedReviewer.getId() == reviewer.getId());
+            reviewer.getRequestedSubmitions().removeIf(submitionRequest -> submitionRequest.getId() == submition.getId());
+            submitionRepository.save(submition);
+            //TODO: SEND REVIEWER REJECT TO EDITOR
         } else {
             throw new ApiNotFoundException("Submition doesnt exist");
         }

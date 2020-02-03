@@ -48,8 +48,10 @@ public class AccessControlService {
         }
     }
 
-    public boolean userIsRequestedToReviewSubmition(Author user, Submition submition) {
-        return user.getRequestedSubmitions().stream().anyMatch(reqSub -> reqSub.getId() == submition.getId());
+    public void checkIfUserIsRequestedToReviewSubmition(Author user, Submition submition) {
+        if (user.getRequestedSubmitions().stream().anyMatch(reqSub -> reqSub.getId() == submition.getId())) {
+            throw new ApiAuthException("You are unauthorized to accept/reject review requests for this submition.");
+        }
     }
 
     public boolean userIsReviewerForSubmition(Author user, Submition submition) {

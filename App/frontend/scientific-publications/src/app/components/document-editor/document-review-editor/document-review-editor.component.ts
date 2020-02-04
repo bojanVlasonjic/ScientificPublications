@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DocumentReviewService } from 'src/app/services/document-review.service';
-import { DocumentDTO } from 'src/app/models/documentDTO';
+import { DocumentDTO } from 'src/app/models/document-dto';
 
 @Component({
   selector: 'app-document-review-editor',
@@ -52,7 +52,7 @@ export class DocumentReviewEditorComponent implements OnInit {
     );
   }
 
-
+  /*
   uploadDocument($event) {
     this.document.documentContent = $event;
 
@@ -66,6 +66,6 @@ export class DocumentReviewEditorComponent implements OnInit {
       }
     );
     
-  }
+  }*/
 
 }

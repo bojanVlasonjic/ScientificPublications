@@ -3,6 +3,7 @@ import { DocumentReviewService } from 'src/app/services/document-review.service'
 import { ScientificPaperService } from 'src/app/services/scientific-paper.service';
 import { CoverLetterService } from 'src/app/services/cover-letter.service';
 import { PaperReviewService } from 'src/app/services/paper-review.service';
+import { UploadService } from 'src/app/services/upload.service';
 
 @Component({
   selector: 'div [app-document-upload]',
@@ -19,6 +20,7 @@ export class DocumentUploadComponent implements OnInit {
   @Input() cid: string;
 
   constructor(
+    private uploadService: UploadService,
     private documentReviewService: DocumentReviewService,
     private scientificPaperService: ScientificPaperService,
     private coverLetterService: CoverLetterService,
@@ -44,9 +46,12 @@ export class DocumentUploadComponent implements OnInit {
       this.xmlFileIndicator = "Cannot send invalid document";
       return;
     }
-    var form = new FormData();
-    form.append('file', input.files[0]);
+    //var form = new FormData();
+   // form.append('file', input.files[0]);
 
+    this.uploadService.sendFile(input.files[0]);
+
+    /*
     if (this.type == 'document-review'){
       this.documentReviewService.uploadFile(form).subscribe(
         data => {
@@ -95,7 +100,7 @@ export class DocumentUploadComponent implements OnInit {
           console.log(error);
         }
       );
-    }
+    }*/
   }
 
   sendDocumentForValidation() {

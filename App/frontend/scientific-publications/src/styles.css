@@ -61,3 +61,8 @@ body {
     color: red;
     left: 1ex;
 }
+
+.heading {
+    text-align: center;
+    margin-bottom: 2ex;
+}

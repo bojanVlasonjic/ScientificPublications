@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashSet;
 import java.util.List;
@@ -54,15 +55,48 @@ public class SubmitionService {
     public AuthorSubmitionDTO createSubmition(CreateSubmitionDTO createSubmitionDTO) {
         Author author = authenticationService.getCurrentAuthor();
         DocumentDTO paper = new DocumentDTO(null, createSubmitionDTO.getPaperContent());
-        DocumentDTO coverLetter = new DocumentDTO(null, createSubmitionDTO.getCoverLetterContnet());
         paper = scientificPaperService.storeScientificPaperAsDocument(paper);
-        coverLetter = coverLetterService.storeCoverLetterAsDocument(coverLetter);
+
+        DocumentDTO coverLetter = new DocumentDTO();
+
+        // if the cover letter was provided
+        if(createSubmitionDTO.getCoverLetterContent() != null && !createSubmitionDTO.getCoverLetterContent().equals("")) {
+            coverLetter.setDocumentContent(createSubmitionDTO.getCoverLetterContent());
+            coverLetter = coverLetterService.storeCoverLetterAsDocument(coverLetter);
+        } else {
+            coverLetter.setDocumentId(null);
+        }
+
         String title = scientificPaperService.retrieveScientificPaperAsObject(paper.getDocumentId()).getHeader().getTitle();
 
         Submition submition = new Submition(paper.getDocumentId(), title, coverLetter.getDocumentId(), SubmitionStatus.NEW);
         author.getSubmitions().add(submition);
         submition.setAuthor(author);
         return new AuthorSubmitionDTO(submitionRepository.save(submition));
+    }
+
+    public AuthorSubmitionDTO createSubmitionFile(MultipartFile[] files) {
+        Author author = authenticationService.getCurrentAuthor();
+        DocumentDTO paper = scientificPaperService.uploadScientificPaperXMLFile(files[0]);
+        String title = scientificPaperService
+                .retrieveScientificPaperAsObject(paper.getDocumentId())
+                .getHeader()
+                .getTitle();
+
+        DocumentDTO coverLetter = new DocumentDTO();
+        // if the cover letter was provided
+        if(files.length > 1) {
+            coverLetter = coverLetterService.uploadCoverLetterXMLFile(files[1]);
+        } else {
+            coverLetter.setDocumentId(null);
+        }
+
+        Submition submition = new Submition(paper.getDocumentId(), title, coverLetter.getDocumentId(), SubmitionStatus.NEW);
+        author.getSubmitions().add(submition);
+        submition.setAuthor(author);
+
+        return new AuthorSubmitionDTO(submitionRepository.save(submition));
+
     }
 
     public void cancelSubmition(Long id) {

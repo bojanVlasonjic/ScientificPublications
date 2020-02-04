@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from './services/authentication.service';
-import { UserDTO } from './models/userDTO';
+import { UserDTO } from './models/user-dto';
 
 @Component({
   selector: 'app-root',

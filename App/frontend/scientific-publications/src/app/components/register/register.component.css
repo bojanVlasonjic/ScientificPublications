@@ -5,11 +5,6 @@ div.register-form-holder {
     left: 20%;
 }
 
-.header {
-    text-align: center;
-    margin-bottom: 3ex;
-}
-
 input {
     border: 1px solid black;
 }

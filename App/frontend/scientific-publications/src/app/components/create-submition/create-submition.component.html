@@ -1,0 +1,31 @@
+
+<div class="submition-holder">
+    <h2 class="heading" *ngIf="!uploadCoverLetter"> Submit scientific paper </h2>
+    <h2 class="heading" *ngIf="uploadCoverLetter"> Submit cover letter </h2>
+
+    <div class="form-group" *ngIf="!uploadCoverLetter">
+        <label> How would you like to proceed? </label>
+        <select class="form-control" [(ngModel)]="uploadType">
+            <option value="" selected disabled hidden></option>
+            <option value="file"> Upload file </option>
+            <option value="editor"> Use editor </option>
+        </select>
+    </div>
+
+    <div *ngIf="uploadType == 'file' && !uploadCoverLetter" [type]="'scientific-paper'" 
+        [cid]="'d3'" app-document-upload>
+    </div>
+
+    <div *ngIf="uploadType == 'file' && uploadCoverLetter" [type]="'cover-letter'"
+        [cid]="'d4'" app-document-upload>
+    </div>
+
+</div>
+
+<div class="editor-holder">
+    <app-scientific-paper-editor *ngIf="uploadType == 'editor' && !uploadCoverLetter">
+    </app-scientific-paper-editor>
+
+    <app-cover-letter-editor *ngIf="uploadType == 'editor' && uploadCoverLetter">
+    </app-cover-letter-editor>
+</div>

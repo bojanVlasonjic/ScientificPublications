@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { LoginData } from '../models/login-data';
-import { UserDTO } from '../models/userDTO';
+import { UserDTO } from '../models/user-dto';
 import { JsonPipe } from '@angular/common';
 
 @Injectable({

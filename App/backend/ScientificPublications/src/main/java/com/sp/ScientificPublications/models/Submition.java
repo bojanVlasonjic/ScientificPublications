@@ -10,7 +10,6 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-@RequiredArgsConstructor
 @AllArgsConstructor
 public class Submition {
 
@@ -18,22 +17,27 @@ public class Submition {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NonNull
     @Column(nullable = false, unique = true)
     private String paperId;
 
-    @NonNull
     @Column(nullable = false)
     private String paperTitle;
 
-    @NonNull
-    @Column(nullable = false)
+    @Column(unique = true)
     private String coverLetterId;
 
-    @NonNull
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private SubmitionStatus status;
+
+
+    public Submition(String paperId, String title, String coverLetterId, SubmitionStatus status) {
+        this.paperId = paperId;
+        this.paperTitle = title;
+        this.coverLetterId = coverLetterId;
+        this.status = status;
+    }
+
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Author author;

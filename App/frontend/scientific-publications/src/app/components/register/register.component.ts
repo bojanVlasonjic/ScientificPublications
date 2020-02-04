@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { UserDTO } from 'src/app/models/userDTO';
+import { UserDTO } from 'src/app/models/user-dto';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ToasterService } from 'src/app/services/toaster.service';
 import { Router } from '@angular/router';

@@ -26,28 +26,28 @@ public class SubmitionController {
         return new ResponseEntity(submitionService.getSubmitions(pageable), HttpStatus.OK);
     }
 
-    @Secured({"ROLE_USER"})
+    @Secured({"ROLE_AUTHOR"})
     @PostMapping
     public ResponseEntity createSubmition(@RequestBody @Valid CreateSubmitionDTO createSubmitionDTO) {
         submitionService.createSubmition(createSubmitionDTO);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
-    @Secured({"ROLE_USER"})
+    @Secured({"ROLE_AUTHOR"})
     @DeleteMapping("/{id}")
     public ResponseEntity cancelSubmition(@PathVariable Long id) {
         submitionService.cancelSubmition(id);
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @Secured({"ROLE_USER"})
+    @Secured({"ROLE_AUTHOR"})
     @PutMapping("/{id}")
     public ResponseEntity reviseSubmition(@PathVariable Long id, @RequestBody @Valid CreateSubmitionDTO revisedSubmitonDTO) {
         submitionService.reviseSubmition(id, revisedSubmitonDTO);
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @Secured({"ROLE_EDITOR"})
+    @Secured({"ROLE_AUTHOR"})
     @PutMapping("/{id}/approve")
     public ResponseEntity approveSubmition(@PathVariable Long id) {
         submitionService.approveSubmition(id);

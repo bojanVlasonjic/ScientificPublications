@@ -27,7 +27,7 @@ public class AuthenticationController {
 	}
 	
 	@PostMapping("/change_password")
-	@Secured({"ROLE_SYS_ADMIN", "ROLE_ADMIN", "ROLE_CUSTOMER"})
+	@Secured({"ROLE_AUTHOR", "ROLE_EDITOR"})
 	public ResponseEntity<HttpStatus> changePassword(@RequestBody ChangePasswordRequestDTO changePasswordRequest) {
 		authService.changePassword(changePasswordRequest.getNewPassword(), changePasswordRequest.getOldPassword());
 		return new ResponseEntity<>(HttpStatus.OK);

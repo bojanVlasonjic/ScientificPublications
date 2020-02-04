@@ -7,6 +7,7 @@ import com.sp.ScientificPublications.exception.ApiBadRequestException;
 import com.sp.ScientificPublications.models.scientific_paper.ScientificPaper;
 import com.sp.ScientificPublications.repository.exist.ExistDocumentRepository;
 import com.sp.ScientificPublications.repository.exist.ExistJaxbRepository;
+import com.sp.ScientificPublications.repository.exist.XQueryRepository;
 import com.sp.ScientificPublications.repository.rdf.FusekiDocumentRepository;
 
 import com.sp.ScientificPublications.utility.FileUtil;
@@ -48,6 +49,9 @@ public class ScientificPaperService {
     
     @Autowired
     EmailSenderService emailSenderService;
+    
+    @Autowired
+    XQueryRepository queryRepository;
 
     private static final String schemaPath = "src/main/resources/data/xsd_schema/scientific-paper.xsd";
     private static final String xslFoFilePath = "src/main/resources/data/xsl_fo/scientific-paper-fo.xsl";
@@ -113,8 +117,14 @@ public class ScientificPaperService {
     	DocumentDTO document = new DocumentDTO();
     	document.setDocumentContent(xmlContent);
     	document = this.storeScientificPaperAsDocument(document);
-    	this.generatePdf(document.getDocumentId());
-    	this.generateHtml(document.getDocumentId());
+    	//this.generatePdf(document.getDocumentId());
+    	//this.generateHtml(document.getDocumentId());
+    	String queryFilePath = "./src/main/resources/data/xquery/get-scientific-paper-references.xqy";
+    	try {
+			this.queryRepository.getData(collectionId, document.getDocumentId(), queryFilePath);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
     	return document;
     }
     
@@ -140,6 +150,7 @@ public class ScientificPaperService {
     	return fusekiDocumentRepository.searchMetadataByAuthor(author);
     }
     
+    //fileName without extension
     public void extractMetaData(String xmlContent, String fileName) throws IOException, SAXException, TransformerException {
     	fusekiDocumentRepository.extractMetadata(xmlContent, fileName);
     }

@@ -5,8 +5,6 @@ import com.sp.ScientificPublications.dto.PageableResultsDTO;
 import com.sp.ScientificPublications.dto.submitions.AuthorSubmitionDTO;
 import com.sp.ScientificPublications.dto.submitions.CreateSubmitionDTO;
 import com.sp.ScientificPublications.dto.submitions.EditorSubmitionDTO;
-import com.sp.ScientificPublications.exception.ApiAuthException;
-import com.sp.ScientificPublications.exception.ApiBadRequestException;
 import com.sp.ScientificPublications.exception.ApiNotFoundException;
 import com.sp.ScientificPublications.models.Author;
 import com.sp.ScientificPublications.models.Submition;
@@ -64,7 +62,6 @@ public class SubmitionService {
         Submition submition = new Submition(paper.getDocumentId(), title, coverLetter.getDocumentId(), SubmitionStatus.NEW);
         author.getSubmitions().add(submition);
         submition.setAuthor(author);
-
         return new AuthorSubmitionDTO(submitionRepository.save(submition));
     }
 
@@ -73,12 +70,10 @@ public class SubmitionService {
         if (optionalSubmition.isPresent()) {
             Author user = authenticationService.getCurrentAuthor();
             Submition submition = optionalSubmition.get();
-            if (accessControlService.userOwnSubmition(user, submition)) {
-                submition.setStatus(SubmitionStatus.CANCELED);
-                submitionRepository.save(submition);
-            } else {
-                throw new ApiAuthException("You are unauthorized to cancel this submition.");
-            }
+            accessControlService.checkIfUserOwnsSubmition(user, submition);
+            accessControlService.checkIfTransitionIsPossible(submition.getStatus(), SubmitionStatus.CANCELED);
+            submition.setStatus(SubmitionStatus.CANCELED);
+            submitionRepository.save(submition);
         } else {
             throw new ApiNotFoundException("Submition doesnt exist.");
         }
@@ -95,13 +90,10 @@ public class SubmitionService {
         Optional<Submition> optionalSubmition = submitionRepository.findById(id);
         if (optionalSubmition.isPresent()) {
             Submition submition = optionalSubmition.get();
-            if (submition.getStatus().equals(SubmitionStatus.NEW)) {
-                submition.setStatus(SubmitionStatus.APPROVED);
-                submitionRepository.save(submition);
-                //TODO: SEND APPROVED EMAIL TO AUTHOR
-            } else {
-                throw new ApiBadRequestException("Submition was already approved.");
-            }
+            accessControlService.checkIfTransitionIsPossible(submition.getStatus(), SubmitionStatus.IN_REVIEW_PROCESS);
+            submition.setStatus(SubmitionStatus.IN_REVIEW_PROCESS);
+            submitionRepository.save(submition);
+            //TODO: SEND APPROVED EMAIL TO AUTHOR
         } else {
             throw new ApiNotFoundException("Submition doesnt exist.");
         }
@@ -113,6 +105,7 @@ public class SubmitionService {
         Optional<Submition> optionalSubmition = submitionRepository.findById(id);
         if (optionalSubmition.isPresent()) {
             Submition submition = optionalSubmition.get();
+            accessControlService.checkIfTransitionIsPossible(submition.getStatus(), SubmitionStatus.REJECTED);
             submition.setStatus(SubmitionStatus.REJECTED);
             //TODO: SEND REJECTION EMAIL
             //TODO: NOTIFY REVIEWES THAT SUBMITION IS REJECTED
@@ -140,6 +133,7 @@ public class SubmitionService {
         Optional<Submition> optionalSubmition = submitionRepository.findById(id);
         if (optionalSubmition.isPresent()) {
             Submition submition = optionalSubmition.get();
+            accessControlService.checkIfTransitionIsPossible(submition.getStatus(), SubmitionStatus.REVISIONS_REQUESTED);
             submition.setStatus(SubmitionStatus.REVISIONS_REQUESTED);
             submitionRepository.save(submition);
             //TODO: SEND REVISION REQUESTED EMAIL
@@ -153,14 +147,11 @@ public class SubmitionService {
         Optional<Submition> optionalSubmition = submitionRepository.findById(id);
         if (optionalSubmition.isPresent()) {
             Submition submition = optionalSubmition.get();
-            if (submition.getStatus().equals(SubmitionStatus.REVISIONS_REQUESTED)) {
-                submition.setStatus(SubmitionStatus.REVISED);
-                //TODO: SAVE REVISED DOCUMENT TO XML DATABASE
-                //TODO: SEND REVISED NOTIFICATION EMAIL TO REVIEWERS AND EDITOR
-                submitionRepository.save(submition);
-            } else {
-                throw new ApiBadRequestException("Revision is not requested.");
-            }
+            accessControlService.checkIfTransitionIsPossible(submition.getStatus(), SubmitionStatus.REVISED);
+            submition.setStatus(SubmitionStatus.REVISED);
+            //TODO: SAVE REVISED DOCUMENT TO XML DATABASE
+            //TODO: SEND REVISED NOTIFICATION EMAIL TO REVIEWERS AND EDITOR
+            submitionRepository.save(submition);
         } else {
             throw new ApiNotFoundException("Submition doesnt exist.");
         }
@@ -170,6 +161,7 @@ public class SubmitionService {
         Optional<Submition> optionalSubmition = submitionRepository.findById(id);
         if (optionalSubmition.isPresent()) {
             Submition submition = optionalSubmition.get();
+            accessControlService.checkIfTransitionIsPossible(submition.getStatus(), SubmitionStatus.PUBLISHED);
             submition.setStatus(SubmitionStatus.PUBLISHED);
             submitionRepository.save(submition);
             //TODO: SEND PUBLISHED NOTIFICATION EMAIL TO AUTHOR
@@ -185,7 +177,7 @@ public class SubmitionService {
         if (optionalSubmition.isPresent() && optionalReviewer.isPresent()) {
             Submition submition = optionalSubmition.get();
             Author reviewer = optionalReviewer.get();
-
+            accessControlService.checkIfRequestReviewIsPossible(submition);
             submition.getRequestedReviewers().add(reviewer);
             reviewer.getRequestedSubmitions().add(submition);
             submitionRepository.save(submition);

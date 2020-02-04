@@ -76,14 +76,14 @@
                         <fo:block>
                             <fo:block font-weight="bold" font-size="12px" margin-bottom="5px" margin-top="30px">References</fo:block>
                             <xsl:for-each select="sp:scientific-paper/sp:references/sp:reference">
-                                <fo:block margin-bottom="5px" font-size="10px">
+                                <fo:basic-link external-destination="url({@href})" margin-bottom="5px" font-size="10px">
                                     <xsl:for-each select="sp:authors/cmn:author">
                                         <xsl:value-of select="cmn:first-name"></xsl:value-of>&#160;<xsl:value-of select="cmn:last-name"></xsl:value-of>
                                     </xsl:for-each>
                                     <xsl:value-of select="sp:year"></xsl:value-of>&#160;
                                     <xsl:value-of select="sp:paper-name"></xsl:value-of>&#160;
                                     <xsl:value-of select="sp:journal"></xsl:value-of>
-                                </fo:block>
+                                </fo:basic-link>
                             </xsl:for-each>
                         </fo:block>
                         

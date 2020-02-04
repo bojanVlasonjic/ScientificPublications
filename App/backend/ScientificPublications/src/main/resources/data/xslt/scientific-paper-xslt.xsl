@@ -83,14 +83,14 @@
                     <div>
                         <p class="bold" style="font-size:14px;margin-bottom:5px;margin-top:30px;">References</p>
                         <xsl:for-each select="sp:scientific-paper/sp:references/sp:reference">
-                            <p style="margin-bottom:5px;font-size:12px;">
+                            <a href="{@href}" style="margin-bottom:5px;font-size:12px;">
                                 <xsl:for-each select="sp:authors/cmn:author">
                                     <xsl:value-of select="cmn:first-name"></xsl:value-of>&#160;<xsl:value-of select="cmn:last-name"></xsl:value-of>
                                 </xsl:for-each>
                                 <xsl:value-of select="sp:year"></xsl:value-of>&#160;
                                 <xsl:value-of select="sp:paper-name"></xsl:value-of>&#160;
                                 <xsl:value-of select="sp:journal"></xsl:value-of>
-                            </p>
+                            </a>
                         </xsl:for-each>
                     </div>
                 </div>

@@ -9,15 +9,22 @@
   <xs:element name="paper-review">
     <xs:complexType>
       <xs:sequence>
+        <xs:element name="header" type="rvw:THeader"/>
         <xs:element name="recommendation" type="rvw:TRecommendation"/>
         <xs:element name="questionare" type="rvw:TQuestionare"/>
         <xs:element name="comments-to-author" type="rvw:TComments"/>
         <xs:element name="comments-to-editor" type="rvw:TComments"/>
       </xs:sequence>
-      <xs:attribute name="id" type="cmn:TPositiveInteger" use="required"/>
-      <xs:attribute name="paper-id" type="cmn:TPositiveInteger" use="required"/>
     </xs:complexType>
   </xs:element>
+
+  <xs:complexType name="THeader">
+    <xs:sequence>
+      <xs:element name="paper-title" type="xs:string"/>
+      <xs:element name="reviewer" type="xs:string"/>
+      <xs:element name="date-created" type="xs:date"/>
+    </xs:sequence>
+  </xs:complexType>
 
   <xs:simpleType name="TRecommendation">
     <xs:restriction base="xs:string">
@@ -51,15 +58,17 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:complexType name="TComments">
+    <xs:complexType name="TComment">
     <xs:sequence>
-      <xs:element name="comment" maxOccurs="unbounded" type="rvw:TComment"/>
+        <xs:element name="referenced-text" type="xs:string"/>
+        <xs:element name="comment" type="xs:string"/>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType mixed="true" name="TComment">
-    <xs:choice maxOccurs="unbounded" minOccurs="0">
-      <xs:element maxOccurs="1" minOccurs="0" name="italic" type="xs:string"/>
-    </xs:choice>
+  <xs:complexType name="TComments">
+    <xs:sequence>
+      <xs:element name="comment" minOccurs="0" maxOccurs="unbounded" type="rvw:TComment"/>
+    </xs:sequence>
   </xs:complexType>
+
 </xs:schema>

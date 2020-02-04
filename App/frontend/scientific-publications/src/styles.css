@@ -54,3 +54,10 @@ body {
     height: 0px;
     overflow: hidden;
 }
+
+.error-message {
+    position: relative;
+    font-size: 15px;
+    color: red;
+    left: 1ex;
+}

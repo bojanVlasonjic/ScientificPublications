@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -25,10 +28,14 @@ public class UserDTO {
 
     private String token;
 
+    private List<String> roles;
+
+
     public UserDTO(User user) {
         super();
         email = user.getEmail();
         firstname = user.getFirstname();
         lastname = user.getLastname();
+        this.roles = user.getAuthorities().stream().map(auth -> auth.getAuthority()).collect(Collectors.toList());
     }
 }

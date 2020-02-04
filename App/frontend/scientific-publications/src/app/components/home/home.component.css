@@ -1,0 +1,15 @@
+.home-container {
+    position: absolute;
+    width: 60%;
+    left: 20%;
+    top: 10%;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 2ex;
+}
+
+.content {
+    text-align: justify;
+}

@@ -16,7 +16,7 @@ public class ExistConnectionProperties {
     private String driver;
     private String uri;
 
-    private static final String connectionUri = "xmldb:exist://%1$s:%2$s/exist/xmlrpc";
+    public static final String connectionUri = "xmldb:exist://%1$s:%2$s/exist/xmlrpc";
 
 
     public ExistConnectionProperties(Properties properties) {

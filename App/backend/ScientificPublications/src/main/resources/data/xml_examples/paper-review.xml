@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rvw:paper-review xmlns:cmn="http://www.ftn.uns.ac.rs/common"
+                  xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+                  xmlns:rvw="http://www.ftn.uns.ac.rs/scientific-publication"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://www.ftn.uns.ac.rs/scientific-publication  /data/xsd_schema/paper-review.xsd">
+
+    <rvw:header>
+        <rvw:paper-title>Paper 1</rvw:paper-title>
+        <rvw:reviewer>Reviewer 1</rvw:reviewer>
+        <rvw:date-created>2020-02-04</rvw:date-created>
+    </rvw:header>
+
+    <rvw:recommendation>Accept</rvw:recommendation>
+    <rvw:questionare>
+        <rvw:question>
+            <rvw:question-text>question-text0</rvw:question-text>
+            <rvw:selected>Strongly disagree</rvw:selected>
+        </rvw:question>
+        <rvw:question>
+            <rvw:question-text>question-text0</rvw:question-text>
+            <rvw:selected>Strongly disagree</rvw:selected>
+        </rvw:question>
+        <rvw:question>
+            <rvw:question-text>question-text0</rvw:question-text>
+            <rvw:selected>Strongly disagree</rvw:selected>
+        </rvw:question>
+        <rvw:question>
+            <rvw:question-text>question-text0</rvw:question-text>
+            <rvw:selected>Strongly disagree</rvw:selected>
+        </rvw:question>
+        <rvw:question>
+            <rvw:question-text>question-text0</rvw:question-text>
+            <rvw:selected>Strongly disagree</rvw:selected>
+        </rvw:question>
+        <rvw:question>
+            <rvw:question-text>question-text0</rvw:question-text>
+            <rvw:selected>Strongly disagree</rvw:selected>
+        </rvw:question>
+        <rvw:question>
+            <rvw:question-text>question-text0</rvw:question-text>
+            <rvw:selected>Strongly disagree</rvw:selected>
+        </rvw:question>
+    </rvw:questionare>
+
+    <rvw:comments-to-author>
+        <rvw:comment>
+            <rvw:referenced-text>referenced text 1</rvw:referenced-text>
+            <rvw:comment>comment1</rvw:comment>
+        </rvw:comment>
+        <rvw:comment>
+            <rvw:referenced-text>referenced text 2</rvw:referenced-text>
+            <rvw:comment>comment2</rvw:comment>
+        </rvw:comment>
+        <rvw:comment>
+            <rvw:referenced-text>referenced text 3</rvw:referenced-text>
+            <rvw:comment>comment3</rvw:comment>
+        </rvw:comment>
+        <rvw:comment>
+            <rvw:referenced-text>referenced text 4</rvw:referenced-text>
+            <rvw:comment>comment4</rvw:comment>
+        </rvw:comment>
+    </rvw:comments-to-author>
+
+    <rvw:comments-to-editor>
+        <rvw:comment>
+            <rvw:referenced-text></rvw:referenced-text>
+            <rvw:comment>comment1</rvw:comment>
+        </rvw:comment>
+
+        <rvw:comment>
+            <rvw:referenced-text>referenced text 3</rvw:referenced-text>
+            <rvw:comment>not good</rvw:comment>
+        </rvw:comment>
+    </rvw:comments-to-editor>
+</rvw:paper-review>

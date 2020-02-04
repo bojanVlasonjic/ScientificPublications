@@ -8,8 +8,6 @@
 
   <xs:element name="document-revision">
     <xs:complexType>
-      <xs:attribute name="id" type="cmn:TPositiveInteger" use="required"/>
-      <xs:attribute name="paper-id" type="cmn:TPositiveInteger" use="required"/>
       <xs:sequence>
         <xs:element name="recommendation" type="rvw:TRecommendation"/>
         <xs:element name="questionare" type="rvw:TQuestionare"/>
@@ -18,6 +16,13 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+
+  <xs:simpleType name="TReviewHeader">
+    <xs:sequence>
+      <xs:element name="paper-id" type="xs:string">
+      <xs:element name="reviewer-id" type="xs:string">
+    </xs:sequence>
+  </xs:simpleType>
 
   <xs:simpleType name="TRecommendation">
     <xs:restriction base="xs:string">
@@ -53,7 +58,7 @@
 
   <xs:complexType name="TComment">
     <xs:sequence>
-        <xs:element name="referenced-text> type="xs:string"/>
+        <xs:element name="referenced-text" type="xs:string"/>
         <xs:element name="comment" type="xs:string"/>
     </xs:sequence>
   </xs:complexType>

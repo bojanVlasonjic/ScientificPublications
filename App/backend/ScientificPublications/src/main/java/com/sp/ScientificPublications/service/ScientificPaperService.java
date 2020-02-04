@@ -4,27 +4,40 @@ import com.sp.ScientificPublications.dto.DocumentDTO;
 import com.sp.ScientificPublications.dto.SearchByAuthorsResponseDTO;
 import com.sp.ScientificPublications.dto.SendEmailDTO;
 import com.sp.ScientificPublications.exception.ApiBadRequestException;
+import com.sp.ScientificPublications.models.ExistConnectionProperties;
 import com.sp.ScientificPublications.models.scientific_paper.ScientificPaper;
 import com.sp.ScientificPublications.repository.exist.ExistDocumentRepository;
 import com.sp.ScientificPublications.repository.exist.ExistJaxbRepository;
+import com.sp.ScientificPublications.repository.exist.ExistUtilityService;
 import com.sp.ScientificPublications.repository.exist.XQueryRepository;
 import com.sp.ScientificPublications.repository.rdf.FusekiDocumentRepository;
 
 import com.sp.ScientificPublications.utility.FileUtil;
+import com.sun.xml.internal.ws.spi.db.DatabindingException;
+import org.apache.xmlrpc.webserver.ServletWebServer;
+import org.exist.xmldb.EXistResource;
+import org.exist.xquery.Except;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
-import org.xmldb.api.base.XMLDBException;
+import org.xmldb.api.DatabaseManager;
+import org.xmldb.api.base.*;
 import org.xmldb.api.modules.XMLResource;
+import org.xmldb.api.modules.XQueryService;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
 import javax.xml.bind.JAXBException;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.transform.TransformerException;
@@ -51,7 +64,8 @@ public class ScientificPaperService {
     EmailSenderService emailSenderService;
     
     @Autowired
-    XQueryRepository queryRepository;
+    XQueryRepository xQueryRepository;
+
 
     private static final String schemaPath = "src/main/resources/data/xsd_schema/scientific-paper.xsd";
     private static final String xslFoFilePath = "src/main/resources/data/xsl_fo/scientific-paper-fo.xsl";
@@ -121,7 +135,7 @@ public class ScientificPaperService {
     	//this.generateHtml(document.getDocumentId());
     	String queryFilePath = "./src/main/resources/data/xquery/get-scientific-paper-references.xqy";
     	try {
-			this.queryRepository.getData(collectionId, document.getDocumentId(), queryFilePath);
+			//this.queryRepository.getData(collectionId, document.getDocumentId(), queryFilePath);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -221,5 +235,16 @@ public class ScientificPaperService {
         return document;
     }
 
+    public String searchByKeyword() {
+        try {
+            String collectionId = "/db/scientific-publication/scientific-papers";
+            String path = "/home/aes/Desktop/ScientificPublications/App/backend/ScientificPublications/src/main/resources/data/xquery/get-scientific-paper-by-keywords.xgy";
+            String xQueryExpression = FileUtil.readFile(path, StandardCharsets.UTF_8);
+            ResourceSet resourceSet = xQueryRepository.find(collectionId, xQueryExpression);
+            return String.valueOf(resourceSet.getSize());
+        } catch (Exception ex) {
+            throw new ApiBadRequestException("Something went wrong...");
+        }
+    }
 
 }

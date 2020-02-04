@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
+import org.xmldb.api.base.XMLDBException;
 
 @RestController
 @RequestMapping("api/scientific-paper")
@@ -28,6 +29,11 @@ public class ScientificPaperController {
     
     @Autowired
     DomParserService domParserSvc;
+
+    @GetMapping("/keywords")
+    public ResponseEntity getByKeywords() throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
+        return new ResponseEntity<>(scPaperService.searchByKeyword(), HttpStatus.OK);
+    }
 
     @GetMapping("/template")
     public ResponseEntity<DocumentDTO> getScientificPaperTemplate() {

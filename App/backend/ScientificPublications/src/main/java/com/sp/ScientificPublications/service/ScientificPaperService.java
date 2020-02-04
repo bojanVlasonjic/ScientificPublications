@@ -4,43 +4,28 @@ import com.sp.ScientificPublications.dto.DocumentDTO;
 import com.sp.ScientificPublications.dto.SearchByAuthorsResponseDTO;
 import com.sp.ScientificPublications.dto.SendEmailDTO;
 import com.sp.ScientificPublications.exception.ApiBadRequestException;
-import com.sp.ScientificPublications.models.ExistConnectionProperties;
 import com.sp.ScientificPublications.models.scientific_paper.ScientificPaper;
 import com.sp.ScientificPublications.repository.exist.ExistDocumentRepository;
 import com.sp.ScientificPublications.repository.exist.ExistJaxbRepository;
-import com.sp.ScientificPublications.repository.exist.ExistUtilityService;
 import com.sp.ScientificPublications.repository.exist.XQueryRepository;
 import com.sp.ScientificPublications.repository.rdf.FusekiDocumentRepository;
-
 import com.sp.ScientificPublications.utility.FileUtil;
-import com.sun.xml.internal.ws.spi.db.DatabindingException;
-import org.apache.xmlrpc.webserver.ServletWebServer;
-import org.exist.xmldb.EXistResource;
-import org.exist.xquery.Except;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
-import org.xmldb.api.DatabaseManager;
-import org.xmldb.api.base.*;
+import org.xmldb.api.base.ResourceSet;
+import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.XMLResource;
-import org.xmldb.api.modules.XQueryService;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
 
 import javax.xml.bind.JAXBException;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import javax.xml.transform.TransformerException;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class ScientificPaperService {

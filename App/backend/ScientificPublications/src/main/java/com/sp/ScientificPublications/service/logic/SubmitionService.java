@@ -46,7 +46,31 @@ public class SubmitionService {
 
     @Autowired
     private AuthenticationService authenticationService;
-    
+
+
+    public List<UserDTO> getAllReviewersForSubmition(Long submitionId) {
+        Optional<Submition> optionalSubmition = submitionRepository.findById(submitionId);
+        if (optionalSubmition.isPresent()) {
+            Submition submition = optionalSubmition.get();
+            List<UserDTO> results = new ArrayList<>();
+
+            submition.getRequestedReviewers().stream().forEach(reviewer -> {
+                UserDTO userDTO = new UserDTO(reviewer);
+                userDTO.setReviewerStatus("REQUESTED");
+                results.add(userDTO);
+            });
+
+            submition.getReviewers().stream().forEach(reviewer -> {
+                UserDTO userDTO = new UserDTO(reviewer);
+                userDTO.setReviewerStatus("ACCEPTED");
+                results.add(userDTO);
+            });
+
+            return results;
+        } else {
+            throw new ApiNotFoundException("Submition doesn't exist.");
+        }
+    }
     
     public List<UserDTO> getRequestedReviewers(String paperId) {
     	Submition submition = submitionRepository.findByPaperId(paperId);

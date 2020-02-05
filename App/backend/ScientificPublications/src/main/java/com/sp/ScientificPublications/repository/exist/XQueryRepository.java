@@ -73,6 +73,4 @@ public class XQueryRepository {
 		
 		return references;
 	}
-
-
 }

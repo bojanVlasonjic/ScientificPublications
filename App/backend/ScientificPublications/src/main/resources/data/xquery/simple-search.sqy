@@ -1,0 +1,13 @@
+xquery version "3.1";
+
+declare namespace sp = "http://www.ftn.uns.ac.rs/scientific-publication";
+
+let $queryWord := %s
+
+for $doc in collection("/db/scientific-publication/scientific-papers")
+    let $title := string($doc/sp:scientific-paper/sp:header/sp:title)
+    let $text := normalize-space(string-join($doc))
+    let $text := replace($text, ",", "")
+    let $text := lower-case($text)
+    where contains($text, $queryWord)
+        return $title

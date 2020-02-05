@@ -22,8 +22,7 @@ public class AuthenticationController {
 	
 	@PostMapping("/login")
 	public ResponseEntity<UserDTO> login(@RequestBody LoginRequestDTO loginRequest) {
-		return new ResponseEntity<>(authService.login(loginRequest.getEmail(), loginRequest.getPassword()),
-				HttpStatus.OK);
+		return new ResponseEntity<>(authService.login(loginRequest.getEmail(), loginRequest.getPassword()), HttpStatus.OK);
 	}
 
 	@PostMapping("/register")

@@ -42,6 +42,7 @@ public class RdfRepository {
             if (validateMetadata(xmlRdfContent)) {
                 // convert metadata from rdf/xml to ntriples
                 Model model = ModelFactory.createDefaultModel();
+
                 model.read(new ByteArrayInputStream(outputStream.toByteArray()), null);
                 model.write(nTriplesOutputStream, SparqlUtil.NTRIPLES);
 
@@ -81,4 +82,5 @@ public class RdfRepository {
         }
         return true;
     }
+
 }

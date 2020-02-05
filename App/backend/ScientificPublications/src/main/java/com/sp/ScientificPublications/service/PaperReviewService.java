@@ -3,7 +3,20 @@ package com.sp.ScientificPublications.service;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Optional;
 
+import com.sp.ScientificPublications.dto.reviews.CreateReviewDTO;
+import com.sp.ScientificPublications.dto.reviews.ReviewDTO;
+import com.sp.ScientificPublications.exception.ApiNotFoundException;
+import com.sp.ScientificPublications.models.Author;
+import com.sp.ScientificPublications.models.Review;
+import com.sp.ScientificPublications.models.Submition;
+import com.sp.ScientificPublications.models.SubmitionStatus;
+import com.sp.ScientificPublications.repository.ReviewRepository;
+import com.sp.ScientificPublications.repository.SubmitionRepository;
+import com.sp.ScientificPublications.repository.rdf.RdfRepository;
+import com.sp.ScientificPublications.service.logic.AccessControlService;
+import com.sp.ScientificPublications.service.logic.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -33,7 +46,19 @@ public class PaperReviewService {
 
     @Autowired
     ExistJaxbRepository existJaxbRepo;
-    
+
+    @Autowired
+    SubmitionRepository submitionRepository;
+
+    @Autowired
+    AuthenticationService authenticationService;
+
+    @Autowired
+    AccessControlService accessControlService;
+
+    @Autowired
+    ReviewRepository reviewRepository;
+
     private static final String schemaPath = "src/main/resources/data/xsd_schema/paper-review.xsd";
     private static final String xslFilePath = "src/main/resources/data/xsl_fo/paper-review-fo.xsl";
     private static final String templatePath = "src/main/resources/templates/paper-review-template.xml";
@@ -126,7 +151,51 @@ public class PaperReviewService {
         }
 
         return documentDTO;
+    }
 
+    @Autowired
+    private RdfRepository rdfRepository;
+
+    public void saveToRdf(String id) {
+        DocumentDTO documentDTO = retrievePaperReviewAsDocument(id);
+        String xml = documentDTO.getDocumentContent();
+        rdfRepository.saveMetadataFromXml(xml);
+    }
+
+    public ReviewDTO createReview(CreateReviewDTO createReviewDTO) {
+        //TODO: SEND EMAIL TO NOTIFY EDITOR ABOUT REVIEW
+
+        Optional<Submition> optionalSubmition = submitionRepository.findById(createReviewDTO.getSubmitionId());
+
+        if (optionalSubmition.isPresent()) {
+            Submition submition = optionalSubmition.get();
+            Author reviewer = authenticationService.getCurrentAuthor();
+
+            accessControlService.checkIfUserIsReviewerForSubmition(reviewer, submition);
+
+            if (submition.getStatus() == SubmitionStatus.IN_REVIEW_PROCESS) {
+                DocumentDTO documentDTO = new DocumentDTO(null, createReviewDTO.getReviewContent());
+                DocumentDTO paperReview = storePaperReviewAsDocument(documentDTO);
+
+                Review review = new Review(paperReview.getDocumentId(), reviewer, submition);
+                reviewer.getReviews().add(review);
+                submition.getReviews().add(review);
+
+                // if all reviewers added their review submition changes its state to REVIEWED
+                if (submition.getRequestedReviewers().size() == 0 && submition.getReviews().size() == submition.getReviewers().size()) {
+                    accessControlService.checkIfTransitionIsPossible(submition.getStatus(), SubmitionStatus.REVIEWED);
+                    submition.setStatus(SubmitionStatus.REVIEWED);
+                }
+
+                review = reviewRepository.save(review);
+                return new ReviewDTO(review);
+                // TODO: SEND EMAIL TO EDITOR
+            } else {
+                throw new ApiBadRequestException("Submition is not in review process state.");
+            }
+        } else {
+            throw new ApiNotFoundException("Submition not found.");
+        }
     }
     
     

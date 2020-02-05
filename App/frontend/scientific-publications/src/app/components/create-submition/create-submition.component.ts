@@ -83,6 +83,7 @@ export class CreateSubmitionComponent implements OnInit, OnDestroy {
 
   uploadPlainSubmition() {
     
+    this.displayUploadSpinner();
     this.submitionSvc.uploadSubmition(this.plainSubmition).subscribe(
       data => {
         this.toastSvc.showMessage('Success', 'Submition successfully uploaded');
@@ -93,6 +94,7 @@ export class CreateSubmitionComponent implements OnInit, OnDestroy {
     ).add(
       () => {
         this.resetData();
+        this.hideUploadSpinner();
       }
     );
 
@@ -126,6 +128,14 @@ export class CreateSubmitionComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.editorSubscription.unsubscribe();
     this.fileSubscription.unsubscribe();
+  }
+
+  displayUploadSpinner() {
+    document.getElementById('editor-toolbar-spinner').style.visibility = 'visible';
+  }
+
+  hideUploadSpinner() {
+    document.getElementById('editor-toolbar-spinner').style.visibility = 'hidden';
   }
 
 

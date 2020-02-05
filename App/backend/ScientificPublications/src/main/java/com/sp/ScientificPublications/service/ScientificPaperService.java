@@ -51,6 +51,7 @@ import java.util.stream.Collectors;
 import javax.xml.transform.TransformerException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ScientificPaperService {

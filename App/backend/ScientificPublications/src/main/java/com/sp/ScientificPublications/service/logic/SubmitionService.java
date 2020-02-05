@@ -79,6 +79,8 @@ public class SubmitionService {
         if(createSubmitionDTO.getCoverLetterContent() != null && !createSubmitionDTO.getCoverLetterContent().equals("")) {
             coverLetter.setDocumentContent(createSubmitionDTO.getCoverLetterContent());
             coverLetter = coverLetterService.storeCoverLetterAsDocument(coverLetter);
+            coverLetterService.generateHtml(coverLetter.getDocumentId());
+            coverLetterService.generatePdf(coverLetter.getDocumentId());
         } else {
             coverLetter.setDocumentId(null);
         }
@@ -230,6 +232,8 @@ public class SubmitionService {
             Submition submition = optionalSubmition.get();
             Author reviewer = optionalReviewer.get();
             accessControlService.checkIfRequestReviewIsPossible(submition);
+            accessControlService.checkIfUserIsRequestedToReviewSubmition(reviewer, submition);
+            accessControlService.checkIfUserIsReviewerForSubmition(reviewer, submition);
             submition.getRequestedReviewers().add(reviewer);
             reviewer.getRequestedSubmitions().add(submition);
             submitionRepository.save(submition);

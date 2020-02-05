@@ -89,6 +89,7 @@ public class ScientificPaperController {
         return new ResponseEntity<>(scPaperService.getTemplate(), HttpStatus.OK);
     }
 
+    /*
     @GetMapping("/{id}")
     public  ResponseEntity<DocumentDTO> getScientificPaperById(@PathVariable String id) {
         return new ResponseEntity<>(scPaperService.retrieveScientificPaperAsDocument(id), HttpStatus.OK);
@@ -102,7 +103,7 @@ public class ScientificPaperController {
     @PostMapping
     public ResponseEntity<DocumentDTO> storeScientificPaper(@RequestBody DocumentDTO documentDTO) {
         return new ResponseEntity<>(scPaperService.storeScientificPaperAsDocument(documentDTO), HttpStatus.CREATED);
-    }
+    }*/
 
     @PostMapping("/validate")
     public ResponseEntity<Boolean> validateScientificPaper(@RequestBody DocumentDTO document) {
@@ -114,17 +115,19 @@ public class ScientificPaperController {
     public ResponseEntity<Boolean> validateScientificPaperFile(@RequestParam("file") MultipartFile file) {
         return new ResponseEntity<>(scPaperService.validateScientificPaperXMLFile(file), HttpStatus.OK);
     }
-    
+
+    /*
     @PostMapping("/upload-xml-file")
     public ResponseEntity<DocumentDTO> uploadScientificPaperFile(@RequestParam("file") MultipartFile file) {
         return new ResponseEntity<>(scPaperService.uploadScientificPaperXMLFile(file), HttpStatus.OK);
-    }
+    }*/
 
     @PostMapping("/send-email")
     public ResponseEntity<Boolean> sendEmail(@RequestBody SendEmailDTO sendEmailDTO) {
     	return new ResponseEntity<>(scPaperService.sendEmail(sendEmailDTO), HttpStatus.OK);
     }
 
+    /*
     @GetMapping("/pdf/{id}")
     public ResponseEntity<String> generatePdf(@PathVariable String id) {
         return new ResponseEntity<>(scPaperService.generatePdf(id), HttpStatus.OK);
@@ -133,7 +136,7 @@ public class ScientificPaperController {
     @GetMapping("/html/{id}")
     public ResponseEntity<String> generateHtml(@PathVariable String id) {
         return new ResponseEntity<>(scPaperService.generateHtml(id), HttpStatus.OK);
-    }
+    }*/
   
     @PostMapping("/rdf/extract")
     public ResponseEntity<String> extractMetadata(@RequestParam("file") MultipartFile file) throws IOException, SAXException, TransformerException {

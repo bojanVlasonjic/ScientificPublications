@@ -6,6 +6,7 @@ import com.sp.ScientificPublications.dto.UserDTO;
 import com.sp.ScientificPublications.dto.submitions.AuthorSubmitionDTO;
 import com.sp.ScientificPublications.dto.submitions.CreateSubmitionDTO;
 import com.sp.ScientificPublications.dto.submitions.EditorSubmitionDTO;
+import com.sp.ScientificPublications.dto.submitions.SubmitionViewDTO;
 import com.sp.ScientificPublications.exception.ApiNotFoundException;
 import com.sp.ScientificPublications.models.Author;
 import com.sp.ScientificPublications.models.Submition;
@@ -64,6 +65,18 @@ public class SubmitionService {
         Page<Submition> submitionPage = submitionRepository.findAll(pageable);
         List<EditorSubmitionDTO> editorsSubmitionDTOS = submitionPage.get().map(EditorSubmitionDTO::new).collect(Collectors.toList());
         return new PageableResultsDTO<>(editorsSubmitionDTOS, submitionPage.getTotalPages());
+    }
+
+    public List<SubmitionViewDTO> getPublishedSubmitions() {
+
+        return submitionRepository
+                .findAllByStatus(SubmitionStatus.PUBLISHED)
+                .stream()
+                .map(subm ->
+                        new SubmitionViewDTO(subm,
+                                scientificPaperService.retrieveScientificPaperAsObject(subm.getPaperId())))
+                .collect(Collectors.toList());
+
     }
 
     public AuthorSubmitionDTO createSubmition(CreateSubmitionDTO createSubmitionDTO) {

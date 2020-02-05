@@ -7,6 +7,7 @@ import { CreateSubmitionComponent } from './components/create-submition/create-s
 import { MyScientificPapersComponent } from './components/my-scientific-papers/my-scientific-papers.component';
 import { Editor } from 'brace';
 import { EditorComponent } from './components/editor/editor.component';
+import { ScientificPapersViewComponent } from './components/scientific-papers-view/scientific-papers-view.component';
 
 
 const routes: Routes = [
@@ -38,6 +39,10 @@ const routes: Routes = [
   {
     path: 'editor',
     component: EditorComponent
+  },
+  {
+    path: 'scientific-papers',
+    component: ScientificPapersViewComponent
   }
 ];
 

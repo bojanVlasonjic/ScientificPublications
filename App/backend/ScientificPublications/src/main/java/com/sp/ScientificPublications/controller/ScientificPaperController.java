@@ -15,6 +15,7 @@ import javax.xml.transform.TransformerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
@@ -101,5 +102,11 @@ public class ScientificPaperController {
 		} catch (IOException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    //@Secured({"ROLE_EDITOR"})
+    @GetMapping("/{paperId}/recommended-reviewers")
+    public ResponseEntity getRecommendedReviewers(@PathVariable String paperId) {
+        return new ResponseEntity(scPaperService.getRecommendedReviewers(paperId), HttpStatus.OK);
     }
 }

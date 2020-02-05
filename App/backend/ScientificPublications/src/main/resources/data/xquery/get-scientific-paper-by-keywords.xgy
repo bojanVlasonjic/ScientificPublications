@@ -1,7 +1,0 @@
-xquery version "3.1";
-
-declare namespace sp = "http://www.ftn.uns.ac.rs/scientific-publication";
-
-for $doc in collection()
-where contains($doc/sp:scientific-paper/sp:abstract/sp:keywords, "rest")
-return $doc/sp:scientific-paper/sp:header/sp:title

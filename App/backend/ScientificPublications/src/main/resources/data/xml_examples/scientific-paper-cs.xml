@@ -5,7 +5,7 @@
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://www.ftn.uns.ac.rs/scientific-publication file:/C:/Users/bojan/Desktop/SIIT/VII_semestar/XML-Projekat/ScientificPublications/Schemas/scientific-paper.xsd">
     <sp:header>
-        <sp:title>title0</sp:title>
+        <sp:title>COMPUTER SCIENCE</sp:title>
         <sp:authors>
             <cmn:author>
                 <cmn:first-name>first-name0</cmn:first-name>
@@ -21,7 +21,7 @@
         </sp:authors>
     </sp:header>
     <sp:abstract>
-        <sp:keywords>computer science,spring security,rest,backend,java</sp:keywords>
+        <sp:keywords>java, xml, xquery, rdf, exist, rest, angular</sp:keywords>
         <sp:paper-type>type</sp:paper-type>
         <sp:purpose>
             blablabla 

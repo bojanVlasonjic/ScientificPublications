@@ -10,12 +10,10 @@ import com.sp.ScientificPublications.exception.ApiNotFoundException;
 import com.sp.ScientificPublications.models.Author;
 import com.sp.ScientificPublications.models.Submition;
 import com.sp.ScientificPublications.models.SubmitionStatus;
-import com.sp.ScientificPublications.models.scientific_paper.ScientificPaper;
 import com.sp.ScientificPublications.repository.AuthorRepository;
 import com.sp.ScientificPublications.repository.SubmitionRepository;
 import com.sp.ScientificPublications.service.CoverLetterService;
 import com.sp.ScientificPublications.service.ScientificPaperService;
-import org.checkerframework.checker.nullness.Opt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -48,7 +46,31 @@ public class SubmitionService {
 
     @Autowired
     private AuthenticationService authenticationService;
-    
+
+
+    public List<UserDTO> getAllReviewersForSubmition(Long submitionId) {
+        Optional<Submition> optionalSubmition = submitionRepository.findById(submitionId);
+        if (optionalSubmition.isPresent()) {
+            Submition submition = optionalSubmition.get();
+            List<UserDTO> results = new ArrayList<>();
+
+            submition.getRequestedReviewers().stream().forEach(reviewer -> {
+                UserDTO userDTO = new UserDTO(reviewer);
+                userDTO.setReviewerStatus("REQUESTED");
+                results.add(userDTO);
+            });
+
+            submition.getReviewers().stream().forEach(reviewer -> {
+                UserDTO userDTO = new UserDTO(reviewer);
+                userDTO.setReviewerStatus("ACCEPTED");
+                results.add(userDTO);
+            });
+
+            return results;
+        } else {
+            throw new ApiNotFoundException("Submition doesn't exist.");
+        }
+    }
     
     public List<UserDTO> getRequestedReviewers(String paperId) {
     	Submition submition = submitionRepository.findByPaperId(paperId);

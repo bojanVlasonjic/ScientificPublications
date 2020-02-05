@@ -6,7 +6,6 @@ import com.sp.ScientificPublications.dto.SendEmailDTO;
 import com.sp.ScientificPublications.dto.UserDTO;
 import com.sp.ScientificPublications.exception.ApiBadRequestException;
 import com.sp.ScientificPublications.models.Author;
-import com.sp.ScientificPublications.models.Review;
 import com.sp.ScientificPublications.models.Submition;
 import com.sp.ScientificPublications.models.SubmitionStatus;
 import com.sp.ScientificPublications.models.scientific_paper.ScientificPaper;
@@ -18,6 +17,7 @@ import com.sp.ScientificPublications.repository.exist.ExistJaxbRepository;
 import com.sp.ScientificPublications.repository.exist.XQueryRepository;
 import com.sp.ScientificPublications.repository.rdf.FusekiDocumentRepository;
 import com.sp.ScientificPublications.utility.FileUtil;
+import org.apache.xmlrpc.webserver.ServletWebServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamResource;
@@ -40,7 +40,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-import javax.xml.bind.JAXBException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,10 +47,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.xml.transform.TransformerException;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class ScientificPaperService {
@@ -470,5 +466,19 @@ public class ScientificPaperService {
             results.addAll(tokenizeKeywords(resource.getContent().toString()));
         }
         return results;
+    }
+
+    public void simpleSearch(String query) throws Exception {
+        String simpleSearchTemplatePath = "src/main/resources/data/xquery/simple-search.sqy";
+        String collectionId = "/db/scientific-publication/scientific-papers/";
+        String keywordsTemplate = FileUtil.readFile(simpleSearchTemplatePath, StandardCharsets.UTF_8);
+        String simpleSearchQuery = String.format(keywordsTemplate, query);
+
+        ResourceSet resourceSet = xQueryRepository.find(collectionId, simpleSearchQuery);
+        ResourceIterator resourceIterator = resourceSet.getIterator();
+
+        Set<String> results = new HashSet<>();
+
+
     }
 }

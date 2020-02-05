@@ -9,11 +9,16 @@ import com.sp.ScientificPublications.service.DomParserService;
 import com.sp.ScientificPublications.service.ScientificPaperService;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.List;
 
 import javax.xml.transform.TransformerException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,7 +34,50 @@ public class ScientificPaperController {
     
     @Autowired
     DomParserService domParserSvc;
+    
+    
+    
+    @GetMapping("/get/referenced-by/{id}")
+    public ResponseEntity<List<String>> getReferencedBy(@PathVariable String id) {
+    	return new ResponseEntity<List<String>>(scPaperService.getAllReferencesTowardsScientificPaper(id), HttpStatus.OK);
+    }
+    
+    @GetMapping("/download/xml/{id}")
+    public ResponseEntity<InputStreamResource> downloadXML(@PathVariable String id) { 
+    	try {
+			return scPaperService.downloadXML(id);
+		} catch (XMLDBException e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+    }
+    
+    @GetMapping("/download/html/{id}")
+    public ResponseEntity<InputStreamResource> downloadHTML(@PathVariable String id) { 
+    	try {
+			return scPaperService.downloadHTML(id);
+		} catch (IOException e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+    }
+    
+    @GetMapping("/download/pdf/{id}")
+    public ResponseEntity<InputStreamResource> downloadPDF(@PathVariable String id) { 
+    	try {
+			return scPaperService.downloadPDF(id);
+		} catch (IOException e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+    }
 
+    @GetMapping("/view/{id}")
+    public ResponseEntity<byte[]> viewScientificPaper(@PathVariable String id) {
+    	try {
+			return scPaperService.viewScientificPaper(id);
+		} catch (URISyntaxException | IOException e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+    }
+    
     @GetMapping("/keywords")
     public ResponseEntity getByKeywords() throws ClassNotFoundException, InstantiationException, XMLDBException, IllegalAccessException {
         return new ResponseEntity<>(scPaperService.searchByKeyword(), HttpStatus.OK);

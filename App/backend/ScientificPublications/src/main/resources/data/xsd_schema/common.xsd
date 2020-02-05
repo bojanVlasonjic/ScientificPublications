@@ -25,6 +25,7 @@
                 <xs:element name="first-name" type="xs:string"/>
                 <xs:element minOccurs="0" name="middle-name" type="xs:string"/>
                 <xs:element name="last-name" type="xs:string"/>
+                <xs:element minOccurs="0" name="email" type="xs:string"/>
                 <xs:element minOccurs="0" ref="cmn:institution"/>
                 <xs:element minOccurs="0" name="expertise">
                     <xs:complexType>

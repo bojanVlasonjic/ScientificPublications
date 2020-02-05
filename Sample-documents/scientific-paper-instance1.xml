@@ -11,6 +11,7 @@
             <cmn:author>
                 <cmn:first-name>first-name0</cmn:first-name>
                 <cmn:last-name>last-name0</cmn:last-name>
+                <cmn:email>example@gmail.com</cmn:email>
                 <cmn:institution>
                     <cmn:name>Faculty</cmn:name>
                     <cmn:location>

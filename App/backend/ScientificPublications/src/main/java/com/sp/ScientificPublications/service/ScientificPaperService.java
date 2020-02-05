@@ -4,14 +4,28 @@ import com.sp.ScientificPublications.dto.DocumentDTO;
 import com.sp.ScientificPublications.dto.SearchByAuthorsResponseDTO;
 import com.sp.ScientificPublications.dto.SendEmailDTO;
 import com.sp.ScientificPublications.exception.ApiBadRequestException;
+import com.sp.ScientificPublications.models.ExistConnectionProperties;
+import com.sp.ScientificPublications.models.Submition;
+import com.sp.ScientificPublications.models.SubmitionStatus;
 import com.sp.ScientificPublications.models.scientific_paper.ScientificPaper;
+import com.sp.ScientificPublications.repository.SubmitionRepository;
 import com.sp.ScientificPublications.repository.exist.ExistDocumentRepository;
 import com.sp.ScientificPublications.repository.exist.ExistJaxbRepository;
 import com.sp.ScientificPublications.repository.exist.XQueryRepository;
 import com.sp.ScientificPublications.repository.rdf.FusekiDocumentRepository;
 import com.sp.ScientificPublications.utility.FileUtil;
+import com.sun.xml.internal.ws.spi.db.DatabindingException;
+import org.apache.xmlrpc.webserver.ServletWebServer;
+import org.bouncycastle.util.encoders.UTF8;
+import org.exist.xmldb.EXistResource;
+import org.exist.xquery.Except;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
@@ -21,10 +35,18 @@ import org.xmldb.api.modules.XMLResource;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.transform.TransformerException;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -50,6 +72,12 @@ public class ScientificPaperService {
     
     @Autowired
     XQueryRepository xQueryRepository;
+    
+    @Autowired
+    SubmitionRepository submitionRepository;
+    
+    @Autowired
+    UtilityService utilityService;
 
 
     private static final String schemaPath = "src/main/resources/data/xsd_schema/scientific-paper.xsd";
@@ -64,7 +92,102 @@ public class ScientificPaperService {
     private static final String modelPackage = "com.sp.ScientificPublications.models.scientific_paper";
     private static final String SPARQL_NAMED_GRAPH_URI = "/scientific-paper/sparql/metadata";
 
+    // ===================== DOWNLOAD =====================
+    public ResponseEntity<InputStreamResource> downloadPDF(String xmlId) throws IOException {
+        String path = PDF_DIRECTORY_PATH + xmlId + ".pdf";
+        File file = new File(path);
+        if (!file.exists()) throw new ApiBadRequestException("No such file");
+        
+        HttpHeaders headers = utilityService.getDownloadHeaders();
+        headers.setContentType(MediaType.parseMediaType("application/pdf"));
+        headers.setContentLength(file.length());
+        headers.setContentDispositionFormData("attachment", file.getName());
+        
+        FileInputStream inputStream = new FileInputStream(file);
+        InputStreamResource resource = new InputStreamResource(inputStream);
+        
+        return new ResponseEntity<>(resource, headers, HttpStatus.OK);
+    }
+    
+    public ResponseEntity<InputStreamResource> downloadHTML(String xmlId) throws IOException {
+        String path = HTML_DIRECTORY_PATH + xmlId + ".html";
+        File file = new File(path);
+        if (!file.exists()) throw new ApiBadRequestException("No such file");
+        
+        HttpHeaders headers = utilityService.getDownloadHeaders();
+        headers.setContentType(MediaType.parseMediaType("application/html"));
+        headers.setContentLength(file.length());
+        headers.setContentDispositionFormData("attachment", file.getName());
+        
+        FileInputStream inputStream = new FileInputStream(file);
+        InputStreamResource resource = new InputStreamResource(inputStream);
+        
+        return new ResponseEntity<>(resource, headers, HttpStatus.OK);
+    }
+    
+    public ResponseEntity<InputStreamResource> downloadXML(String xmlId) throws XMLDBException {
+    	XMLResource res = existDocumentRepo.retrieveXmlFile(collectionId, xmlId);
+    	
+    	InputStreamResource resource = new InputStreamResource(
+    			new ByteArrayInputStream(res.getContent().toString().getBytes()));
+    	
+    	HttpHeaders headers = utilityService.getDownloadHeaders();
+        headers.setContentType(MediaType.parseMediaType("application/xml"));
+        headers.setContentDispositionFormData("attachment", xmlId + ".xml");
+    	
+    	return new ResponseEntity<>(resource, headers, HttpStatus.OK);
+    }
+ 	// =========================================================================
 
+    public List<String> getAllReferencesTowardsScientificPaper(String xmlId) {
+    	String queryFilePath = "./src/main/resources/data/xquery/get-scientific-paper-references.xqy";
+    	String query = "";
+		try {
+			query = FileUtil.readFile(queryFilePath, StandardCharsets.UTF_8);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    	
+    	List<String> references = new ArrayList<String>();
+    	
+    	List<Submition> submitions = this.submitionRepository.findAllByStatus(SubmitionStatus.PUBLISHED);
+    	for (Submition sub : submitions) {
+    		List<String> inDocumentReferences = this.xQueryRepository.getAllReferencesFromScientificPaper(collectionId, query, sub.getPaperId());
+    		for (String ref : inDocumentReferences) {
+    			String[] tokens = ref.split("/");
+    			if (tokens.length >= 3) {
+    				String refId = tokens[tokens.length - 1];
+    				String collectionId = tokens[tokens.length - 3];
+    				if (collectionId.equals("scientific-paper") &&
+    						refId.equals(xmlId) &&
+    						!references.contains(sub.getPaperId())) {
+    					references.add(sub.getPaperId());
+    				}
+    			}
+    		}
+    	}
+    	
+    	return references;
+    }
+    
+    // ============================== VIEW ==============================
+    public ResponseEntity<byte[]> viewScientificPaper(String id) throws URISyntaxException, IOException {
+    	
+    	String filename = PDF_DIRECTORY_PATH + id + ".pdf";
+    	File pdf = new File(filename);
+    	if (!pdf.exists()) throw new ApiBadRequestException("No such file");
+    	
+    	HttpHeaders headers = new HttpHeaders();
+    	headers.setContentType(MediaType.parseMediaType("application/pdf"));
+    	headers.add("content-disposition", "inline;filename=" + filename);
+    	headers.setCacheControl("must-revalidate, post-check=0 pre-check=0");
+    	
+    	byte[] file = xmlTransformSvc.loadFile(filename);
+    	
+    	return new ResponseEntity<byte[]>(file, headers, HttpStatus.OK);
+    }
+    // ============================================================
+    
     public DocumentDTO getTemplate() {
 
         DocumentDTO templateDTO = new DocumentDTO();
@@ -116,14 +239,9 @@ public class ScientificPaperService {
     	DocumentDTO document = new DocumentDTO();
     	document.setDocumentContent(xmlContent);
     	document = this.storeScientificPaperAsDocument(document);
-    	//this.generatePdf(document.getDocumentId());
-    	//this.generateHtml(document.getDocumentId());
-    	String queryFilePath = "./src/main/resources/data/xquery/get-scientific-paper-references.xqy";
-    	try {
-			//this.queryRepository.getData(collectionId, document.getDocumentId(), queryFilePath);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+    	this.generatePdf(document.getDocumentId());
+    	this.generateHtml(document.getDocumentId());
+    	
     	return document;
     }
     
@@ -230,6 +348,14 @@ public class ScientificPaperService {
         } catch (Exception ex) {
             throw new ApiBadRequestException("Something went wrong...");
         }
+    }
+    
+    private HttpHeaders getDownloadHeaders() {
+    	HttpHeaders headers = new HttpHeaders();
+        headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
+        headers.add("Pragma", "no-cache");
+        headers.add("Expires", "0");
+    	return headers;
     }
 
 }

@@ -47,7 +47,7 @@ export class XmlEditorComponent implements OnInit {
 
     // waiting for editor content to update
     window.setTimeout(() =>{
-    }, 1500);
+    }, 2000);
 
     this.uploadSvc.sendEditorContent(this.xmlContent);
   }
@@ -61,6 +61,10 @@ export class XmlEditorComponent implements OnInit {
 
   changeTheme(event: any) {
     this.selectedTheme = this.themes[event.target.value];
+  }
+
+  isDocumentUploading(): boolean {
+    return document.getElementById('editor-toolbar-spinner').style.visibility == 'visible';
   }
   
 

@@ -2,7 +2,13 @@
     <ul id="editor-toolbar">
         <div id="left-selection">
             <li (click)="generateTemplate()">Generate template</li>
-            <li (click)="uploadDocument()"> Upload document </li>
+            <li (click)="uploadDocument()" *ngIf="!isDocumentUploading()"> Upload document </li>
+            <li>
+                <div id="editor-toolbar-spinner" class="spinner-grow" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </li>
+
         </div>
         
         <div id="right-selection">

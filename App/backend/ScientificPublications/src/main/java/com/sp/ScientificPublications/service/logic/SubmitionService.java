@@ -2,6 +2,7 @@ package com.sp.ScientificPublications.service.logic;
 
 import com.sp.ScientificPublications.dto.DocumentDTO;
 import com.sp.ScientificPublications.dto.PageableResultsDTO;
+import com.sp.ScientificPublications.dto.UserDTO;
 import com.sp.ScientificPublications.dto.submitions.AuthorSubmitionDTO;
 import com.sp.ScientificPublications.dto.submitions.CreateSubmitionDTO;
 import com.sp.ScientificPublications.dto.submitions.EditorSubmitionDTO;
@@ -21,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -46,6 +48,16 @@ public class SubmitionService {
 
     @Autowired
     private AuthenticationService authenticationService;
+    
+    
+    public List<UserDTO> getRequestedReviewers(String paperId) {
+    	Submition submition = submitionRepository.findByPaperId(paperId);
+    	List<UserDTO> users = new ArrayList<>();
+    	for (Author author : submition.getRequestedReviewers()) {
+    		users.add(new UserDTO(author));
+    	}
+    	return users;
+    }
 
     public PageableResultsDTO<EditorSubmitionDTO> getSubmitions(Pageable pageable) {
         authenticationService.getCurrentEditor();
@@ -58,6 +70,8 @@ public class SubmitionService {
         Author author = authenticationService.getCurrentAuthor();
         DocumentDTO paper = new DocumentDTO(null, createSubmitionDTO.getPaperContent());
         paper = scientificPaperService.storeScientificPaperAsDocument(paper);
+        scientificPaperService.generateHtml(paper.getDocumentId());
+        scientificPaperService.generatePdf(paper.getDocumentId());
 
         DocumentDTO coverLetter = new DocumentDTO();
 
@@ -65,6 +79,8 @@ public class SubmitionService {
         if(createSubmitionDTO.getCoverLetterContent() != null && !createSubmitionDTO.getCoverLetterContent().equals("")) {
             coverLetter.setDocumentContent(createSubmitionDTO.getCoverLetterContent());
             coverLetter = coverLetterService.storeCoverLetterAsDocument(coverLetter);
+            coverLetterService.generateHtml(coverLetter.getDocumentId());
+            coverLetterService.generatePdf(coverLetter.getDocumentId());
         } else {
             coverLetter.setDocumentId(null);
         }
@@ -101,7 +117,7 @@ public class SubmitionService {
 
     }
 
-    public void cancelSubmition(Long id) {
+    public AuthorSubmitionDTO cancelSubmition(Long id) {
         Optional<Submition> optionalSubmition = submitionRepository.findById(id);
         if (optionalSubmition.isPresent()) {
             Author user = authenticationService.getCurrentAuthor();
@@ -109,7 +125,9 @@ public class SubmitionService {
             accessControlService.checkIfUserOwnsSubmition(user, submition);
             accessControlService.checkIfTransitionIsPossible(submition.getStatus(), SubmitionStatus.CANCELED);
             submition.setStatus(SubmitionStatus.CANCELED);
-            submitionRepository.save(submition);
+
+
+            return new AuthorSubmitionDTO(submitionRepository.save(submition));
         } else {
             throw new ApiNotFoundException("Submition doesn't exist.");
         }

@@ -16,7 +16,9 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EditorSubmitionDTO {
+	private Long id;
     private String paperId;
+    private String paperTitle;
     private String coverLetterId;
     private String status;
     private UserDTO author;
@@ -24,7 +26,9 @@ public class EditorSubmitionDTO {
     private List<ReviewDTO> reviews;
 
     public EditorSubmitionDTO(Submition submition) {
+    	id = submition.getId();
         paperId = submition.getPaperId();
+        paperTitle = submition.getPaperTitle();
         coverLetterId = submition.getCoverLetterId();
         status = submition.getStatus().toString();
         author = new UserDTO(submition.getAuthor());

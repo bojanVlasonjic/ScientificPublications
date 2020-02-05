@@ -10,6 +10,10 @@ export class SubmitionService {
 
   constructor(private http: HttpClient) { }
 
+  getAllSubmitions(): Observable<any> {
+    return this.http.get('api/submitions');
+  }
+
   getSubmitionsForAuthor(): Observable<any> {
     return this.http.get('api/submitions/author');
   }
@@ -20,5 +24,17 @@ export class SubmitionService {
 
   uploadSubmitionFile(submitionFiles: FormData): Observable<any> {
     return this.http.post('api/submitions/file', submitionFiles);
+  }
+
+  cancelSubmition(id: string): Observable<any> {
+    return this.http.delete(`api/submitions/${id}`);
+  }
+
+  requestReview(paperId: number, authorId: number): Observable<any> {
+    return this.http.put<any>(`api/submitions/${paperId}/requested-reviewers/${authorId}`, null);
+  }
+
+  getRequestedReviewers(paperId: string): Observable<any> {
+    return this.http.get(`api/submitions/requested-reviewers/${paperId}`);
   }
 }

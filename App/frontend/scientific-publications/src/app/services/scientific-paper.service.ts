@@ -10,8 +10,8 @@ export class ScientificPaperService {
 
   constructor(private http: HttpClient) { }
 
-  storeDocument(document: DocumentDTO): Observable<any> {
-    return this.http.post<any>('api/scientific-paper', document);
+  getRecommenderReviewers(paperId: string): Observable<any> {
+    return this.http.get(`api/scientific-paper/${paperId}/recommended-reviewers`)
   }
 
   validate(data: DocumentDTO): Observable<any> {

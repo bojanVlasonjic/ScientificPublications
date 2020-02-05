@@ -9,5 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SubmitionRepository extends JpaRepository<Submition, Long> {
 	Submition findByPaperIdAndStatus(String paperId, SubmitionStatus status);
+	Submition findByPaperId(String paperId);
 	List<Submition> findAllByStatus(SubmitionStatus status);
 }

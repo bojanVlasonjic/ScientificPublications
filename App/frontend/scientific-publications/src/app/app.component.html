@@ -22,10 +22,10 @@
     <div *ngIf="getUser?.roles.includes('ROLE_AUTHOR')" class="navigation-item">
       Scientific papers
     </div>
-    <div *ngIf="getUser?.roles.includes('ROLE_AUTHOR')" class="navigation-item" routerLink="/create-submition">
+    <div *ngIf="getUser?.roles.includes('ROLE_AUTHOR')" class="navigation-item" routerLink="/create-submition" [ngClass]="{'selected' : getUrl() == 'create-submition'}">
       Submit scientific paper
     </div>
-    <div *ngIf="getUser?.roles.includes('ROLE_AUTHOR')" class="navigation-item" routerLink="/my-papers">
+    <div *ngIf="getUser?.roles.includes('ROLE_AUTHOR')" class="navigation-item" routerLink="/my-papers" [ngClass]="{'selected' : getUrl() == 'my-papers'}">
       My scientific papers
     </div>
     <div *ngIf="getUser?.roles.includes('ROLE_AUTHOR')" class="navigation-item">
@@ -33,6 +33,9 @@
     </div>
 
     <!-- Editor tabs -->
+    <div *ngIf="getUser?.roles.includes('ROLE_EDITOR')" class="navigation-item" routerLink="/editor" [ngClass]="{'selected' : getUrl() == 'editor'}">
+      All scientific papers
+    </div>
 
   </div>
 

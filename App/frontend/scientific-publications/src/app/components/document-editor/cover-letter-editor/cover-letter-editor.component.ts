@@ -36,12 +36,12 @@ export class CoverLetterEditorComponent implements OnInit {
     );
   }
 
-  validateDocument($event) {
-    this.document.documentContent = $event;
+  validateDocument(event: any) {
+    this.document.documentContent = event;
 
     this.coverLetterSvc.validate(this.document).subscribe(
       data => {
-        this.document = data;
+        this.documentValid = data;
         this.logMessage = '';
       },
       err => {

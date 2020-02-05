@@ -36,8 +36,8 @@ export class ScientificPaperEditorComponent implements OnInit {
     );
   }
 
-  validateDocument($event) {
-    this.document.documentContent = $event;
+  validateDocument(event: any) {
+    this.document.documentContent = event;
 
     this.scientfPaperSvc.validate(this.document).subscribe(
       data => {

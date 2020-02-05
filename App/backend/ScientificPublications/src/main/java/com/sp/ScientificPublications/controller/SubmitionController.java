@@ -22,8 +22,8 @@ public class SubmitionController {
 
     @Secured({"ROLE_EDITOR"})
     @GetMapping
-    public ResponseEntity getSubmitions(@RequestParam("page") Integer page, @RequestParam("size") Integer size) {
-        Pageable pageable = PageRequest.of(page, size);
+    public ResponseEntity getSubmitions() {
+        Pageable pageable = PageRequest.of(0, 1000000);
         return new ResponseEntity(submitionService.getSubmitions(pageable), HttpStatus.OK);
     }
 

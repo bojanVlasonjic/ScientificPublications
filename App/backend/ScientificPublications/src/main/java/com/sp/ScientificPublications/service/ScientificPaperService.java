@@ -3,24 +3,19 @@ package com.sp.ScientificPublications.service;
 import com.sp.ScientificPublications.dto.DocumentDTO;
 import com.sp.ScientificPublications.dto.SearchByAuthorsResponseDTO;
 import com.sp.ScientificPublications.dto.SendEmailDTO;
+import com.sp.ScientificPublications.dto.UserDTO;
 import com.sp.ScientificPublications.exception.ApiBadRequestException;
-import com.sp.ScientificPublications.models.ExistConnectionProperties;
+import com.sp.ScientificPublications.models.Author;
 import com.sp.ScientificPublications.models.Submition;
 import com.sp.ScientificPublications.models.SubmitionStatus;
 import com.sp.ScientificPublications.models.scientific_paper.ScientificPaper;
+import com.sp.ScientificPublications.repository.AuthorRepository;
 import com.sp.ScientificPublications.repository.SubmitionRepository;
 import com.sp.ScientificPublications.repository.exist.ExistDocumentRepository;
 import com.sp.ScientificPublications.repository.exist.ExistJaxbRepository;
-import com.sp.ScientificPublications.repository.exist.ExistUtilityService;
 import com.sp.ScientificPublications.repository.exist.XQueryRepository;
 import com.sp.ScientificPublications.repository.rdf.FusekiDocumentRepository;
-
 import com.sp.ScientificPublications.utility.FileUtil;
-import com.sun.xml.internal.ws.spi.db.DatabindingException;
-import org.apache.xmlrpc.webserver.ServletWebServer;
-import org.bouncycastle.util.encoders.UTF8;
-import org.exist.xmldb.EXistResource;
-import org.exist.xquery.Except;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamResource;
@@ -31,29 +26,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
-import org.xmldb.api.DatabaseManager;
-import org.xmldb.api.base.*;
+import org.xmldb.api.base.Resource;
+import org.xmldb.api.base.ResourceIterator;
+import org.xmldb.api.base.ResourceSet;
+import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.XMLResource;
-import org.xmldb.api.modules.XQueryService;
 
+import javax.xml.bind.JAXBException;
+import javax.xml.transform.TransformerException;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
-
-import javax.xml.bind.JAXBException;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.transform.TransformerException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ScientificPaperService {
@@ -69,13 +57,13 @@ public class ScientificPaperService {
 
     @Autowired
     ExistJaxbRepository existJaxbRepo;
-    
+
     @Autowired
     FusekiDocumentRepository fusekiDocumentRepository;
-    
+
     @Autowired
     EmailSenderService emailSenderService;
-    
+
     @Autowired
     XQueryRepository xQueryRepository;
     
@@ -85,12 +73,15 @@ public class ScientificPaperService {
     @Autowired
     UtilityService utilityService;
 
+    @Autowired
+    AuthorRepository authorRepository;
+
 
     private static final String schemaPath = "src/main/resources/data/xsd_schema/scientific-paper.xsd";
     private static final String xslFoFilePath = "src/main/resources/data/xsl_fo/scientific-paper-fo.xsl";
     private static final String xsltFilePath = "src/main/resources/data/xslt/scientific-paper-xslt.xsl";
     private static final String templatePath = "src/main/resources/templates/scientific-paper-template.xml";
-    
+
     private static final String PDF_DIRECTORY_PATH = "src/main/resources/output/pdf/scientific-paper/";
     private static final String HTML_DIRECTORY_PATH = "src/main/resources/output/html/scientific-paper/";
 
@@ -205,41 +196,41 @@ public class ScientificPaperService {
 
         return templateDTO;
     }
-    
+
     public boolean sendEmail(SendEmailDTO dto) {
-    	
-    	String pdfPath = PDF_DIRECTORY_PATH + dto.getPdfGUID() + ".pdf";
-    	String htmlPath = HTML_DIRECTORY_PATH + dto.getHtmlGUID() + ".html";
-    	
-    	byte[] pdfBytes = null;
-    	byte[] htmlBytes = null;
-    	
-    	try {
-			pdfBytes = xmlTransformSvc.loadFile(pdfPath);
-			htmlBytes = xmlTransformSvc.loadFile(htmlPath);
-		} catch (URISyntaxException | IOException e) {
-			e.printStackTrace();
-		}
-    	
-    	
-    	Map<String, ByteArrayResource> attachmentNameAndByteResource = new HashMap<String, ByteArrayResource>();
-    	attachmentNameAndByteResource.put("ScientificPaper.pdf", new ByteArrayResource(pdfBytes));
-    	attachmentNameAndByteResource.put("ScientificPaper.html", new ByteArrayResource(htmlBytes));
-    	
-    	emailSenderService.sendMessageWithAttachments(
-    			dto.getTo(), 
-    			dto.getSubject(),
-    			dto.getMessage(), 
-    			attachmentNameAndByteResource);
-    	return true;
+
+        String pdfPath = PDF_DIRECTORY_PATH + dto.getPdfGUID() + ".pdf";
+        String htmlPath = HTML_DIRECTORY_PATH + dto.getHtmlGUID() + ".html";
+
+        byte[] pdfBytes = null;
+        byte[] htmlBytes = null;
+
+        try {
+            pdfBytes = xmlTransformSvc.loadFile(pdfPath);
+            htmlBytes = xmlTransformSvc.loadFile(htmlPath);
+        } catch (URISyntaxException | IOException e) {
+            e.printStackTrace();
+        }
+
+
+        Map<String, ByteArrayResource> attachmentNameAndByteResource = new HashMap<String, ByteArrayResource>();
+        attachmentNameAndByteResource.put("ScientificPaper.pdf", new ByteArrayResource(pdfBytes));
+        attachmentNameAndByteResource.put("ScientificPaper.html", new ByteArrayResource(htmlBytes));
+
+        emailSenderService.sendMessageWithAttachments(
+                dto.getTo(),
+                dto.getSubject(),
+                dto.getMessage(),
+                attachmentNameAndByteResource);
+        return true;
     }
 
     // ================= File manipulation
-    
+
     public boolean validateScientificPaperXMLFile(MultipartFile file) {
-    	return this.validateScientificPaper(domParserSvc.readMultipartXMLFile(file));
+        return this.validateScientificPaper(domParserSvc.readMultipartXMLFile(file));
     }
-    
+
     public DocumentDTO uploadScientificPaperXMLFile(MultipartFile file) {
     	String xmlContent = domParserSvc.readMultipartXMLFile(file);
     	DocumentDTO document = new DocumentDTO();
@@ -250,7 +241,7 @@ public class ScientificPaperService {
     	
     	return document;
     }
-    
+
     // =================
 
     public boolean validateScientificPaper(String documentContent) {
@@ -258,24 +249,24 @@ public class ScientificPaperService {
     }
 
     public String generatePdf(String documentId) {
-    	DocumentDTO retrievedDTO = this.retrieveScientificPaperAsDocument(documentId);
-    	retrievedDTO.setDocumentId("scientific-paper/" + retrievedDTO.getDocumentId());
+        DocumentDTO retrievedDTO = this.retrieveScientificPaperAsDocument(documentId);
+        retrievedDTO.setDocumentId("scientific-paper/" + retrievedDTO.getDocumentId());
         return xmlTransformSvc.generatePdfFromXml(retrievedDTO, xslFoFilePath);
     }
 
     public String generateHtml(String documentId) {
-    	DocumentDTO retrievedDTO = this.retrieveScientificPaperAsDocument(documentId);
-    	retrievedDTO.setDocumentId("scientific-paper/" + retrievedDTO.getDocumentId());
+        DocumentDTO retrievedDTO = this.retrieveScientificPaperAsDocument(documentId);
+        retrievedDTO.setDocumentId("scientific-paper/" + retrievedDTO.getDocumentId());
         return xmlTransformSvc.generateHtmlFromXml(retrievedDTO, xsltFilePath);
     }
-    
+
     public SearchByAuthorsResponseDTO searchMetadataByAuthor(String author) throws IOException {
-    	return fusekiDocumentRepository.searchMetadataByAuthor(author);
+        return fusekiDocumentRepository.searchMetadataByAuthor(author);
     }
-    
+
     //fileName without extension
     public void extractMetaData(String xmlContent, String fileName) throws IOException, SAXException, TransformerException {
-    	fusekiDocumentRepository.extractMetadata(xmlContent, fileName);
+        fusekiDocumentRepository.extractMetadata(xmlContent, fileName);
     }
 
 
@@ -327,7 +318,7 @@ public class ScientificPaperService {
 
     public DocumentDTO storeScientificPaperAsDocument(DocumentDTO document) {
 
-        if(!validateScientificPaper(document.getDocumentContent())) {
+        if (!validateScientificPaper(document.getDocumentContent())) {
             throw new ApiBadRequestException("The scientific publication is not in a valid format");
         }
 
@@ -340,7 +331,6 @@ public class ScientificPaperService {
             e.printStackTrace();
             throw new ApiBadRequestException("Failed to save scientific publication");
         }
-
         return document;
     }
 
@@ -364,4 +354,101 @@ public class ScientificPaperService {
     	return headers;
     }
 
+    public List<UserDTO> getRecommendedReviewers(String paperId) {
+        List<UserDTO> rankedUsers = null;
+        try {
+            // get xml paper
+            ScientificPaper scientificPaper = retrieveScientificPaperAsObject(paperId);
+
+            // tokenize keywords from paper
+            Set<String> paperKeywords = tokenizeKeywords(scientificPaper.getAbstract().getKeywords());
+
+            // get distinct keywords for every author
+            Map<String, Set<String>> authorsKeywords = getDistinctKeywordsForAuthors(scientificPaper);
+
+            // rank authors keywords against paper keywords
+            rankedUsers = rankAuthors(paperKeywords, authorsKeywords);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return rankedUsers;
+    }
+
+    public List<UserDTO> rankAuthors(Set<String> paperKeywords, Map<String, Set<String>> authorsKeywords) {
+        List<UserDTO> rankings = new ArrayList<>();
+        for (String authorEmail : authorsKeywords.keySet()) {
+            authorsKeywords.get(authorEmail).retainAll(paperKeywords);
+            Integer rank = authorsKeywords.get(authorEmail).size();
+            UserDTO userDTO = new UserDTO(authorRepository.findByEmail(authorEmail).get());
+            userDTO.setRank(rank);
+            rankings.add(userDTO);
+        }
+        return rankings;
+    }
+
+    public Map<String, Set<String>> getDistinctKeywordsForAuthors(ScientificPaper scientificPaper) throws Exception {
+        // get authors of given scientific paper
+        Set<String> authorsOfPaper = getAuthorsForDocument(scientificPaper.getHeader().getTitle());
+
+        // filter all authors against authorsOfPaper
+        List<Author> filteredAuthors = authorRepository.findAll()
+                .stream()
+                .filter(author -> !authorsOfPaper.contains(author.getEmail()))
+                .collect(Collectors.toList());
+
+        // get all distinct keywords for every filtered author
+        Map<String, Set<String>> authorsKeywords = new HashMap<>();
+        for (Author author : filteredAuthors) {
+            String authorEmail = author.getEmail();
+            Set<String> keywords = getKeywordsForAuthor(authorEmail);
+
+            if (authorsKeywords.containsKey(authorEmail)) {
+                authorsKeywords.get(authorEmail).addAll(keywords);
+            } else {
+                authorsKeywords.put(authorEmail, keywords);
+            }
+        }
+        return authorsKeywords;
+    }
+
+    public Set<String> getKeywordsForAuthor(String authorEmail) throws Exception {
+        String keywordsTemplatePath = "src/main/resources/data/xquery/get-author-keywords.xqy";
+        String collectionId = "/db/scientific-publication/scientific-papers/";
+        String keywordsTemplate = FileUtil.readFile(keywordsTemplatePath, StandardCharsets.UTF_8);
+        String keywordsXQuery = String.format(keywordsTemplate, authorEmail);
+
+        ResourceSet resourceSet = xQueryRepository.find(collectionId, keywordsXQuery);
+        ResourceIterator resourceIterator = resourceSet.getIterator();
+
+        Set<String> results = new HashSet<>();
+        while (resourceIterator.hasMoreResources()) {
+            Resource resource = resourceIterator.nextResource();
+            results.addAll(tokenizeKeywords(resource.getContent().toString()));
+        }
+        return results;
+    }
+
+    public Set<String> tokenizeKeywords(String keywords) {
+        Set<String> results = new HashSet<>();
+        keywords = keywords.replace(" ", "");
+        results.addAll(Arrays.asList(keywords.split(",")));
+        return results;
+    }
+
+    public Set<String> getAuthorsForDocument(String documentTitle) throws Exception {
+        String keywordsTemplatePath = "src/main/resources/data/xquery/get-authors-from-document.xqy";
+        String collectionId = "/db/scientific-publication/scientific-papers/";
+        String keywordsTemplate = FileUtil.readFile(keywordsTemplatePath, StandardCharsets.UTF_8);
+        String keywordsXQuery = String.format(keywordsTemplate, documentTitle);
+
+        ResourceSet resourceSet = xQueryRepository.find(collectionId, keywordsXQuery);
+        ResourceIterator resourceIterator = resourceSet.getIterator();
+
+        Set<String> results = new HashSet<>();
+        while (resourceIterator.hasMoreResources()) {
+            Resource resource = resourceIterator.nextResource();
+            results.addAll(tokenizeKeywords(resource.getContent().toString()));
+        }
+        return results;
+    }
 }

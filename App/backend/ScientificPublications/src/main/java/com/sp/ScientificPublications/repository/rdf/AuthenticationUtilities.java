@@ -20,7 +20,6 @@ import java.util.Properties;
  */
 public class AuthenticationUtilities {
 	
-
 	/**
 	 * Read the configuration properties for the example.
 	 * 

@@ -2,6 +2,7 @@ package com.sp.ScientificPublications.repository.rdf;
 
 
 import org.apache.xalan.xsltc.trax.TransformerFactoryImpl;
+import org.springframework.stereotype.Service;
 import org.xml.sax.SAXException;
 
 import javax.xml.transform.OutputKeys;
@@ -12,8 +13,6 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.*;
 
-//import com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl;
-
 /**
  * 
  * Primer demonstrira ekstrakciju RDFa metapodataka iz 
@@ -22,16 +21,15 @@ import java.io.*;
  * 
  */
 
+@Service
 public class MetadataExtractor {
 	
-	private TransformerFactory transformerFactory;
+	private TransformerFactory transformerFactory = new TransformerFactoryImpl();
 
 	private static final String XSLT_FILE = "src/main/resources/data/rdf/xsl/grddl.xsl";
 	
-	public MetadataExtractor() throws SAXException, IOException {
-		
+	public MetadataExtractor() {
 		// Setup the XSLT transformer factory
-		transformerFactory = new TransformerFactoryImpl();
 	}
 
 	/**

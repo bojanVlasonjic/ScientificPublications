@@ -1,20 +1,27 @@
 package com.sp.ScientificPublications.service.logic;
 
+import com.sp.ScientificPublications.dto.DocumentDTO;
 import com.sp.ScientificPublications.dto.PageableResultsDTO;
 import com.sp.ScientificPublications.dto.reviews.CreateReviewDTO;
+import com.sp.ScientificPublications.dto.reviews.ReviewDTO;
 import com.sp.ScientificPublications.dto.submitions.AuthorSubmitionDTO;
+import com.sp.ScientificPublications.exception.ApiBadRequestException;
 import com.sp.ScientificPublications.exception.ApiNotFoundException;
 import com.sp.ScientificPublications.models.Author;
+import com.sp.ScientificPublications.models.Review;
 import com.sp.ScientificPublications.models.Submition;
+import com.sp.ScientificPublications.models.SubmitionStatus;
 import com.sp.ScientificPublications.repository.AuthorRepository;
 import com.sp.ScientificPublications.repository.ReviewRepository;
 import com.sp.ScientificPublications.repository.SubmitionRepository;
+import com.sp.ScientificPublications.service.PaperReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.print.Doc;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -37,12 +44,15 @@ public class ReviewerService {
     @Autowired
     private AuthenticationService authenticationService;
 
+    @Autowired
+    private PaperReviewService paperReviewService;
+
     public void acceptSubmitionReviewRequest(Long submitionId) {
         Optional<Submition> optionalSubmition = submitionRepository.findById(submitionId);
         if (optionalSubmition.isPresent()) {
             Submition submition = optionalSubmition.get();
             Author reviewer = authenticationService.getCurrentAuthor();
-            accessControlService.checkIfUserIsRequestedToReviewSubmition(reviewer, submition);
+            accessControlService.checkIfUserCanAcceptDeclineReviewRequest(reviewer, submition);
             submition.getRequestedReviewers().removeIf(requestedReviewer -> requestedReviewer.getId() == reviewer.getId());
             reviewer.getRequestedSubmitions().removeIf(submitionRequest -> submitionRequest.getId() == submition.getId());
             submition.getReviewers().add(reviewer);
@@ -59,7 +69,7 @@ public class ReviewerService {
         if (optionalSubmition.isPresent()) {
             Submition submition = optionalSubmition.get();
             Author reviewer = authenticationService.getCurrentAuthor();
-            accessControlService.checkIfUserIsRequestedToReviewSubmition(reviewer, submition);
+            accessControlService.checkIfUserCanAcceptDeclineReviewRequest(reviewer, submition);
             submition.getRequestedReviewers().removeIf(requestedReviewer -> requestedReviewer.getId() == reviewer.getId());
             reviewer.getRequestedSubmitions().removeIf(submitionRequest -> submitionRequest.getId() == submition.getId());
             submitionRepository.save(submition);
@@ -83,8 +93,4 @@ public class ReviewerService {
         return new PageableResultsDTO(authorSubmitionDTOS, submitionPage.getTotalPages());
     }
 
-    public void createReview(CreateReviewDTO createReviewDTO) {
-        //TODO: WILL BE IMPLEMENTED AFTER XML SERVICE FOR REVIEW IS FIXED WITH CORRECT XML SCHEMA
-        //TODO: SEND EMAIL TO NOTIFY EDITOR ABOUT REVIEW
-    }
 }

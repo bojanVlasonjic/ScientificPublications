@@ -246,13 +246,12 @@ public class FusekiDocumentRepository {
 		// Create a QueryExecution that will access a SPARQL service over HTTP
 		QueryExecution query = QueryExecutionFactory.sparqlService(conn.queryEndpoint, sparqlQuery);
 		
-		
 		// Query the collection, dump output response as XML
 		ResultSet results = query.execSelect();
 		
 		ResultSetFormatter.out(System.out, results);
 		
-		query.close() ;
+		query.close();
 		
 		System.out.println("[INFO] End.");
 	}

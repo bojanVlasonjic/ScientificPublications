@@ -207,10 +207,10 @@ public class FusekiDocumentRepository {
 		// Loading a default model with extracted metadata
 		Model model = ModelFactory.createDefaultModel();
 		model.read(new ByteArrayInputStream(outputStream.toByteArray()), null);
-		
+
+		// write to System.out
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		ByteArrayOutputStream outXml = new ByteArrayOutputStream();
-		
 		model.write(out, SparqlUtil.NTRIPLES);
 		model.write(outXml, SparqlUtil.RDF_XML);
 		
@@ -221,6 +221,7 @@ public class FusekiDocumentRepository {
 		
 		System.out.println("[INFO] Extracted metadata as RDF/XML...");
 		model.write(System.out, SparqlUtil.RDF_XML);
+
 
 		
 		// Writing the named graph

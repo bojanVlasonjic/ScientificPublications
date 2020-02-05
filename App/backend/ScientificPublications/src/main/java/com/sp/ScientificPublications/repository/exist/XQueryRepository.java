@@ -1,5 +1,6 @@
 package com.sp.ScientificPublications.repository.exist;
 
+import com.sp.ScientificPublications.exception.ApiInternalServerException;
 import com.sp.ScientificPublications.models.ExistConnectionProperties;
 import com.sp.ScientificPublications.utility.FileUtil;
 
@@ -15,6 +16,7 @@ import org.xmldb.api.base.CompiledExpression;
 import org.xmldb.api.base.Resource;
 import org.xmldb.api.base.ResourceIterator;
 import org.xmldb.api.base.ResourceSet;
+import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.XQueryService;
 
 @Repository
@@ -23,13 +25,18 @@ public class XQueryRepository {
 	@Autowired
 	ExistConnectionProperties existConnectionProperties;
 
-	public ResourceSet find(String collectionId, String xqueryExpression) throws Exception {
+	public ResourceSet find(String collectionId, String xqueryExpression) {
         String uri = existConnectionProperties.getUri() + collectionId;
 
-        Collection spCollection = DatabaseManager.getCollection(uri, "admin", "");
-        XQueryService xQueryService = (XQueryService) spCollection.getService("XQueryService", "1.0");
-        CompiledExpression compiledXquery = xQueryService.compile(xqueryExpression);
-        return xQueryService.execute(compiledXquery);
+        try {
+            Collection spCollection = DatabaseManager.getCollection(uri, "admin", "");
+            XQueryService xQueryService = (XQueryService) spCollection.getService("XQueryService", "1.0");
+            CompiledExpression compiledXquery = xQueryService.compile(xqueryExpression);
+            return xQueryService.execute(compiledXquery);
+        } catch (XMLDBException e) {
+            e.printStackTrace();
+            throw new ApiInternalServerException("Error while comunicationg with xml database.");
+        }
     }
 	
 	public List<String> getAllDocumentIDS(String collectionId) {

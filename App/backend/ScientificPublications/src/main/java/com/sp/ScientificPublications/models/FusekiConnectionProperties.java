@@ -10,8 +10,6 @@ public class FusekiConnectionProperties {
 	public String queryEndpoint;
 	public String updateEndpoint;
 	public String dataEndpoint;
-	
-	
 
 	public FusekiConnectionProperties(Properties props) {
 		super();

@@ -1,14 +1,55 @@
 
 <div class="main-holder row">
   <div class="navigation-bar col-md-3">
-    <div class="navigation-item" [ngClass]="{'selected' : getUrl() == '' || getUrl() == 'home'}" routerLink="/home">Home</div>
-    <div class="navigation-item" [ngClass]="{'selected' : getUrl() == 'login'}" routerLink="/login">Login</div>
-    <div class="navigation-item" [ngClass]="{'selected' : getUrl() == 'register'}" routerLink="/register">Register</div>
+    <div class="navigation-item" [ngClass]="{'selected' : getUrl() == '' || getUrl() == 'home'}" 
+      routerLink="/home">
+      Home
+    </div>
+    <div *ngIf="getUser?.roles == null" class="navigation-item" [ngClass]="{'selected' : getUrl() == 'login'}" 
+      routerLink="/login">
+      Login
+    </div>
+    <div *ngIf="getUser?.roles != null" class="navigation-item" (click)="logout()">
+      Logout
+    </div>
+    <div class="navigation-item" [ngClass]="{'selected' : getUrl() == 'register'}" routerLink="/register">
+      Register
+    </div>
+
     <div class="delimiter"></div>
-    <div class="navigation-item">Documents</div>
+
+    <!-- Author tabs-->
+    <div *ngIf="getUser?.roles.includes('ROLE_AUTHOR')" class="navigation-item">
+      Scientific papers
+    </div>
+    <div *ngIf="getUser?.roles.includes('ROLE_AUTHOR')" class="navigation-item" routerLink="/create-submition">
+      Submit scientific paper
+    </div>
+    <div *ngIf="getUser?.roles.includes('ROLE_AUTHOR')" class="navigation-item" routerLink="/my-papers">
+      My scientific papers
+    </div>
+    <div *ngIf="getUser?.roles.includes('ROLE_AUTHOR')" class="navigation-item">
+      Pending reviews
+    </div>
+
+    <!-- Editor tabs -->
+
   </div>
+
+
+  <!-- Toaster used to display messages -->
+<div class="card text-white bg-dark mb-3" id="toaster">
+  <div class="card-header" id="toaster-header"></div>
+  <div class="card-body">
+    <p class="card-text" id="toaster-message">
+    </p>
+  </div>
+</div>
+
+
   <div class="main-content col-md-9">
     <router-outlet></router-outlet>
   </div>
+
 </div>
 

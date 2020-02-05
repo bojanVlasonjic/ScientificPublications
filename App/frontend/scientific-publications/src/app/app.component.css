@@ -58,3 +58,26 @@
     background: white;
     color: black;
 }
+
+
+/* Toaster */
+#toaster {
+    position: fixed;
+    top: 0;
+    left: 40%;
+    height: 0;
+    z-index: 999999;
+    max-width: 25rem;
+    -webkit-transition: height 0.5s;
+    transition: height 0.5s;
+    overflow: hidden;
+}
+
+#toaster-header {
+    font-size: 19px;
+}
+
+#toaster-message {
+    font-size: 17px;
+}
+

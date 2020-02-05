@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CoverLetterService } from 'src/app/services/cover-letter.service';
-import { DocumentDTO } from 'src/app/models/documentDTO';
+import { DocumentDTO } from 'src/app/models/document-dto';
 
 @Component({
   selector: 'app-cover-letter-editor',
@@ -36,13 +36,13 @@ export class CoverLetterEditorComponent implements OnInit {
     );
   }
 
-  validateDocument($event) {
-    this.document.documentContent = $event;
+  validateDocument(event: any) {
+    this.document.documentContent = event;
 
-    this.coverLetterSvc.storeDocument(this.document).subscribe(
+    this.coverLetterSvc.validate(this.document).subscribe(
       data => {
-        this.document = data;
-        this.logMessage = 'Document successfully uploaded';
+        this.documentValid = data;
+        this.logMessage = '';
       },
       err => {
         this.logMessage = err.error.message;
@@ -51,7 +51,7 @@ export class CoverLetterEditorComponent implements OnInit {
 
   }
 
-
+  /*
   uploadDocument($event) {
     this.document.documentContent = $event;
 
@@ -65,7 +65,7 @@ export class CoverLetterEditorComponent implements OnInit {
       }
     );
     
-  }
+  }*/
 
 
 }

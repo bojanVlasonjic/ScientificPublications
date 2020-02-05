@@ -1,1 +1,61 @@
-<p>register works!</p>
+
+<div class="container">
+    <div class="register-form-holder">
+        <h3 class="headeing"> Register </h3>
+
+        <form name="registerForm" #rf="ngForm" (ngSubmit)="register()" novalidate>
+            <div class="form-group">
+                <label>Email address</label>
+                <input type="email" name="email" class="form-control" placeholder="example@email.com" 
+                    [(ngModel)]="registerData.email" #email="ngModel" required>
+                <small *ngIf="rf.submitted && email.errors?.required" class="error-message">
+                    Email is required
+                </small>
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" name="password" class="form-control" placeholder="Password"
+                 [(ngModel)]="registerData.password" #password="ngModel" required>
+                <small *ngIf="rf.submitted && password.errors?.required" class="error-message">
+                    Password is required
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label>Confirm password</label>
+                <input type="password" name="confirmPassword" class="form-control" [(ngModel)]="confirmedPassword"
+                    placeholder="Password" #confirmPassword="ngModel" (focusout)="checkPasswordMatch()" required>
+                <small *ngIf="rf.submitted && confirmPassword.errors?.required" class="error-message">
+                    Password is required
+                </small>
+                <small *ngIf="!passwordsMatch" class="error-message">
+                    Passwords do not match
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label>First name: </label>
+                <input type="text" name="firstname" class="form-control" placeholder="First name"
+                    [(ngModel)]="registerData.firstname" #firstname="ngModel" required>
+                <small *ngIf="rf.submitted && firstname.errors?.required" class="error-message">
+                    First name is required
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label>Last name: </label>
+                <input type="text" name="lastname" class="form-control" placeholder="Last name" 
+                    [(ngModel)]="registerData.lastname" #lastname="ngModel" required>
+                <small *ngIf="rf.submitted && lastname.errors?.required" class="error-message">
+                    Last name is required
+                </small>
+            </div>
+
+            <button type="submit" id="register-btn" class="btn btn-dark">
+                Register
+            </button>
+
+        </form>
+
+    </div>
+</div>

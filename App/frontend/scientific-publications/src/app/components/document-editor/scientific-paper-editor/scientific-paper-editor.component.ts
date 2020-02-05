@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DocumentDTO } from 'src/app/models/documentDTO';
+import { DocumentDTO } from 'src/app/models/document-dto';
 import { ScientificPaperService } from 'src/app/services/scientific-paper.service';
 
 @Component({
@@ -36,8 +36,8 @@ export class ScientificPaperEditorComponent implements OnInit {
     );
   }
 
-  validateDocument($event) {
-    this.document.documentContent = $event;
+  validateDocument(event: any) {
+    this.document.documentContent = event;
 
     this.scientfPaperSvc.validate(this.document).subscribe(
       data => {
@@ -49,22 +49,6 @@ export class ScientificPaperEditorComponent implements OnInit {
         this.logMessage = `Error at line ${error.error.lineNumber}, column ${error.error.column}, ${error.error.message}`;
       }
     );
-  }
-
-
-  uploadDocument($event) {
-    this.document.documentContent = $event;
-
-    this.scientfPaperSvc.storeDocument(this.document).subscribe(
-      data => {
-        this.document = data;
-        this.logMessage = 'Document successfully uploaded';
-      },
-      err => {
-        this.logMessage = err.error.message;
-      }
-    );
-    
   }
 
 }

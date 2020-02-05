@@ -5,6 +5,8 @@ import 'brace/theme/eclipse';
 import 'brace/theme/cobalt';
 
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { UploadService } from 'src/app/services/upload.service';
+import { ToasterService } from 'src/app/services/toaster.service';
 
 @Component({
   selector: 'app-xml-editor',
@@ -23,9 +25,8 @@ export class XmlEditorComponent implements OnInit {
   @Input() logMessage: string;
 
   @Output() validationEvent = new EventEmitter();
-  @Output() uploadEvent = new EventEmitter(); 
 
-  constructor() { }
+  constructor(private uploadSvc: UploadService, private toastSvc: ToasterService) { }
 
   ngOnInit() {
     this.documentValid = true;
@@ -39,7 +40,16 @@ export class XmlEditorComponent implements OnInit {
   }
 
   uploadDocument() {
-    this.uploadEvent.emit(this.xmlContent);
+    if(!this.documentValid || this.xmlContent == '' || this.xmlContent == null) {
+      this.toastSvc.showMessage('Not valid', 'Document is not valid and can not be uploaded');
+      return;
+    }
+
+    // waiting for editor content to update
+    window.setTimeout(() =>{
+    }, 1500);
+
+    this.uploadSvc.sendEditorContent(this.xmlContent);
   }
 
   generateTemplate() {

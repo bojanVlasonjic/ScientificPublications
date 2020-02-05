@@ -11,6 +11,7 @@ import com.sp.ScientificPublications.repository.EditorRepository;
 import com.sp.ScientificPublications.repository.UserRepository;
 import com.sp.ScientificPublications.security.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -59,10 +60,11 @@ public class AuthenticationService {
 		SecurityContextHolder.getContext().setAuthentication(auth);
 		UserDTO user = new UserDTO(userRepository.findByEmail(auth.getName()).get());
 		user.setToken(token);
+
 		return user;
 	}
 
-	public void register(UserDTO userDTO) {
+	public UserDTO register(UserDTO userDTO) {
 		Optional<User> optionalUser = userRepository.findByEmail(userDTO.getEmail());
 		if (!optionalUser.isPresent()) {
 			Author author = new Author();
@@ -71,6 +73,7 @@ public class AuthenticationService {
 			author.setFirstname(userDTO.getFirstname());
 			author.setLastname(userDTO.getLastname());
 			authorRepository.save(author);
+			return new UserDTO(author);
 		} else {
 			throw new ApiBadRequestException("Email is not available.");
 		}

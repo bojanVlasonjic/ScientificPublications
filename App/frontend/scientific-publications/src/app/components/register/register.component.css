@@ -1,0 +1,10 @@
+div.register-form-holder {
+    position: absolute;
+    width: 60%;
+    top: 10%;
+    left: 20%;
+}
+
+input {
+    border: 1px solid black;
+}

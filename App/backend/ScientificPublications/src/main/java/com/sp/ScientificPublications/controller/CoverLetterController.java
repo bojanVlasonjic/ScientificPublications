@@ -1,7 +1,6 @@
 package com.sp.ScientificPublications.controller;
 
 import com.sp.ScientificPublications.dto.DocumentDTO;
-import com.sp.ScientificPublications.models.cover_letter.CoverLetter;
 import com.sp.ScientificPublications.service.CoverLetterService;
 
 import java.io.IOException;

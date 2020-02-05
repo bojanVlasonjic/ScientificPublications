@@ -1,10 +1,9 @@
 package com.sp.ScientificPublications.controller;
 
-import com.sp.ScientificPublications.models.document_review.DocumentReview;
-
 import java.io.IOException;
 import java.net.URISyntaxException;
 
+import com.sp.ScientificPublications.models.document_review.DocumentReview;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

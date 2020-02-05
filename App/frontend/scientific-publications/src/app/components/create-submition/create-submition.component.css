@@ -1,0 +1,10 @@
+div.submition-holder {
+    position: relative;
+    margin-top: 5ex;
+    left: 20%;
+    width: 60%;
+}
+
+.editor-holder {
+    position: relative;
+}

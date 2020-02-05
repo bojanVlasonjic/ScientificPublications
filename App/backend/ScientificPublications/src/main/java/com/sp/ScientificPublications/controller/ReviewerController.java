@@ -19,21 +19,21 @@ public class ReviewerController {
     @Autowired
     private ReviewerService reviewerService;
 
-    @Secured({"ROLE_USER"})
+    @Secured({"ROLE_AUTHOR"})
     @PutMapping("/submitions/{id}/accept")
     public ResponseEntity acceptSubmitionReviewRequest(@PathVariable Long id) {
         reviewerService.acceptSubmitionReviewRequest(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @Secured({"ROLE_USER"})
+    @Secured({"ROLE_AUTHOR"})
     @PutMapping("/submitions/{id}/reject")
     public ResponseEntity rejectSubmitionReviewRequest(@PathVariable Long id) {
         reviewerService.rejectSubmitionReviewRequest(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @Secured({"ROLE_USER"})
+    @Secured({"ROLE_AUTHOR"})
     @GetMapping("/submitions")
     public ResponseEntity getAcceptedSubmitionReviews(
             @RequestParam(name = "page", defaultValue = "0") Integer page,
@@ -42,7 +42,7 @@ public class ReviewerController {
         return new ResponseEntity<>(reviewerService.getMySubmitions(pageable), HttpStatus.OK);
     }
 
-    @Secured({"ROLE_USER"})
+    @Secured({"ROLE_AUTHOR"})
     @GetMapping("/requested-submitions")
     public ResponseEntity getRequestedSubmitionReviews(
             @RequestParam(name = "page", defaultValue = "0") Integer page,
@@ -51,7 +51,7 @@ public class ReviewerController {
         return new ResponseEntity<>(reviewerService.getMyRequestedSubmitions(pageable), HttpStatus.OK);
     }
 
-    @Secured({"ROLE_USER"})
+    @Secured({"ROLE_AUTHOR"})
     @PostMapping
     public ResponseEntity createReview(@RequestBody @Valid CreateReviewDTO createReviewDTO) {
         reviewerService.createReview(createReviewDTO);

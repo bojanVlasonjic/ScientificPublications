@@ -1,5 +1,6 @@
 package com.sp.ScientificPublications.controller;
 
+import com.sp.ScientificPublications.dto.submitions.AuthorSubmitionDTO;
 import com.sp.ScientificPublications.dto.submitions.CreateSubmitionDTO;
 import com.sp.ScientificPublications.service.logic.SubmitionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/submitions")
@@ -21,33 +24,47 @@ public class SubmitionController {
 
     @Secured({"ROLE_EDITOR"})
     @GetMapping
-    public ResponseEntity getSubmitions(@RequestParam("page") Integer page, @RequestParam("size") Integer size) {
-        Pageable pageable = PageRequest.of(page, size);
+    public ResponseEntity getSubmitions() {
+        Pageable pageable = PageRequest.of(0, 1000000);
         return new ResponseEntity(submitionService.getSubmitions(pageable), HttpStatus.OK);
     }
 
-    @Secured({"ROLE_USER"})
+    @Secured({"ROLE_AUTHOR"})
+    @GetMapping("/author")
+    public ResponseEntity<List<AuthorSubmitionDTO>> getSubmitionsForAuthor() {
+        return new ResponseEntity<>(submitionService.mySubmitions(), HttpStatus.OK);
+    }
+
+    @Secured({"ROLE_AUTHOR"})
     @PostMapping
     public ResponseEntity createSubmition(@RequestBody @Valid CreateSubmitionDTO createSubmitionDTO) {
         submitionService.createSubmition(createSubmitionDTO);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
-    @Secured({"ROLE_USER"})
+    @Secured({"ROLE_AUTHOR"})
+    @PostMapping("/file")
+    public ResponseEntity createSubmitionFile(@RequestParam("submition-files")
+                                                          MultipartFile[] files) {
+        submitionService.createSubmitionFile(files);
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
+
+    @Secured({"ROLE_AUTHOR"})
     @DeleteMapping("/{id}")
     public ResponseEntity cancelSubmition(@PathVariable Long id) {
         submitionService.cancelSubmition(id);
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @Secured({"ROLE_USER"})
+    @Secured({"ROLE_AUTHOR"})
     @PutMapping("/{id}")
     public ResponseEntity reviseSubmition(@PathVariable Long id, @RequestBody @Valid CreateSubmitionDTO revisedSubmitonDTO) {
         submitionService.reviseSubmition(id, revisedSubmitonDTO);
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @Secured({"ROLE_EDITOR"})
+    @Secured({"ROLE_AUTHOR"})
     @PutMapping("/{id}/approve")
     public ResponseEntity approveSubmition(@PathVariable Long id) {
         submitionService.approveSubmition(id);

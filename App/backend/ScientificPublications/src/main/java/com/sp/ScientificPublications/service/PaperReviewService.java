@@ -1,6 +1,14 @@
 package com.sp.ScientificPublications.service;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.xmldb.api.base.XMLDBException;
@@ -30,9 +38,29 @@ public class PaperReviewService {
     private static final String xslFilePath = "src/main/resources/data/xsl_fo/paper-review-fo.xsl";
     private static final String templatePath = "src/main/resources/templates/paper-review-template.xml";
     private static final String xsltFilePath = "src/main/resources/data/xslt/paper-review-xslt.xsl";
+    
+    private static final String PDF_DIRECTORY_PATH = "src/main/resources/output/pdf/paper-review/";
 
     private static final String collectionId = "/db/scientific-publication/paper-reviews";
     private static final String modelPackage = "com.sp.ScientificPublications.models.paper_review";
+    
+    // ============================== VIEW ==============================
+    public ResponseEntity<byte[]> viewPaperReview(String id) throws URISyntaxException, IOException {
+    	
+    	String filename = PDF_DIRECTORY_PATH + id + ".pdf";
+    	File pdf = new File(filename);
+    	if (!pdf.exists()) throw new ApiBadRequestException("No such file");
+    	
+    	HttpHeaders headers = new HttpHeaders();
+    	headers.setContentType(MediaType.parseMediaType("application/pdf"));
+    	headers.add("content-disposition", "inline;filename=" + filename);
+    	headers.setCacheControl("must-revalidate, post-check=0 pre-check=0");
+    	
+    	byte[] file = xmlTransformSvc.loadFile(filename);
+    	
+    	return new ResponseEntity<byte[]>(file, headers, HttpStatus.OK);
+    }
+    // ============================================================
 
 	public boolean validatePaperReviewXMLFile(MultipartFile file) {
     	return this.validatePaperReview(domParserSvc.readMultipartXMLFile(file));

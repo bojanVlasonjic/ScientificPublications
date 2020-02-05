@@ -14,6 +14,5 @@ public class CreateSubmitionDTO {
     @NotEmpty(message = "Provide paper content.")
     private String paperContent;
 
-    @NotEmpty(message = "Provide cover letter content.")
-    private String coverLetterContnet;
+    private String coverLetterContent;
 }

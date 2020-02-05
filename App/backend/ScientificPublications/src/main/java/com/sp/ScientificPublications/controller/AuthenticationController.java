@@ -25,9 +25,14 @@ public class AuthenticationController {
 		return new ResponseEntity<>(authService.login(loginRequest.getEmail(), loginRequest.getPassword()),
 				HttpStatus.OK);
 	}
+
+	@PostMapping("/register")
+	public ResponseEntity<UserDTO> register(@RequestBody UserDTO userToRegister) {
+		return new ResponseEntity<>(authService.register(userToRegister), HttpStatus.CREATED);
+	}
 	
 	@PostMapping("/change_password")
-	@Secured({"ROLE_SYS_ADMIN", "ROLE_ADMIN", "ROLE_CUSTOMER"})
+	@Secured({"ROLE_AUTHOR", "ROLE_EDITOR"})
 	public ResponseEntity<HttpStatus> changePassword(@RequestBody ChangePasswordRequestDTO changePasswordRequest) {
 		authService.changePassword(changePasswordRequest.getNewPassword(), changePasswordRequest.getOldPassword());
 		return new ResponseEntity<>(HttpStatus.OK);

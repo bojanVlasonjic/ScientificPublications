@@ -1,14 +1,13 @@
 package com.sp.ScientificPublications.controller;
 
 import com.sp.ScientificPublications.models.document_review.DocumentReview;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +22,15 @@ public class DocumentReviewController {
 	DocumentReviewService documentReviewService;
 
 
+	@GetMapping("/view/{id}")
+    public ResponseEntity<byte[]> viewScientificPaper(@PathVariable String id) {
+    	try {
+			return documentReviewService.viewDocumentReview(id);
+		} catch (URISyntaxException | IOException e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+    }
+	
 	@GetMapping("/template")
 	public ResponseEntity<DocumentDTO> getDocumentReviewTemplate() {
 		return new ResponseEntity<>(documentReviewService.getTemplate(), HttpStatus.OK);

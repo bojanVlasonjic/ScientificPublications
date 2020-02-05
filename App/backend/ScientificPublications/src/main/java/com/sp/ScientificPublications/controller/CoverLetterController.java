@@ -3,11 +3,17 @@ package com.sp.ScientificPublications.controller;
 import com.sp.ScientificPublications.dto.DocumentDTO;
 import com.sp.ScientificPublications.models.cover_letter.CoverLetter;
 import com.sp.ScientificPublications.service.CoverLetterService;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.xmldb.api.base.XMLDBException;
 
 
 @RestController
@@ -18,6 +24,42 @@ public class CoverLetterController {
     private CoverLetterService coverLetterService;
 
 
+    @GetMapping("/download/xml/{id}")
+    public ResponseEntity<InputStreamResource> downloadXML(@PathVariable String id) { 
+    	try {
+			return coverLetterService.downloadXML(id);
+		} catch (XMLDBException e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+    }
+    
+    @GetMapping("/download/html/{id}")
+    public ResponseEntity<InputStreamResource> downloadHTML(@PathVariable String id) { 
+    	try {
+			return coverLetterService.downloadHTML(id);
+		} catch (IOException e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+    }
+    
+    @GetMapping("/download/pdf/{id}")
+    public ResponseEntity<InputStreamResource> downloadPDF(@PathVariable String id) { 
+    	try {
+			return coverLetterService.downloadPDF(id);
+		} catch (IOException e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+    }
+
+    @GetMapping("/view/{id}")
+    public ResponseEntity<byte[]> viewScientificPaper(@PathVariable String id) {
+    	try {
+			return coverLetterService.viewCoverLetter(id);
+		} catch (URISyntaxException | IOException e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+    }
+    
     @GetMapping("/template")
     public ResponseEntity<DocumentDTO> getCoverLetterTemplate() {
         return new ResponseEntity<>(coverLetterService.getTemplate(), HttpStatus.OK);

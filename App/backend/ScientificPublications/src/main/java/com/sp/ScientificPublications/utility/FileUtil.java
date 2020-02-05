@@ -22,5 +22,4 @@ public class FileUtil {
 		out.println(content);
 		out.close();
 	}
-	
 }

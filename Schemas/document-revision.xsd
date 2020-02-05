@@ -14,10 +14,15 @@
         <xs:element name="comments-to-author" type="rvw:TComments"/>
         <xs:element name="comments-to-editor" type="rvw:TComments"/>
       </xs:sequence>
-      <xs:attribute name="id" type="cmn:TPositiveInteger" use="required"/>
-      <xs:attribute name="paper-id" type="cmn:TPositiveInteger" use="required"/>
     </xs:complexType>
   </xs:element>
+
+  <xs:simpleType name="TReviewHeader">
+    <xs:sequence>
+      <xs:element name="paper-id" type="xs:string">
+      <xs:element name="reviewer-id" type="xs:string">
+    </xs:sequence>
+  </xs:simpleType>
 
   <xs:simpleType name="TRecommendation">
     <xs:restriction base="xs:string">
@@ -51,9 +56,16 @@
     </xs:restriction>
   </xs:simpleType>
 
+  <xs:complexType name="TComment">
+    <xs:sequence>
+        <xs:element name="referenced-text" type="xs:string"/>
+        <xs:element name="comment" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
   <xs:complexType name="TComments">
     <xs:sequence>
-      <xs:element name="comment" maxOccurs="unbounded" type="xs:string"/>
+      <xs:element name="comment" maxOccurs="unbounded" type="rvw:TComment"/>
     </xs:sequence>
   </xs:complexType>
 

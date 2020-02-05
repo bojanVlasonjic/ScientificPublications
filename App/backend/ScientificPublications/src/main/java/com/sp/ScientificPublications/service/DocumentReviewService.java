@@ -7,13 +7,20 @@ import com.sp.ScientificPublications.repository.exist.ExistDocumentRepository;
 import com.sp.ScientificPublications.repository.exist.ExistJaxbRepository;
 import com.sp.ScientificPublications.utility.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.XMLResource;
 
 import javax.xml.bind.JAXBException;
+
+import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 
 @Service
@@ -35,10 +42,29 @@ public class DocumentReviewService {
     private static final String xslFoFilePath = "src/main/resources/data/xsl_fo/document-review-fo.xsl";
     private static final String xsltFilePath = "src/main/resources/data/xslt/document-review-xslt.xsl";
     private static final String templatePath = "src/main/resources/templates/document-review-template.xml";
+    
+    private static final String PDF_DIRECTORY_PATH = "src/main/resources/output/pdf/document-review/";
 
     private static final String collectionId = "/db/scientific-publication/document-reviews";
     private static final String modelPackage = "com.sp.ScientificPublications.models.document_review";
 
+    // ============================== VIEW ==============================
+    public ResponseEntity<byte[]> viewDocumentReview(String id) throws URISyntaxException, IOException {
+    	
+    	String filename = PDF_DIRECTORY_PATH + id + ".pdf";
+    	File pdf = new File(filename);
+    	if (!pdf.exists()) throw new ApiBadRequestException("No such file");
+    	
+    	HttpHeaders headers = new HttpHeaders();
+    	headers.setContentType(MediaType.parseMediaType("application/pdf"));
+    	headers.add("content-disposition", "inline;filename=" + filename);
+    	headers.setCacheControl("must-revalidate, post-check=0 pre-check=0");
+    	
+    	byte[] file = xmlTransformSvc.loadFile(filename);
+    	
+    	return new ResponseEntity<byte[]>(file, headers, HttpStatus.OK);
+    }
+    // ============================================================
 
     public DocumentDTO getTemplate() {
 

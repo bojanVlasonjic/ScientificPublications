@@ -14,6 +14,9 @@ import java.util.stream.Collectors;
 @Setter
 @NoArgsConstructor
 public class UserDTO {
+	
+	private Long id;
+	
     @NotEmpty(message = "Provide email.")
     private String email;
 
@@ -35,6 +38,7 @@ public class UserDTO {
 
     public UserDTO(User user) {
         super();
+        id = user.getId();
         email = user.getEmail();
         firstname = user.getFirstname();
         lastname = user.getLastname();

@@ -25,4 +25,12 @@ export class SubmitionService {
   uploadSubmitionFile(submitionFiles: FormData): Observable<any> {
     return this.http.post('api/submitions/file', submitionFiles);
   }
+
+  requestReview(paperId: number, authorId: number): Observable<any> {
+    return this.http.put<any>(`api/submitions/${paperId}/requested-reviewers/${authorId}`, null);
+  }
+
+  getRequestedReviewers(paperId: string): Observable<any> {
+    return this.http.get(`api/submitions/requested-reviewers/${paperId}`);
+  }
 }

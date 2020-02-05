@@ -6,10 +6,12 @@ import com.sp.ScientificPublications.dto.SendEmailDTO;
 import com.sp.ScientificPublications.dto.UserDTO;
 import com.sp.ScientificPublications.exception.ApiBadRequestException;
 import com.sp.ScientificPublications.models.Author;
+import com.sp.ScientificPublications.models.Review;
 import com.sp.ScientificPublications.models.Submition;
 import com.sp.ScientificPublications.models.SubmitionStatus;
 import com.sp.ScientificPublications.models.scientific_paper.ScientificPaper;
 import com.sp.ScientificPublications.repository.AuthorRepository;
+import com.sp.ScientificPublications.repository.ReviewRepository;
 import com.sp.ScientificPublications.repository.SubmitionRepository;
 import com.sp.ScientificPublications.repository.exist.ExistDocumentRepository;
 import com.sp.ScientificPublications.repository.exist.ExistJaxbRepository;
@@ -75,6 +77,9 @@ public class ScientificPaperService {
 
     @Autowired
     AuthorRepository authorRepository;
+    
+    @Autowired
+    ReviewRepository reviewRepository;
 
 
     private static final String schemaPath = "src/main/resources/data/xsd_schema/scientific-paper.xsd";
@@ -357,6 +362,8 @@ public class ScientificPaperService {
     public List<UserDTO> getRecommendedReviewers(String paperId) {
         List<UserDTO> rankedUsers = null;
         try {
+        	Submition submition = submitionRepository.findByPaperId(paperId);
+        	
             // get xml paper
             ScientificPaper scientificPaper = retrieveScientificPaperAsObject(paperId);
 
@@ -364,7 +371,7 @@ public class ScientificPaperService {
             Set<String> paperKeywords = tokenizeKeywords(scientificPaper.getAbstract().getKeywords());
 
             // get distinct keywords for every author
-            Map<String, Set<String>> authorsKeywords = getDistinctKeywordsForAuthors(scientificPaper);
+            Map<String, Set<String>> authorsKeywords = getDistinctKeywordsForAuthors(scientificPaper, submition);
 
             // rank authors keywords against paper keywords
             rankedUsers = rankAuthors(paperKeywords, authorsKeywords);
@@ -386,14 +393,19 @@ public class ScientificPaperService {
         return rankings;
     }
 
-    public Map<String, Set<String>> getDistinctKeywordsForAuthors(ScientificPaper scientificPaper) throws Exception {
+    public Map<String, Set<String>> getDistinctKeywordsForAuthors(ScientificPaper scientificPaper, Submition submition) throws Exception {
         // get authors of given scientific paper
         Set<String> authorsOfPaper = getAuthorsForDocument(scientificPaper.getHeader().getTitle());
+        
+        List<String> reviewers = submition.getReviewers().stream().map(Author::getEmail).collect(Collectors.toList());
+        List<String> requestedReviewers = submition.getRequestedReviewers().stream().map(Author::getEmail).collect(Collectors.toList());
 
         // filter all authors against authorsOfPaper
         List<Author> filteredAuthors = authorRepository.findAll()
                 .stream()
                 .filter(author -> !authorsOfPaper.contains(author.getEmail()))
+                .filter(author -> !reviewers.contains(author.getEmail()))
+                .filter(author -> !requestedReviewers.contains(author.getEmail()))
                 .collect(Collectors.toList());
 
         // get all distinct keywords for every filtered author

@@ -1,5 +1,6 @@
 package com.sp.ScientificPublications.controller;
 
+import com.sp.ScientificPublications.dto.UserDTO;
 import com.sp.ScientificPublications.dto.submitions.AuthorSubmitionDTO;
 import com.sp.ScientificPublications.dto.submitions.CreateSubmitionDTO;
 import com.sp.ScientificPublications.service.logic.SubmitionService;
@@ -21,6 +22,12 @@ public class SubmitionController {
 
     @Autowired
     private SubmitionService submitionService;
+    
+    @Secured({"ROLE_EDITOR", "ROLE_AUTHOR"})
+    @GetMapping("/requested-reviewers/{paperId}")
+    public ResponseEntity<List<UserDTO>> getRequestedReviewers(@PathVariable String paperId) {
+    	return new ResponseEntity<>(submitionService.getRequestedReviewers(paperId), HttpStatus.OK);
+    }
 
     @Secured({"ROLE_EDITOR"})
     @GetMapping

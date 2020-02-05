@@ -5,7 +5,6 @@ import com.sp.ScientificPublications.dto.SearchByAuthorsResponseDTO;
 import com.sp.ScientificPublications.dto.SendEmailDTO;
 import com.sp.ScientificPublications.dto.UserDTO;
 import com.sp.ScientificPublications.exception.ApiBadRequestException;
-import com.sp.ScientificPublications.exception.ApiInternalServerException;
 import com.sp.ScientificPublications.models.Author;
 import com.sp.ScientificPublications.models.Submition;
 import com.sp.ScientificPublications.models.SubmitionStatus;
@@ -17,8 +16,6 @@ import com.sp.ScientificPublications.repository.exist.ExistJaxbRepository;
 import com.sp.ScientificPublications.repository.exist.XQueryRepository;
 import com.sp.ScientificPublications.repository.rdf.FusekiDocumentRepository;
 import com.sp.ScientificPublications.utility.FileUtil;
-import it.unimi.dsi.fastutil.Hash;
-import org.apache.xmlrpc.webserver.ServletWebServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamResource;
@@ -357,8 +354,8 @@ public class ScientificPaperService {
     	return headers;
     }
 
-    public Map<String, Integer> getRecommendedReviewers(String paperId) {
-        Map<String, Integer> rankings = null;
+    public List<UserDTO> getRecommendedReviewers(String paperId) {
+        List<UserDTO> rankedUsers = null;
         try {
             // get xml paper
             ScientificPaper scientificPaper = retrieveScientificPaperAsObject(paperId);
@@ -370,19 +367,21 @@ public class ScientificPaperService {
             Map<String, Set<String>> authorsKeywords = getDistinctKeywordsForAuthors(scientificPaper);
 
             // rank authors keywords against paper keywords
-            rankings = rankAuthors(paperKeywords, authorsKeywords);
+            rankedUsers = rankAuthors(paperKeywords, authorsKeywords);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return rankings;
+        return rankedUsers;
     }
 
-    public Map<String, Integer> rankAuthors(Set<String> paperKeywords, Map<String, Set<String>> authorsKeywords) {
-        Map<String, Integer> rankings = new HashMap<>();
+    public List<UserDTO> rankAuthors(Set<String> paperKeywords, Map<String, Set<String>> authorsKeywords) {
+        List<UserDTO> rankings = new ArrayList<>();
         for (String authorEmail : authorsKeywords.keySet()) {
             authorsKeywords.get(authorEmail).retainAll(paperKeywords);
             Integer rank = authorsKeywords.get(authorEmail).size();
-            rankings.put(authorEmail, rank);
+            UserDTO userDTO = new UserDTO(authorRepository.findByEmail(authorEmail).get());
+            userDTO.setRank(rank);
+            rankings.add(userDTO);
         }
         return rankings;
     }

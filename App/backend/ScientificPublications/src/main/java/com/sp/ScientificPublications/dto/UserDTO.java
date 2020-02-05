@@ -23,7 +23,7 @@ public class UserDTO {
     @NotEmpty(message = "Provide lastname.")
     private String lastname;
 
-    private Long rank;
+    private Integer rank;
 
     private String token;
 

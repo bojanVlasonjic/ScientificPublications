@@ -30,6 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
 
 import org.xmldb.api.base.*;
+import org.xmldb.api.modules.XMLResource;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.transform.TransformerException;
@@ -45,6 +46,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.xml.transform.TransformerException;
 import java.nio.charset.StandardCharsets;

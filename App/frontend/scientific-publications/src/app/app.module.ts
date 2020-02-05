@@ -13,6 +13,7 @@ import { CreateSubmitionComponent } from './components/create-submition/create-s
 import { FormsModule } from '@angular/forms';
 import { MyScientificPapersComponent } from './components/my-scientific-papers/my-scientific-papers.component';
 import { EditorComponent } from './components/editor/editor.component';
+import { PendingReviewsComponent } from './components/pending-reviews/pending-reviews.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { EditorComponent } from './components/editor/editor.component';
     DocumentsComponent,
     CreateSubmitionComponent,
     MyScientificPapersComponent,
-    EditorComponent
+    EditorComponent,
+    PendingReviewsComponent
   ],
   imports: [
     BrowserModule,

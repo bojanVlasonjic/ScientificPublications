@@ -1,0 +1,36 @@
+.pending-reviews-header {
+    position: relative;
+    font-size: 2rem;
+    letter-spacing: 2px;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 50px;
+}
+
+.pending-reviews-table {
+    position: relative;
+    margin-top: 45px;
+    width: 100%;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+.pending-reviews-table tr:first-child {
+    background: black;
+    color: white;
+}
+
+.pending-reviews-table td {
+    padding: 15px 10px;
+}
+
+.pending-reviews-table button {
+    background: black;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    padding: 10px 20px;
+    font-family: Montserrat;
+    letter-spacing: 1px;
+    font-weight: 600;
+}

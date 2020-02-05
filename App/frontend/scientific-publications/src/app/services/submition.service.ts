@@ -26,6 +26,9 @@ export class SubmitionService {
     return this.http.post('api/submitions/file', submitionFiles);
   }
 
+  cancelSubmition(id: string): Observable<any> {
+    return this.http.delete(`api/submitions/${id}`);
+
   requestReview(paperId: number, authorId: number): Observable<any> {
     return this.http.put<any>(`api/submitions/${paperId}/requested-reviewers/${authorId}`, null);
   }

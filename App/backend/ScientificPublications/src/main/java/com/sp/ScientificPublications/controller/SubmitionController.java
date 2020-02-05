@@ -59,9 +59,8 @@ public class SubmitionController {
 
     @Secured({"ROLE_AUTHOR"})
     @DeleteMapping("/{id}")
-    public ResponseEntity cancelSubmition(@PathVariable Long id) {
-        submitionService.cancelSubmition(id);
-        return new ResponseEntity(HttpStatus.OK);
+    public ResponseEntity<AuthorSubmitionDTO> cancelSubmition(@PathVariable Long id) {
+        return new ResponseEntity<>(submitionService.cancelSubmition(id), HttpStatus.OK);
     }
 
     @Secured({"ROLE_AUTHOR"})

@@ -11,13 +11,15 @@ import { TokenInterceptor } from './interceptors/token.interceptor';
 import { HomeModule } from './components/home/home.module';
 import { CreateSubmitionComponent } from './components/create-submition/create-submition.component';
 import { FormsModule } from '@angular/forms';
+import { MyScientificPapersComponent } from './components/my-scientific-papers/my-scientific-papers.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DocumentUploadComponent,
     DocumentsComponent,
-    CreateSubmitionComponent
+    CreateSubmitionComponent,
+    MyScientificPapersComponent
   ],
   imports: [
     BrowserModule,

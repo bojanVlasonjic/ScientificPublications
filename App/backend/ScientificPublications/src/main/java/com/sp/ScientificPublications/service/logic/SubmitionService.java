@@ -109,7 +109,7 @@ public class SubmitionService {
             submition.setStatus(SubmitionStatus.CANCELED);
             submitionRepository.save(submition);
         } else {
-            throw new ApiNotFoundException("Submition doesnt exist.");
+            throw new ApiNotFoundException("Submition doesn't exist.");
         }
     }
 

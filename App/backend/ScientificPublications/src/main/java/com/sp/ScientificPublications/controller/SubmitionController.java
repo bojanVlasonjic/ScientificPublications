@@ -1,5 +1,6 @@
 package com.sp.ScientificPublications.controller;
 
+import com.sp.ScientificPublications.dto.submitions.AuthorSubmitionDTO;
 import com.sp.ScientificPublications.dto.submitions.CreateSubmitionDTO;
 import com.sp.ScientificPublications.service.logic.SubmitionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/submitions")
@@ -25,6 +27,12 @@ public class SubmitionController {
     public ResponseEntity getSubmitions() {
         Pageable pageable = PageRequest.of(0, 1000000);
         return new ResponseEntity(submitionService.getSubmitions(pageable), HttpStatus.OK);
+    }
+
+    @Secured({"ROLE_AUTHOR"})
+    @GetMapping("/author")
+    public ResponseEntity<List<AuthorSubmitionDTO>> getSubmitionsForAuthor() {
+        return new ResponseEntity<>(submitionService.mySubmitions(), HttpStatus.OK);
     }
 
     @Secured({"ROLE_AUTHOR"})

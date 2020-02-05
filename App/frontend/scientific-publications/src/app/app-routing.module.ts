@@ -4,6 +4,7 @@ import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { CreateSubmitionComponent } from './components/create-submition/create-submition.component';
+import { MyScientificPapersComponent } from './components/my-scientific-papers/my-scientific-papers.component';
 
 
 const routes: Routes = [
@@ -28,6 +29,10 @@ const routes: Routes = [
     path: 'create-submition',
     component: CreateSubmitionComponent
   },
+  {
+    path: 'my-papers',
+    component: MyScientificPapersComponent
+  }
 ];
 
 @NgModule({

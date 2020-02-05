@@ -25,7 +25,7 @@
     <div *ngIf="getUser?.roles.includes('ROLE_AUTHOR')" class="navigation-item" routerLink="/create-submition">
       Submit scientific paper
     </div>
-    <div *ngIf="getUser?.roles.includes('ROLE_AUTHOR')" class="navigation-item">
+    <div *ngIf="getUser?.roles.includes('ROLE_AUTHOR')" class="navigation-item" routerLink="/my-papers">
       My scientific papers
     </div>
     <div *ngIf="getUser?.roles.includes('ROLE_AUTHOR')" class="navigation-item">

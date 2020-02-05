@@ -1,0 +1,13 @@
+<div class="container">
+
+    <h2 class="heading" style="margin-top: 3ex;">My scientific papers</h2>
+
+    <div class="submitions-holder">
+        <div *ngFor="let submition of submitions" class="card text-white bg-secondary mb-3 submition-card">
+            <div class="card-header"> {{ submition.paperTitle }} <span class="remove-span">X</span> </div>
+            <div class="card-body">
+                <p class="card-text"> {{ submition.status }} </p>
+            </div>
+        </div>
+    </div>
+</div>

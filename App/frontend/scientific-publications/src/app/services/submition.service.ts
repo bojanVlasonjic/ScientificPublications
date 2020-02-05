@@ -10,6 +10,10 @@ export class SubmitionService {
 
   constructor(private http: HttpClient) { }
 
+  getSubmitionsForAuthor(): Observable<any> {
+    return this.http.get('api/submitions/author');
+  }
+
   uploadSubmition(submitionData: CreateSubmitionDTO): Observable<any> {
     return this.http.post('api/submitions', submitionData);
   }

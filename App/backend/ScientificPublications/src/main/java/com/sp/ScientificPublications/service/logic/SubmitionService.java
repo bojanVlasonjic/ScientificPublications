@@ -79,6 +79,8 @@ public class SubmitionService {
         if(createSubmitionDTO.getCoverLetterContent() != null && !createSubmitionDTO.getCoverLetterContent().equals("")) {
             coverLetter.setDocumentContent(createSubmitionDTO.getCoverLetterContent());
             coverLetter = coverLetterService.storeCoverLetterAsDocument(coverLetter);
+            coverLetterService.generateHtml(coverLetter.getDocumentId());
+            coverLetterService.generatePdf(coverLetter.getDocumentId());
         } else {
             coverLetter.setDocumentId(null);
         }

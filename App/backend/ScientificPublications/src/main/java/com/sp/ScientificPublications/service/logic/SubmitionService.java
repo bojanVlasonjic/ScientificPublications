@@ -99,7 +99,7 @@ public class SubmitionService {
 
     }
 
-    public void cancelSubmition(Long id) {
+    public AuthorSubmitionDTO cancelSubmition(Long id) {
         Optional<Submition> optionalSubmition = submitionRepository.findById(id);
         if (optionalSubmition.isPresent()) {
             Author user = authenticationService.getCurrentAuthor();
@@ -107,7 +107,9 @@ public class SubmitionService {
             accessControlService.checkIfUserOwnsSubmition(user, submition);
             accessControlService.checkIfTransitionIsPossible(submition.getStatus(), SubmitionStatus.CANCELED);
             submition.setStatus(SubmitionStatus.CANCELED);
-            submitionRepository.save(submition);
+
+
+            return new AuthorSubmitionDTO(submitionRepository.save(submition));
         } else {
             throw new ApiNotFoundException("Submition doesn't exist.");
         }

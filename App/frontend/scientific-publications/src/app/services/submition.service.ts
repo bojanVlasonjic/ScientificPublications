@@ -21,4 +21,8 @@ export class SubmitionService {
   uploadSubmitionFile(submitionFiles: FormData): Observable<any> {
     return this.http.post('api/submitions/file', submitionFiles);
   }
+
+  cancelSubmition(id: string): Observable<any> {
+    return this.http.delete(`api/submitions/${id}`);
+  }
 }

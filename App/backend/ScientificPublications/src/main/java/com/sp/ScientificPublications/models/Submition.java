@@ -42,7 +42,7 @@ public class Submition {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Author author;
 
-    @ManyToMany(mappedBy = "submitions", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "reviewedSubmitions", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Author> reviewers = new HashSet<>();
 
     @ManyToMany(mappedBy = "requestedSubmitions", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

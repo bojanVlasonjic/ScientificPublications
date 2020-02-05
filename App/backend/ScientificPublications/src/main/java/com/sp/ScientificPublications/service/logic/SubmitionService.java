@@ -2,6 +2,7 @@ package com.sp.ScientificPublications.service.logic;
 
 import com.sp.ScientificPublications.dto.DocumentDTO;
 import com.sp.ScientificPublications.dto.PageableResultsDTO;
+import com.sp.ScientificPublications.dto.UserDTO;
 import com.sp.ScientificPublications.dto.submitions.AuthorSubmitionDTO;
 import com.sp.ScientificPublications.dto.submitions.CreateSubmitionDTO;
 import com.sp.ScientificPublications.dto.submitions.EditorSubmitionDTO;
@@ -21,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -46,6 +48,16 @@ public class SubmitionService {
 
     @Autowired
     private AuthenticationService authenticationService;
+    
+    
+    public List<UserDTO> getRequestedReviewers(String paperId) {
+    	Submition submition = submitionRepository.findByPaperId(paperId);
+    	List<UserDTO> users = new ArrayList<>();
+    	for (Author author : submition.getRequestedReviewers()) {
+    		users.add(new UserDTO(author));
+    	}
+    	return users;
+    }
 
     public PageableResultsDTO<EditorSubmitionDTO> getSubmitions(Pageable pageable) {
         authenticationService.getCurrentEditor();

@@ -14,10 +14,6 @@ export class ScientificPaperService {
     return this.http.get(`api/scientific-paper/${paperId}/recommended-reviewers`)
   }
 
-  storeDocument(document: DocumentDTO): Observable<any> {
-    return this.http.post<any>('api/scientific-paper', document);
-  }
-
   validate(data: DocumentDTO): Observable<any> {
     return this.http.post<any>('api/scientific-paper/validate', data);
   }

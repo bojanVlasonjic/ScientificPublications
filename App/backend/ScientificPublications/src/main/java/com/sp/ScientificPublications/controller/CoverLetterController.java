@@ -65,6 +65,7 @@ public class CoverLetterController {
         return new ResponseEntity<>(coverLetterService.getTemplate(), HttpStatus.OK);
     }
 
+    /*
     @GetMapping("/{id}")
     public  ResponseEntity<DocumentDTO> getCoverLetterById(@PathVariable String id) {
         return new ResponseEntity<>(coverLetterService.retrieveCoverLetterAsDocument(id), HttpStatus.OK);
@@ -80,7 +81,7 @@ public class CoverLetterController {
     @PostMapping
     public ResponseEntity<DocumentDTO> storeCoverLetter(@RequestBody DocumentDTO documentDTO) {
         return new ResponseEntity<>(coverLetterService.storeCoverLetterAsDocument(documentDTO), HttpStatus.CREATED);
-    }
+    }*/
 
 
 
@@ -93,12 +94,12 @@ public class CoverLetterController {
 	public ResponseEntity<Boolean> validateCoverLetterFile(@RequestParam("file") MultipartFile file) {
 		return new ResponseEntity<>(coverLetterService.validateCoverLetterXMLFile(file), HttpStatus.OK);
 	}
-    
+
+	/*
     @PostMapping("/upload-xml-file")
     public ResponseEntity<DocumentDTO> uploadCoverLetterFile(@RequestParam("file") MultipartFile file) {
         return new ResponseEntity<>(coverLetterService.uploadCoverLetterXMLFile(file), HttpStatus.OK);
     }
-
 
 
     @GetMapping("/pdf/{id}")
@@ -112,7 +113,7 @@ public class CoverLetterController {
     @GetMapping("/html/{id}")
     public ResponseEntity<String> generateHtml(@PathVariable String id) {
         return new ResponseEntity<>(coverLetterService.generateHtml(id), HttpStatus.OK);
-    }
+    }*/
 
 
 }

@@ -10,7 +10,7 @@
             <td colspan="3">Download</td>
             <td colspan="2">Action</td>
         </tr>
-        <tr *ngFor="let sub of submitions">
+        <tr *ngFor="let sub of submitions" @fadeIn>
             <td>{{sub.paperTitle}}</td>
             <td>{{sub.author.firstname}} {{sub.author.lastname}}</td>
             <td>{{sub.status}}</td>

@@ -14,6 +14,7 @@ import { FormsModule } from '@angular/forms';
 import { MyScientificPapersComponent } from './components/my-scientific-papers/my-scientific-papers.component';
 import { EditorComponent } from './components/editor/editor.component';
 import { PendingReviewsComponent } from './components/pending-reviews/pending-reviews.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { PendingReviewsComponent } from './components/pending-reviews/pending-re
     AppRoutingModule,
     FormsModule,
     EditorModule,
-    HomeModule
+    HomeModule,
+    BrowserAnimationsModule
 
   ],
   providers: [

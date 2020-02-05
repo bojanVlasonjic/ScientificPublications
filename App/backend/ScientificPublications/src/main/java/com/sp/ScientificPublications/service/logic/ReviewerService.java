@@ -78,7 +78,7 @@ public class ReviewerService {
             submition.getRequestedReviewers().removeIf(requestedReviewer -> requestedReviewer.getId() == reviewer.getId());
             reviewer.getRequestedSubmitions().removeIf(submitionRequest -> submitionRequest.getId() == submition.getId());
             submition.getReviewers().add(reviewer);
-            reviewer.getSubmitions().add(submition);
+            reviewer.getReviewedSubmitions().add(submition);
             submitionRepository.save(submition);
             //TODO: SEND REVIEWER ACCEPTED TO EDITOR
         } else {

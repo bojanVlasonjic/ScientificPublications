@@ -65,5 +65,11 @@ public class AccessControlService {
             throw new ApiAuthException("You are unauthorized to accept/reject review requests for this submition.");
         }
     }
+    
+    public void checkIfUserIsNotReviewerForSubmition(Author user, Submition submition) {
+        if (user.getReviewedSubmitions().stream().anyMatch(revSub -> revSub.getId() == submition.getId())) {
+            throw new ApiAuthException("You are unauthorized to accept/reject review requests for this submition.");
+        }
+    }
 
 }

@@ -4,11 +4,20 @@ import { ScientificPaperService } from 'src/app/services/scientific-paper.servic
 import { DomSanitizer } from '@angular/platform-browser';
 import { ToasterService } from 'src/app/services/toaster.service';
 import { ReviewersService } from 'src/app/services/reviewers.service';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-pending-reviews',
   templateUrl: './pending-reviews.component.html',
-  styleUrls: ['./pending-reviews.component.css']
+  styleUrls: ['./pending-reviews.component.css'],
+  animations: [
+    trigger('fadeIn', [
+      transition(':enter', [
+        style({ opacity: '0' }),
+        animate('.5s ease-out', style({ opacity: '1' })),
+      ]),
+    ]),
+  ],
 })
 export class PendingReviewsComponent implements OnInit {
 
@@ -37,7 +46,7 @@ export class PendingReviewsComponent implements OnInit {
   }
 
   acceptSubmition(submition): void {
-    this.submitions.splice(this.submitions.indexOf(submition));
+    this.submitions.splice(this.submitions.indexOf(submition), 1);
     this.reviewersService.acceptSubmitionReviewRequest(submition.id).subscribe(
       data => {
         this.toaster.showMessage("Accepted", "Accepted review request");
@@ -50,7 +59,7 @@ export class PendingReviewsComponent implements OnInit {
   }
 
   declineSubmition(submition): void {
-    this.submitions.splice(this.submitions.indexOf(submition));
+    this.submitions.splice(this.submitions.indexOf(submition), 1);
     this.reviewersService.rejectSubmitionReviewRequest(submition.id).subscribe(
       data => {
         this.toaster.showMessage("Declined", "Declined review request");

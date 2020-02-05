@@ -10,6 +10,7 @@
             <cmn:author>
                 <cmn:first-name>first-name1</cmn:first-name>
                 <cmn:last-name>last-name1</cmn:last-name>
+                <cmn:email>autor2@gmail.com</cmn:email>
                 <cmn:institution>
                     <cmn:name>Faculty</cmn:name>
                     <cmn:location>
@@ -21,7 +22,7 @@
         </sp:authors>
     </sp:header>
     <sp:abstract>
-        <sp:keywords>osciloskom, generator signala, struja, dioda, mosfet</sp:keywords>
+        <sp:keywords>c, c++</sp:keywords>
         <sp:paper-type>type</sp:paper-type>
         <sp:purpose>
             blablabla

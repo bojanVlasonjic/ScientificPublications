@@ -6,15 +6,19 @@ import com.sp.ScientificPublications.dto.SendEmailDTO;
 import com.sp.ScientificPublications.dto.UserDTO;
 import com.sp.ScientificPublications.exception.ApiBadRequestException;
 import com.sp.ScientificPublications.exception.ApiInternalServerException;
+import com.sp.ScientificPublications.models.Author;
 import com.sp.ScientificPublications.models.Submition;
 import com.sp.ScientificPublications.models.SubmitionStatus;
 import com.sp.ScientificPublications.models.scientific_paper.ScientificPaper;
+import com.sp.ScientificPublications.repository.AuthorRepository;
 import com.sp.ScientificPublications.repository.SubmitionRepository;
 import com.sp.ScientificPublications.repository.exist.ExistDocumentRepository;
 import com.sp.ScientificPublications.repository.exist.ExistJaxbRepository;
 import com.sp.ScientificPublications.repository.exist.XQueryRepository;
 import com.sp.ScientificPublications.repository.rdf.FusekiDocumentRepository;
 import com.sp.ScientificPublications.utility.FileUtil;
+import it.unimi.dsi.fastutil.Hash;
+import org.apache.xmlrpc.webserver.ServletWebServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamResource;
@@ -71,6 +75,9 @@ public class ScientificPaperService {
     
     @Autowired
     UtilityService utilityService;
+
+    @Autowired
+    AuthorRepository authorRepository;
 
 
     private static final String schemaPath = "src/main/resources/data/xsd_schema/scientific-paper.xsd";
@@ -350,38 +357,99 @@ public class ScientificPaperService {
     	return headers;
     }
 
-    public String getRecommendedReviewers(String paperId) {
-        final String XQUERY_FILE_PATH = "src/main/resources/data/xquery/get-reviewer-rankings-recommendation.xqy";
-        final String COLLECTION_ID = "/db/scientific-publication/scientific-papers/";
-
+    public Map<String, Integer> getRecommendedReviewers(String paperId) {
+        Map<String, Integer> rankings = null;
         try {
+            // get xml paper
             ScientificPaper scientificPaper = retrieveScientificPaperAsObject(paperId);
-            String keywords = scientificPaper.getAbstract().getKeywords();
-            String unformatedXQuery = FileUtil.readFile(XQUERY_FILE_PATH, StandardCharsets.UTF_8);
 
-            List<String> quotedKeywords = Arrays.stream(keywords.split(","))
-                                                .map(keyword -> "'" + keyword + "'")
-                                                .collect(Collectors.toList());
+            // tokenize keywords from paper
+            Set<String> paperKeywords = tokenizeKeywords(scientificPaper.getAbstract().getKeywords());
 
-            keywords = "(" + String.join(",", quotedKeywords) + ")";
-            String formatedXQuery = String.format(unformatedXQuery, keywords);
-            ResourceSet resourceSet = xQueryRepository.find(COLLECTION_ID, formatedXQuery);
-            ResourceIterator resourceIterator = resourceSet.getIterator();
+            // get distinct keywords for every author
+            Map<String, Set<String>> authorsKeywords = getDistinctKeywordsForAuthors(scientificPaper);
 
-            List<UserDTO> userDTOS = new ArrayList<>();
-            while (resourceIterator.hasMoreResources()) {
-                Resource resource = resourceIterator.nextResource();
-                String author = resource.getContent().toString().split(",")[0];
-                Long rank = Long.parseLong(resource.getContent().toString().split(",")[1]);
-            }
-            return "";
-        } catch (IOException io) {
-            io.printStackTrace();
-            throw new ApiInternalServerException("Error while reading xquery file.");
-        } catch (XMLDBException xmlex) {
-            xmlex.printStackTrace();
-            throw new ApiInternalServerException("Erro while reading resource set.");
+            // rank authors keywords against paper keywords
+            rankings = rankAuthors(paperKeywords, authorsKeywords);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
+        return rankings;
     }
 
+    public Map<String, Integer> rankAuthors(Set<String> paperKeywords, Map<String, Set<String>> authorsKeywords) {
+        Map<String, Integer> rankings = new HashMap<>();
+        for (String authorEmail : authorsKeywords.keySet()) {
+            authorsKeywords.get(authorEmail).retainAll(paperKeywords);
+            Integer rank = authorsKeywords.get(authorEmail).size();
+            rankings.put(authorEmail, rank);
+        }
+        return rankings;
+    }
+
+    public Map<String, Set<String>> getDistinctKeywordsForAuthors(ScientificPaper scientificPaper) throws Exception {
+        // get authors of given scientific paper
+        Set<String> authorsOfPaper = getAuthorsForDocument(scientificPaper.getHeader().getTitle());
+
+        // filter all authors against authorsOfPaper
+        List<Author> filteredAuthors = authorRepository.findAll()
+                .stream()
+                .filter(author -> !authorsOfPaper.contains(author.getEmail()))
+                .collect(Collectors.toList());
+
+        // get all distinct keywords for every filtered author
+        Map<String, Set<String>> authorsKeywords = new HashMap<>();
+        for (Author author : filteredAuthors) {
+            String authorEmail = author.getEmail();
+            Set<String> keywords = getKeywordsForAuthor(authorEmail);
+
+            if (authorsKeywords.containsKey(authorEmail)) {
+                authorsKeywords.get(authorEmail).addAll(keywords);
+            } else {
+                authorsKeywords.put(authorEmail, keywords);
+            }
+        }
+        return authorsKeywords;
+    }
+
+    public Set<String> getKeywordsForAuthor(String authorEmail) throws Exception {
+        String keywordsTemplatePath = "src/main/resources/data/xquery/get-author-keywords.xqy";
+        String collectionId = "/db/scientific-publication/scientific-papers/";
+        String keywordsTemplate = FileUtil.readFile(keywordsTemplatePath, StandardCharsets.UTF_8);
+        String keywordsXQuery = String.format(keywordsTemplate, authorEmail);
+
+        ResourceSet resourceSet = xQueryRepository.find(collectionId, keywordsXQuery);
+        ResourceIterator resourceIterator = resourceSet.getIterator();
+
+        Set<String> results = new HashSet<>();
+        while (resourceIterator.hasMoreResources()) {
+            Resource resource = resourceIterator.nextResource();
+            results.addAll(tokenizeKeywords(resource.getContent().toString()));
+        }
+        return results;
+    }
+
+    public Set<String> tokenizeKeywords(String keywords) {
+        Set<String> results = new HashSet<>();
+        keywords = keywords.replace(" ", "");
+        results.addAll(Arrays.asList(keywords.split(",")));
+        return results;
+    }
+
+    public Set<String> getAuthorsForDocument(String documentTitle) throws Exception {
+        String keywordsTemplatePath = "src/main/resources/data/xquery/get-authors-from-document.xqy";
+        String collectionId = "/db/scientific-publication/scientific-papers/";
+        String keywordsTemplate = FileUtil.readFile(keywordsTemplatePath, StandardCharsets.UTF_8);
+        String keywordsXQuery = String.format(keywordsTemplate, documentTitle);
+
+        ResourceSet resourceSet = xQueryRepository.find(collectionId, keywordsXQuery);
+        ResourceIterator resourceIterator = resourceSet.getIterator();
+
+        Set<String> results = new HashSet<>();
+        while (resourceIterator.hasMoreResources()) {
+            Resource resource = resourceIterator.nextResource();
+            results.addAll(tokenizeKeywords(resource.getContent().toString()));
+        }
+        return results;
+    }
 }

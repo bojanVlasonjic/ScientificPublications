@@ -56,6 +56,8 @@ public class SubmitionService {
         Author author = authenticationService.getCurrentAuthor();
         DocumentDTO paper = new DocumentDTO(null, createSubmitionDTO.getPaperContent());
         paper = scientificPaperService.storeScientificPaperAsDocument(paper);
+        scientificPaperService.generateHtml(paper.getDocumentId());
+        scientificPaperService.generatePdf(paper.getDocumentId());
 
         DocumentDTO coverLetter = new DocumentDTO();
 

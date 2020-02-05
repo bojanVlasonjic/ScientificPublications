@@ -1,0 +1,51 @@
+.new-papers-header {
+    position: relative;
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-align: center;
+    margin-top: 50px;
+}
+
+.edit-table {
+    position: relative;
+    margin-top: 45px;
+    width: 100%;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+.edit-table button {
+    background: black;
+    color: white;
+    border-radius: 15px;
+    border: none;
+    padding: 5px 20px;
+    font-family: Montserrat;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+.edit-table tr:first-child {
+    background: black;
+    color: white;
+}
+
+.edit-table td {
+    padding: 15px 10px;
+}
+
+.back {
+    position: absolute;
+    right: 30px;
+    top: 50px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    background: black;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    z-index: 9;
+}

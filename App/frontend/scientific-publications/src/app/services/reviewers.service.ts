@@ -25,5 +25,7 @@ export class ReviewersService {
     return this.http.get(`api/reviewers/submitions`);
   }
 
-  
+  uploadPaperReview(data): Observable<any> {
+    return this.http.post<any>('api/paper-review', data);
+  }
 }

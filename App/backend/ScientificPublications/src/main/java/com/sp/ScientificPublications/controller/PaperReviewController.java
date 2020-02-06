@@ -32,6 +32,16 @@ public class PaperReviewController {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
     }
+    
+    @GetMapping("/template")
+    public ResponseEntity<DocumentDTO> getCoverLetterTemplate() {
+        return new ResponseEntity<>(paperReviewService.getTemplate(), HttpStatus.OK);
+    }
+    
+    @PostMapping("/validate")
+    public ResponseEntity<Boolean> validateCoverLetter(@RequestBody DocumentDTO document) {
+        return new ResponseEntity<>(paperReviewService.validatePaperReview(document.getDocumentContent()), HttpStatus.OK);
+    }
 
 	@PostMapping("/validate-xml-file")
 	public ResponseEntity<Boolean> validateDocumentReviewFile(@RequestParam("file") MultipartFile file) {

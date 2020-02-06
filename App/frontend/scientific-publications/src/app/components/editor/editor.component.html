@@ -27,12 +27,12 @@
             <td><button (click)="selectPaper(sub)">Choose</button></td>
         </tr>
         <tr *ngIf="submitions.length == 0" class="last-row-no-data">
-            <td colspan="8">No new scientific papers</td>
+            <td colspan="9">No new scientific papers</td>
         </tr>
     </table>
 </div>
 
-<div *ngIf="selectedPaper">
+<div *ngIf="selectedPaper && selectedPaper.status == 'NEW'">
     <div class="back" (click)="selectPaper(null)">BACK</div>
     <p class="new-papers-header">Choose reviewers for {{selectedPaper.paperTitle}}</p>
 
@@ -70,4 +70,51 @@
             <td colspan="4">No requested reviewers</td>
         </tr>
     </table>
+</div>
+
+<div *ngIf="selectedPaper && selectedPaper.status == 'REVIEWED'">
+    <div class="back" (click)="selectPaper(null)">BACK</div>
+    <p class="new-papers-header">View reviews for {{selectedPaper.paperTitle}}</p>
+
+    <table class="edit-table">
+        <tr>
+            <td>Rank</td>
+            <td>Author</td>
+            <td>Email</td>
+            <td>Action</td>
+        </tr>
+        <tr *ngFor="let rev of reviewers" @fadeIn>
+            <td>{{rev.rank}}</td>
+            <td>{{rev.firstname}} {{rev.lastname}}</td>
+            <td>{{rev.email}}</td>
+            <td><button (click)="requestReview(rev)">Request review</button></td>
+        </tr>
+    </table>
+
+    <p class="requested-reviewers-header">Requested reviewers</p>
+
+    <table class="edit-table">
+        <tr>
+            <td>Firstname</td>
+            <td>Lastname</td>
+            <td>Email</td>
+            <td>Status</td>
+        </tr>
+        <tr *ngFor="let rev of requestedReviewers" @fadeIn>
+            <td>{{rev.firstname}}</td>
+            <td>{{rev.lastname}}</td>
+            <td>{{rev.email}}</td>
+            <td>{{rev.reviewerStatus}}</td>
+        </tr>
+        <tr *ngIf="requestedReviewers.length == 0" class="last-row-no-data">
+            <td colspan="4">No requested reviewers</td>
+        </tr>
+    </table>
+
+    <p class="new-papers-header" style="margin-top: 90px !important;">Actions</p>
+    <div class="editor-future-actions d-flex justify-content-center">
+        <button class="editor-future-actions-button">Accept</button>
+        <button class="editor-future-actions-button">Request revisions</button>
+        <button class="editor-future-actions-button">Reject</button>
+    </div>
 </div>

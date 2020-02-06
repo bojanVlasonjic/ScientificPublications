@@ -10,12 +10,10 @@ import com.sp.ScientificPublications.exception.ApiNotFoundException;
 import com.sp.ScientificPublications.models.Author;
 import com.sp.ScientificPublications.models.Submition;
 import com.sp.ScientificPublications.models.SubmitionStatus;
-import com.sp.ScientificPublications.models.scientific_paper.ScientificPaper;
 import com.sp.ScientificPublications.repository.AuthorRepository;
 import com.sp.ScientificPublications.repository.SubmitionRepository;
 import com.sp.ScientificPublications.service.CoverLetterService;
 import com.sp.ScientificPublications.service.ScientificPaperService;
-import org.checkerframework.checker.nullness.Opt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -266,4 +264,6 @@ public class SubmitionService {
             throw new ApiNotFoundException("Submition and/or reviewer doesnt exist.");
         }
     }
+
+
 }

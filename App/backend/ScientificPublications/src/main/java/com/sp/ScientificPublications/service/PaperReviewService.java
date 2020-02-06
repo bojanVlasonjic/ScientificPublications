@@ -197,6 +197,4 @@ public class PaperReviewService {
             throw new ApiNotFoundException("Submition not found.");
         }
     }
-    
-    
 }

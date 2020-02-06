@@ -8,6 +8,7 @@ import { MyScientificPapersComponent } from './components/my-scientific-papers/m
 import { Editor } from 'brace';
 import { EditorComponent } from './components/editor/editor.component';
 import { ScientificPapersViewComponent } from './components/scientific-papers-view/scientific-papers-view.component';
+import { PendingReviewsComponent } from './components/pending-reviews/pending-reviews.component';
 
 
 const routes: Routes = [
@@ -43,6 +44,10 @@ const routes: Routes = [
   {
     path: 'scientific-papers',
     component: ScientificPapersViewComponent
+  },
+  {
+    path: 'pending-reviews',
+    component: PendingReviewsComponent
   }
 ];
 

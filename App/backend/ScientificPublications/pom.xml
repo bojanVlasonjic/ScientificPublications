@@ -203,7 +203,7 @@
 				</executions>
 				<configuration>
 					<sources>
-						<source>src/main/resources/data/xsd_schema</source> <!-- Add schema name to this path -->
+						<source>src/main/resources/data/xsd_schema/paper-review.xsd</source> <!-- Add schema name to this path -->
 					</sources>
 				</configuration>
 			</plugin>

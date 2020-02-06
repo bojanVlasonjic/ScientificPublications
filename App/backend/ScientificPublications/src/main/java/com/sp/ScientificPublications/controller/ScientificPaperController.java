@@ -3,8 +3,8 @@ package com.sp.ScientificPublications.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.sp.ScientificPublications.dto.DocumentDTO;
 import com.sp.ScientificPublications.dto.SearchByAuthorsResponseDTO;
+import com.sp.ScientificPublications.dto.SearchResultDTO;
 import com.sp.ScientificPublications.dto.SendEmailDTO;
-import com.sp.ScientificPublications.models.scientific_paper.ScientificPaper;
 import com.sp.ScientificPublications.service.DomParserService;
 import com.sp.ScientificPublications.service.ScientificPaperService;
 
@@ -16,11 +16,8 @@ import javax.xml.transform.TransformerException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
@@ -159,5 +156,10 @@ public class ScientificPaperController {
     @GetMapping("/{paperId}/recommended-reviewers")
     public ResponseEntity getRecommendedReviewers(@PathVariable String paperId) {
         return new ResponseEntity(scPaperService.getRecommendedReviewers(paperId), HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<SearchResultDTO>> simpleSearch(@RequestParam(name = "query", defaultValue = "") String query) {
+        return new ResponseEntity<>(scPaperService.simpleSearch(query), HttpStatus.OK);
     }
 }

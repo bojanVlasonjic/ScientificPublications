@@ -30,6 +30,7 @@ public class UserDTO {
     private String lastname;
 
     private Integer rank;
+    private String reviewerStatus;
 
     private String token;
 

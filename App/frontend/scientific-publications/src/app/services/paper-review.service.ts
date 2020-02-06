@@ -16,4 +16,5 @@ export class PaperReviewService {
   uploadFile(form: FormData): Observable<any> {
     return this.http.post<any>('api/paper-review/upload-xml-file', form);
   }
+  
 }

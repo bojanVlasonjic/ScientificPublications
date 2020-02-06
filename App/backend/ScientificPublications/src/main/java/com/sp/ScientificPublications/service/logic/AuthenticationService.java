@@ -116,4 +116,14 @@ public class AuthenticationService {
 			throw new ApiAuthException("You are not authorized as author.");
 		}
 	}
+
+	public String getTypeOfUser() {
+		Optional<Author> optionalAuthor = authorRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+		if (optionalAuthor.isPresent()) return "AUTHOR";
+
+		Optional<Editor> optionalEditor = editorRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+		if (optionalEditor.isPresent()) return "EDITOR";
+
+		return "GUEST";
+	}
 }

@@ -66,3 +66,57 @@ body {
     text-align: center;
     margin-bottom: 2ex;
 }
+
+.last-row-no-data {
+    background: rgb(214, 214, 214);
+}
+
+.h-header {
+    position: relative;
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-align: center;
+    margin-top: 50px;
+}
+
+.t-table {
+    position: relative;
+    margin-top: 45px;
+    width: 100%;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+.t-table button {
+    background: black;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    padding: 10px 20px;
+    font-family: Montserrat;
+    letter-spacing: 1px;
+    font-weight: 600;
+    transition: .3s;
+}
+
+.t-table button:hover {
+    background: white;
+    color: black;
+    box-shadow: 0px 0px 15px 0px black;
+}
+
+.t-table tr:first-child {
+    background: black;
+    color: white;
+}
+
+.t-table td {
+    padding: 15px 10px;
+}
+
+.disabled-button {
+    opacity: .3;
+    pointer-events: none;
+}
+

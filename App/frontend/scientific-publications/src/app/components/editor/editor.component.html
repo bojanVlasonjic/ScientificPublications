@@ -6,19 +6,28 @@
             <td>Paper name</td>
             <td>Publisher</td>
             <td>Status</td>
-            <td>View</td>
+            <td colspan="2">View</td>
             <td colspan="3">Download</td>
             <td>Action</td>
         </tr>
-        <tr *ngFor="let sub of submitions">
+        <tr *ngFor="let sub of submitions" @fadeIn>
             <td>{{sub.paperTitle}}</td>
             <td>{{sub.author.firstname}} {{sub.author.lastname}}</td>
             <td>{{sub.status}}</td>
-            <td><a [href]="getSanitizedURL('http://localhost:8081/api/scientific-paper/view/' + sub.paperId)" [attr.target]="'_blank'"><button>View</button></a></td>
+            <td>
+                <a [href]="getSanitizedURL('http://localhost:8081/api/scientific-paper/view/' + sub.paperId)" [attr.target]="'_blank'"><button>SC</button></a>
+            </td>
+            <td>
+                <a *ngIf="sub.coverLetterId" [href]="getSanitizedURL('http://localhost:8081/api/cover-letter/view/' + sub.coverLetterId)" [attr.target]="'_blank'"><button>CL</button></a>
+                <button *ngIf="!sub.coverLetterId" class="disabled-button">CL</button>
+            </td>
             <td><a [href]="getSanitizedURL('http://localhost:8081/api/scientific-paper/download/xml/' + sub.paperId)" [attr.target]="'_blank'"><button>XML</button></a></td>
             <td><a [href]="getSanitizedURL('http://localhost:8081/api/scientific-paper/download/html/' + sub.paperId)" [attr.target]="'_blank'"><button>HTML</button></a></td>
             <td><a [href]="getSanitizedURL('http://localhost:8081/api/scientific-paper/download/pdf/' + sub.paperId)" [attr.target]="'_blank'"><button>PDF</button></a></td>
             <td><button (click)="selectPaper(sub)">Choose</button></td>
+        </tr>
+        <tr *ngIf="submitions.length == 0" class="last-row-no-data">
+            <td colspan="8">No new scientific papers</td>
         </tr>
     </table>
 </div>
@@ -34,7 +43,7 @@
             <td>Email</td>
             <td>Action</td>
         </tr>
-        <tr *ngFor="let rev of reviewers">
+        <tr *ngFor="let rev of reviewers" @fadeIn>
             <td>{{rev.rank}}</td>
             <td>{{rev.firstname}} {{rev.lastname}}</td>
             <td>{{rev.email}}</td>
@@ -49,11 +58,16 @@
             <td>Firstname</td>
             <td>Lastname</td>
             <td>Email</td>
+            <td>Status</td>
         </tr>
-        <tr *ngFor="let rev of requestedReviewers">
+        <tr *ngFor="let rev of requestedReviewers" @fadeIn>
             <td>{{rev.firstname}}</td>
             <td>{{rev.lastname}}</td>
             <td>{{rev.email}}</td>
+            <td>{{rev.reviewerStatus}}</td>
+        </tr>
+        <tr *ngIf="requestedReviewers.length == 0" class="last-row-no-data">
+            <td colspan="4">No requested reviewers</td>
         </tr>
     </table>
 </div>

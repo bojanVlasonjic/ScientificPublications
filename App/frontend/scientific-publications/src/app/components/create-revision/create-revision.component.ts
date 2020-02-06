@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { ReviewersService } from 'src/app/services/reviewers.service';
 import { ReviewDto } from 'src/app/models/review/review-dto.model';
 import { UploadService } from 'src/app/services/upload.service';
@@ -7,19 +7,22 @@ import { CreateSubmitionDTO } from 'src/app/models/submitions/create-submition-d
 import { ScientificPaperService } from 'src/app/services/scientific-paper.service';
 import { ToasterService } from 'src/app/services/toaster.service';
 import { SubmitionService } from 'src/app/services/submition.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-create-revision',
   templateUrl: './create-revision.component.html',
   styleUrls: ['./create-revision.component.css']
 })
-export class CreateRevisionComponent implements OnInit {
+export class CreateRevisionComponent implements OnInit, OnDestroy {
 
   reviewsForPaper: Array<ReviewDto>;
 
   paperId: string;
   paperContent: string;
   submitionId: number;
+
+  editorSubscription: Subscription;
 
   @Output() submitionUpdatedEvent: EventEmitter<any>;
 
@@ -78,7 +81,7 @@ export class CreateRevisionComponent implements OnInit {
 
   waitForEditorContent() {
 
-    this.uploadSvc.getEditorContent().subscribe(
+    this.editorSubscription = this.uploadSvc.getEditorContent().subscribe(
       data => {
         this.uploadUpdatedPaper(data);
       },
@@ -120,6 +123,10 @@ export class CreateRevisionComponent implements OnInit {
 
   hideUploadSpinner() {
     document.getElementById('editor-toolbar-spinner').style.visibility = 'hidden';
+  }
+
+  ngOnDestroy() {
+    this.editorSubscription.unsubscribe();
   }
 
 

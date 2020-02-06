@@ -165,7 +165,8 @@ public class ScientificPaperController {
             @RequestParam(name = "dateCreated", defaultValue = "") String dateCreated,
             @RequestParam(name = "datePublished", defaultValue = "") String datePublished,
             @RequestParam(name = "dateRevised", defaultValue = "") String dateRevised,
-            @RequestParam(name = "status", defaultValue = "") String status)
+            @RequestParam(name = "status", defaultValue = "") String status,
+            @RequestParam(name = "customMetadata", defaultValue = "") String customMetadata)
     {
         return new ResponseEntity<>(
                 scPaperService.search(
@@ -173,7 +174,8 @@ public class ScientificPaperController {
                         dateCreated,
                         datePublished,
                         dateRevised,
-                        status),
+                        status,
+                        customMetadata),
                 HttpStatus.OK);
     }
 }

@@ -41,6 +41,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -463,20 +464,12 @@ public class ScientificPaperService {
         return results;
     }
 
-    public List<SearchResultDTO> search(String query, String dateCreated, String datePublished, String dateRevised, String status) {
+    public List<SearchResultDTO> search(String query, String dateCreated, String datePublished, String dateRevised, String status, String customMetadata) {
         List<SearchResultDTO> simpleSearchDTOs = simpleSearch(query);
-        List<SearchResultDTO> advancedSearchDTOs = advancedSearch(dateCreated, datePublished, dateRevised, status);
+        List<SearchResultDTO> advancedSearchDTOs = advancedSearch(dateCreated, datePublished, dateRevised, status, customMetadata);
 
-        System.out.println("SS:" + simpleSearchDTOs.size());
-        System.out.println("AS:" + advancedSearchDTOs.size());
-
-        advancedSearchDTOs.stream().forEach(r -> System.out.println(r.getTitle()));
         List<SearchResultDTO> combinedResultsDTOs = joinResults(simpleSearchDTOs, advancedSearchDTOs);
-
-        System.out.println("CR:" + combinedResultsDTOs.size());
-
         List<SearchResultDTO> fileterdResultsDTOs = filterSearchResults(combinedResultsDTOs);
-        System.out.println("FR:" + fileterdResultsDTOs.size());
 
         return fileterdResultsDTOs;
     }
@@ -507,7 +500,7 @@ public class ScientificPaperService {
         return resultDTOS;
     }
 
-    public List<SearchResultDTO> advancedSearch(String dateCreated,String datePublished,String dateRevised,String status) {
+    public List<SearchResultDTO> advancedSearch(String dateCreated,String datePublished,String dateRevised,String status, String customMetadata) {
         String query = "";
         String whereConditionTemplate = "?s <" + SparqlUtil.PROPERTY_URI + "%s> '%s' .\n";
 
@@ -527,6 +520,21 @@ public class ScientificPaperService {
             query += String.format(whereConditionTemplate, "/status", status.toUpperCase());
         }
 
+        try {
+            if (!customMetadata.equals("")) {
+                List<String> queries = Arrays.asList(customMetadata.split(","));
+                for (String mquery : queries) {
+                    if (mquery.contains("=")) {
+                        String property = mquery.split("=")[0];
+                        String object = mquery.split("=")[1];
+                        query += String.format(whereConditionTemplate, "/" + property.replace("\"", ""), object.replace("\"", ""));
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            throw new ApiBadRequestException("Invalid format of metadata format.");
+        }
+
         if (query.equals("")) {
             query = "?s ?p ?o .";
         }
@@ -536,14 +544,19 @@ public class ScientificPaperService {
 
         List<SearchResultDTO> searchResultDTOS = new ArrayList<>();
 
-        ResultSet resultSet = rdfRepository.getTripletsFromRdfDb(query);
-        while (resultSet.hasNext()) {
-            QuerySolution querySolution = resultSet.next();
-            String subject = querySolution.getResource("s").toString();
-            String[] tokens = subject.split("/");
-            String paperId = tokens[tokens.length - 1];
-            searchResultDTOS.add(createSearchResultDTO(paperId, 0L));
+        try {
+            ResultSet resultSet = rdfRepository.getTripletsFromRdfDb(query);
+            while (resultSet.hasNext()) {
+                QuerySolution querySolution = resultSet.next();
+                String subject = querySolution.getResource("s").toString();
+                String[] tokens = subject.split("/");
+                String paperId = tokens[tokens.length - 1];
+                searchResultDTOS.add(createSearchResultDTO(paperId, 0L));
+            }
+        } catch (Exception ex) {
+            System.out.println("Nothing founded in RDF.");
         }
+
 
         return searchResultDTOS;
     }

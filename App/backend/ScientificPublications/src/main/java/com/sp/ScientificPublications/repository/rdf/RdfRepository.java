@@ -5,8 +5,10 @@ import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryExecutionFactory;
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSet;
+import org.apache.jena.rdf.model.Literal;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.impl.PropertyImpl;
 import org.apache.jena.update.UpdateExecutionFactory;
 import org.apache.jena.update.UpdateFactory;
 import org.apache.jena.update.UpdateRequest;
@@ -44,6 +46,9 @@ public class RdfRepository {
                 Model model = ModelFactory.createDefaultModel();
 
                 model.read(new ByteArrayInputStream(outputStream.toByteArray()), null);
+                model.createResource(SparqlUtil.SUBJECT_URI + "/author/john")
+                        .addProperty(new PropertyImpl(SparqlUtil.PROPERTY_URI + "/parentTo"), "jane");
+
                 model.write(nTriplesOutputStream, SparqlUtil.NTRIPLES);
 
                 // create update expression
@@ -55,9 +60,9 @@ public class RdfRepository {
                 UpdateRequest updateRequest = UpdateFactory.create(sparqlUpdate);
                 UpdateExecutionFactory.createRemote(updateRequest, fusekiConnectionProperties.updateEndpoint).execute();
 
-                ResultSet resultSet = getTripletsFromRdfDb("?s ?p ?o");
-                QuerySolution querySolution = resultSet.nextSolution();
-                System.out.println(querySolution.getResource("p"));
+                // ResultSet resultSet = getTripletsFromRdfDb("?s ?p ?o");
+                // QuerySolution querySolution = resultSet.nextSolution();
+                // System.out.println(querySolution.getResource("p"));
             }
         } catch (Exception ex) {
             ex.printStackTrace();

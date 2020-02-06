@@ -69,8 +69,6 @@ public class DocumentReviewController {
         return new ResponseEntity<>(documentReviewService.uploadDocumentReviewXMLFile(file), HttpStatus.OK);
     }
 	
-
-
 	@GetMapping("/pdf/{id}")
   	public ResponseEntity<String> generatePdf(@PathVariable String id) {
 		return new ResponseEntity<>(documentReviewService.generatePdf(id), HttpStatus.OK);

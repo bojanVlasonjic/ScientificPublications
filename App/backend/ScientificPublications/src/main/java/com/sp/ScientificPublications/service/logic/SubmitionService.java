@@ -3,6 +3,7 @@ package com.sp.ScientificPublications.service.logic;
 import com.sp.ScientificPublications.dto.DocumentDTO;
 import com.sp.ScientificPublications.dto.PageableResultsDTO;
 import com.sp.ScientificPublications.dto.UserDTO;
+import com.sp.ScientificPublications.dto.reviews.ReviewDTO;
 import com.sp.ScientificPublications.dto.submitions.AuthorSubmitionDTO;
 import com.sp.ScientificPublications.dto.submitions.CreateSubmitionDTO;
 import com.sp.ScientificPublications.dto.submitions.EditorSubmitionDTO;
@@ -114,6 +115,12 @@ public class SubmitionService {
         submition.setAuthor(author);
         return new AuthorSubmitionDTO(submitionRepository.save(submition));
     }
+
+    public void generateAndSaveMetadata(Submition submition) {
+
+    }
+
+
 
     public AuthorSubmitionDTO createSubmitionFile(MultipartFile[] files) {
         Author author = authenticationService.getCurrentAuthor();
@@ -279,4 +286,14 @@ public class SubmitionService {
         }
     }
 
+    public List<ReviewDTO> getReviewsForSubmitionEditor(Long submitionId) {
+        Optional<Submition> optionalSubmition = submitionRepository.findById(submitionId);
+        if (optionalSubmition.isPresent()) {
+            Submition submition = optionalSubmition.get();
+            List<ReviewDTO> reviewDTOS = submition.getReviews().stream().map(ReviewDTO::new).collect(Collectors.toList());
+            return reviewDTOS;
+        } else {
+            throw new ApiNotFoundException("Submition doesnt exist.");
+        }
+    }
 }

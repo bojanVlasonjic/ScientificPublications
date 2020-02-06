@@ -1,6 +1,7 @@
 package com.sp.ScientificPublications.controller;
 
 import com.sp.ScientificPublications.dto.UserDTO;
+import com.sp.ScientificPublications.dto.reviews.ReviewDTO;
 import com.sp.ScientificPublications.dto.submitions.AuthorSubmitionDTO;
 import com.sp.ScientificPublications.dto.submitions.CreateSubmitionDTO;
 import com.sp.ScientificPublications.service.logic.SubmitionService;
@@ -117,5 +118,4 @@ public class SubmitionController {
     public ResponseEntity<List<UserDTO>> getAllReviewersForSubmition(@PathVariable Long submitionId) {
         return new ResponseEntity<>(submitionService.getAllReviewersForSubmition(submitionId), HttpStatus.OK);
     }
-
 }

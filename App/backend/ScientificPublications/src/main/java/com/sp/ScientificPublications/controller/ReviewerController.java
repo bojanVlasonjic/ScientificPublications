@@ -56,5 +56,4 @@ public class ReviewerController {
         Pageable pageable = PageRequest.of(page, size);
         return new ResponseEntity<>(reviewerService.getMyRequestedSubmitions(pageable), HttpStatus.OK);
     }
-
 }

@@ -72,3 +72,20 @@
     letter-spacing: 1px;
     font-size: 1.5rem;
 }
+
+.editor-future-actions:first-child{
+    margin-left: 0px !important;
+}
+
+.editor-future-actions-button {
+    background: black;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    padding: 10px 20px;
+    font-family: Montserrat;
+    letter-spacing: 1px;
+    font-weight: 600;
+    margin-left: 20px;
+    transition: .3s;
+}

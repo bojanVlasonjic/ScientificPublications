@@ -1,4 +1,4 @@
-<div>
+<div *ngIf="!currentlyReviewingSubmition">
     <p class="pending-reviews-header">Pending reviews</p>
 
     <table class="pending-reviews-table">
@@ -45,9 +45,18 @@
             <td><a [href]="getSanitizedURL('http://localhost:8081/api/scientific-paper/download/html/' + sub.paperId)" [attr.target]="'_blank'"><button>HTML</button></a></td>
             <td><a [href]="getSanitizedURL('http://localhost:8081/api/scientific-paper/download/pdf/' + sub.paperId)" [attr.target]="'_blank'"><button>PDF</button></a></td>
             <td *ngIf="sub.status == 'NEW'">Currently No Action</td>
+            <td *ngIf="sub.status == 'IN_REVIEW_PROCESS'" (click)="selectSubmitionForPaperReview(sub)"><button>Review</button></td>
         </tr>
         <tr *ngIf="myAcceptedSubmitions.length == 0" class="last-row-no-data">
             <td colspan="8">No accepted reviews</td>
         </tr>
     </table>
+</div>
+
+
+
+<div *ngIf="currentlyReviewingSubmition">
+    <p class="pending-reviews-header">Paper review</p>
+
+    <app-paper-review-editor></app-paper-review-editor>
 </div>

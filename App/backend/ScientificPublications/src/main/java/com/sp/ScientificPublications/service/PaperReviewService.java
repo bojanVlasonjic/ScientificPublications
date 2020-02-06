@@ -3,6 +3,7 @@ package com.sp.ScientificPublications.service;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 import com.sp.ScientificPublications.dto.reviews.CreateReviewDTO;
@@ -17,6 +18,8 @@ import com.sp.ScientificPublications.repository.SubmitionRepository;
 import com.sp.ScientificPublications.repository.rdf.RdfRepository;
 import com.sp.ScientificPublications.service.logic.AccessControlService;
 import com.sp.ScientificPublications.service.logic.AuthenticationService;
+import com.sp.ScientificPublications.utility.FileUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -111,6 +114,18 @@ public class PaperReviewService {
     	DocumentDTO retrievedDTO = this.retrievePaperReviewAsDocument(documentId);
     	retrievedDTO.setDocumentId("paper-review/" + retrievedDTO.getDocumentId());
         return xmlTransformSvc.generateHtmlFromXml(retrievedDTO, xsltFilePath);
+    }
+    
+    public DocumentDTO getTemplate() {
+
+        DocumentDTO templateDTO = new DocumentDTO();
+        try {
+            templateDTO.setDocumentContent(FileUtil.readFile(templatePath, StandardCharsets.UTF_8));
+        } catch (IOException e) {
+            throw new ApiBadRequestException("Failed to generate paper review template");
+        }
+
+        return templateDTO;
     }
     
     public boolean validatePaperReview(String documentContent) {

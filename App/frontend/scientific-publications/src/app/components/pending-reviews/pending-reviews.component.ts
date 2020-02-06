@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SubmitionService } from 'src/app/services/submition.service';
 import { ScientificPaperService } from 'src/app/services/scientific-paper.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ToasterService } from 'src/app/services/toaster.service';
 import { ReviewersService } from 'src/app/services/reviewers.service';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { Subscription } from 'rxjs';
+import { UploadService } from 'src/app/services/upload.service';
 
 @Component({
   selector: 'app-pending-reviews',
@@ -19,20 +21,59 @@ import { trigger, transition, style, animate } from '@angular/animations';
     ]),
   ],
 })
-export class PendingReviewsComponent implements OnInit {
+export class PendingReviewsComponent implements OnInit, OnDestroy {
 
   private submitions = [];
   private myAcceptedSubmitions = [];
+  private currentlyReviewingSubmition = null;
+
+  private documentValid = true;
+  private logMessage = '';
+  private template = '';
+
+  private editorSubscription: Subscription;
 
   constructor(private submitionService: SubmitionService,
               private reviewersService: ReviewersService,
               private scientificPaperService: ScientificPaperService,
               private sanitizer: DomSanitizer,
-              private toaster: ToasterService) { }
+              private toaster: ToasterService,
+              private uploadSvc: UploadService) { }
 
   ngOnInit() {
+    this.editorSubscription = this.uploadSvc.getEditorContent().subscribe(
+      data => {
+        this.uploadPaperReview(data);
+        console.log(data);
+      }
+    );
     this.getPendingReviewsForCurrentReviewer();
     this.getMyAcceptedSubmitionReviews();
+  }
+
+  ngOnDestroy() {
+    this.editorSubscription.unsubscribe();
+  }
+
+  uploadPaperReview(data): void{
+    this.displayUploadSpinner();
+    this.reviewersService.uploadPaperReview({
+      submitionId: this.currentlyReviewingSubmition.submitionId,
+      reviewContent: data
+    }).subscribe(
+      data => {
+        console.log(data);
+        this.hideUploadSpinner();
+      },
+      error => {
+        console.log(error);
+        this.hideUploadSpinner();
+      }
+    );
+  }
+
+  selectSubmitionForPaperReview(submition) {
+    this.currentlyReviewingSubmition = submition;
   }
 
   getPendingReviewsForCurrentReviewer(): void {
@@ -91,6 +132,12 @@ export class PendingReviewsComponent implements OnInit {
     );
   }
 
+  displayUploadSpinner() {
+    document.getElementById('editor-toolbar-spinner').style.visibility = 'visible';
+  }
 
+  hideUploadSpinner() {
+    document.getElementById('editor-toolbar-spinner').style.visibility = 'hidden';
+  }
 
 }

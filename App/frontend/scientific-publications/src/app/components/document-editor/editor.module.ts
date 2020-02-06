@@ -7,13 +7,15 @@ import { ScientificPaperEditorComponent } from './scientific-paper-editor/scient
 import { DocumentReviewEditorComponent } from './document-review-editor/document-review-editor.component';
 import { AceEditorModule } from 'ng2-ace-editor';
 import { HttpClientModule } from '@angular/common/http';
+import { PaperReviewEditorComponent } from './paper-review-editor/paper-review-editor.component';
 
 @NgModule({
     declarations: [
         XmlEditorComponent,
         CoverLetterEditorComponent,
         ScientificPaperEditorComponent,
-        DocumentReviewEditorComponent
+        DocumentReviewEditorComponent,
+        PaperReviewEditorComponent
     ],
     imports: [
         BrowserModule,
@@ -23,7 +25,8 @@ import { HttpClientModule } from '@angular/common/http';
     exports: [
         CoverLetterEditorComponent,
         ScientificPaperEditorComponent,
-        DocumentReviewEditorComponent
+        DocumentReviewEditorComponent,
+        PaperReviewEditorComponent
     ]
 })
 

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { DocumentDTO } from '../models/document-dto';
+import { SearchParams } from '../models/search-params.model';
 
 @Injectable({
   providedIn: 'root'
@@ -38,6 +39,11 @@ export class ScientificPaperService {
 
   getPaperById(id: string): Observable<any> {
     return this.http.get(`api/scientific-paper/${id}`);
+  }
+
+  searchScientificPapers(sp: SearchParams): Observable<any> {
+
+    return this.http.get(`api/scientific-paper/search?query=${sp.query}&dateCreated=${sp.dateCreated}&datePublished=${sp.datePublished}&dateRevised=${sp.dateRevised}&status=${sp.status}&customMetadata=${sp.customMetaData}`);
   }
 
 }

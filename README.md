@@ -59,5 +59,6 @@ Log in with the following credentials: username='admin', password is empty.
 
 **Note** Make sure that tomcat server and spring boot server have started.
 
-
+# DEMO
+https://youtu.be/WKQY81fE8fc
 

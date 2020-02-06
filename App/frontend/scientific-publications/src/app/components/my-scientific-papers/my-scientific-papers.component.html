@@ -1,8 +1,44 @@
-<div class="container">
+<div>
 
-    <h2 class="heading" style="margin-top: 3ex;">My scientific papers</h2>
+    <h2 class="h-header">My scientific papers</h2>
 
-    <table class="table">
+    <table class="t-table">
+        <tr>
+            <td>#</td>
+            <td scope="col">Title</td>
+            <td scope="col">Status</td>
+            <td scope="col">View</td>
+            <td scope="col">Download</td>
+            <td scope="col">Action</td>
+        </tr>
+        <tr *ngFor="let submition of submitions; index as i;" @fadeIn>
+            <th scope="row"> {{ i+1 }} </th>
+            <td> {{ submition.paperTitle }} </td>
+            <td> {{ submition.status }} </td>
+            <td>
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <button type="button"
+                        (click)="viewDocument('scientific-paper', submition.paperId)">
+                        Scientific paper
+                    </button>
+                    <button *ngIf="submition.coverLetterId != null"
+                        (click)="viewDocument('cover-letter', submition.coverLetterId)">
+                        Cover letter
+                    </button>
+                    </div>
+            </td>
+            <td>
+                <button class="btn btn-secondary" (click)="showPopUp(submition)">Download</button>
+            </td>
+            <td *ngIf="submition.status !== 'CANCELED'">
+                <button class="btn btn-danger" (click)="cancelSubmition(submition.submitionId, i)">
+                    Cancel 
+                </button>
+            </td>
+        </tr>
+    </table>
+
+    <!--<table class="table">
         <thead class="thead-dark">
           <tr>
             <th>#</th>
@@ -40,7 +76,7 @@
                 </td>
             </tr>
         </tbody>
-    </table>
+    </table>-->
 </div>
 
 <div (click)="closePopUp()" class="dialog-background" *ngIf="displayPopUp">

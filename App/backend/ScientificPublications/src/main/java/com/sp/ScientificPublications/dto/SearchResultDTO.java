@@ -13,8 +13,5 @@ public class SearchResultDTO {
     private String title;
     private String author;
     private Integer rank;
-
-    public SearchResultDTO() {
-
-    }
+    
 }

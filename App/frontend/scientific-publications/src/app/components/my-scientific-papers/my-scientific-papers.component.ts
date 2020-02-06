@@ -3,11 +3,20 @@ import { AuthorSubmitionDTO } from 'src/app/models/submitions/author-submition-d
 import { SubmitionService } from 'src/app/services/submition.service';
 import { ToasterService } from 'src/app/services/toaster.service';
 import { environment } from 'src/environments/environment';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-my-scientific-papers',
   templateUrl: './my-scientific-papers.component.html',
-  styleUrls: ['./my-scientific-papers.component.css']
+  styleUrls: ['./my-scientific-papers.component.css'],
+  animations: [
+    trigger('fadeIn', [
+      transition(':enter', [
+        style({ opacity: '0' }),
+        animate('.5s ease-out', style({ opacity: '1' })),
+      ]),
+    ]),
+  ],
 })
 export class MyScientificPapersComponent implements OnInit {
 

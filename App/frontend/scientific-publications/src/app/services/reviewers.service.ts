@@ -21,5 +21,9 @@ export class ReviewersService {
     return this.http.put<any>(`api/reviewers/submitions/${id}/reject`, null);
   }
 
+  getMyAcceptedSubmitionReviews(): Observable<any> {
+    return this.http.get(`api/reviewers/submitions`);
+  }
+
   
 }

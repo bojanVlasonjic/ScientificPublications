@@ -34,7 +34,7 @@
             <td>
                 <div class="btn-group" role="group" aria-label="Basic example">
                     <button [ngClass]="{'disabled-button': submition.status !== 'REVISIONS_REQUESTED'}"
-                        (click)="displayCreateRevision(submition.paperId)">
+                        (click)="displayCreateRevision(submition)">
                         Make revision 
                     </button>
                     <button [ngClass]="{'disabled-button': submition.status == 'CANCELED'}"
@@ -46,7 +46,8 @@
         </tr>
     </table>
 
-    <app-create-revision *ngIf="createRevisionDisplayed" [reviewedPaper]="reviewedPaperId">
+    <app-create-revision *ngIf="createRevisionDisplayed" [reviewedPaperId]="reviewedPaperId"
+        [reviewedSubmitionId]="reviewedSubmitionId" (submitionUpdatedEvent)="updateSubmition($event)">
 
     </app-create-revision>
 </div>

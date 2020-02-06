@@ -18,11 +18,11 @@
         </select>
     </div>
 
-    <div *ngIf="uploadType == 'file'" [type]="'document-review'" [cid]="'d1'" app-document-upload>
-    </div>
+
+    <div *ngIf="uploadType == 'file'"[type]="'scientific-paper'" [cid]="'d3'" app-document-upload></div>
 
 </div>
 
-<app-document-review-editor *ngIf="uploadType == 'editor'">
+<app-scientific-paper-editor *ngIf="uploadType == 'editor'" [contentToUpdate]="paperContent">
 
-</app-document-review-editor>
+</app-scientific-paper-editor>

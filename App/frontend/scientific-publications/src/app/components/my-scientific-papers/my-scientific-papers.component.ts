@@ -26,6 +26,7 @@ export class MyScientificPapersComponent implements OnInit {
   submitionToDownload: AuthorSubmitionDTO;
 
   reviewedPaperId: string;
+  reviewedSubmitionId: number;
   createRevisionDisplayed: boolean; 
 
   constructor(private submitionSvc: SubmitionService , private toastSvc: ToasterService) {
@@ -75,9 +76,24 @@ export class MyScientificPapersComponent implements OnInit {
     );
   }
 
-  displayCreateRevision(paperId: string) {
+  displayCreateRevision(submition: AuthorSubmitionDTO) {
     this.createRevisionDisplayed = true;
-    this.reviewedPaperId = paperId;
+    this.reviewedPaperId = submition.paperId;
+    this.reviewedSubmitionId = submition.submitionId;
+  }
+
+  updateSubmition(submition: any) {
+
+    for(let i = 0; i < this.submitions.length; i++) {
+      if(this.submitions[i].submitionId == submition.submitionId) {
+        this.submitions[i] = submition;
+      }
+    }
+
+    this.createRevisionDisplayed = false;
+    this.reviewedPaperId = null;
+    this.reviewedSubmitionId = null;
+
   }
 
 }

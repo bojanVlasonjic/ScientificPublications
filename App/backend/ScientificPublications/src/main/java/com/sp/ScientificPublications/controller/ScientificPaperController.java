@@ -5,6 +5,7 @@ import com.sp.ScientificPublications.dto.DocumentDTO;
 import com.sp.ScientificPublications.dto.SearchByAuthorsResponseDTO;
 import com.sp.ScientificPublications.dto.SearchResultDTO;
 import com.sp.ScientificPublications.dto.SendEmailDTO;
+import com.sp.ScientificPublications.models.scientific_paper.ScientificPaper;
 import com.sp.ScientificPublications.service.DomParserService;
 import com.sp.ScientificPublications.service.ScientificPaperService;
 
@@ -86,12 +87,13 @@ public class ScientificPaperController {
         return new ResponseEntity<>(scPaperService.getTemplate(), HttpStatus.OK);
     }
 
-    /*
+
     @GetMapping("/{id}")
     public  ResponseEntity<DocumentDTO> getScientificPaperById(@PathVariable String id) {
         return new ResponseEntity<>(scPaperService.retrieveScientificPaperAsDocument(id), HttpStatus.OK);
     }
 
+    /*
     @GetMapping("jaxb//{id}")
     public  ResponseEntity<ScientificPaper> getScientificPaperObjectById(@PathVariable String id) {
         return new ResponseEntity<>(scPaperService.retrieveScientificPaperAsObject(id), HttpStatus.OK);

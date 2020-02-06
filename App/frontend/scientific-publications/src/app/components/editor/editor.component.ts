@@ -86,7 +86,7 @@ export class EditorComponent implements OnInit {
   }
 
   getRequestReviewers(): void {
-    this.submitionService.getRequestedReviewers(this.selectedPaper.paperId).subscribe(
+    this.submitionService.getAllReviewersForSubmition(this.selectedPaper.id).subscribe(
       data => {
         this.requestedReviewers = data;
         console.log(data);

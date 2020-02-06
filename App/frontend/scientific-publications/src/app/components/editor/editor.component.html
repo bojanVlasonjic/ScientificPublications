@@ -49,11 +49,13 @@
             <td>Firstname</td>
             <td>Lastname</td>
             <td>Email</td>
+            <td>Status</td>
         </tr>
         <tr *ngFor="let rev of requestedReviewers" @fadeIn>
             <td>{{rev.firstname}}</td>
             <td>{{rev.lastname}}</td>
             <td>{{rev.email}}</td>
+            <td>{{rev.reviewerStatus}}</td>
         </tr>
     </table>
 </div>

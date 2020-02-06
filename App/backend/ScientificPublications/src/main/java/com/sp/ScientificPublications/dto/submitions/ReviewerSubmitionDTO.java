@@ -26,6 +26,5 @@ public class ReviewerSubmitionDTO {
         paperTitle = submition.getPaperTitle();
         status = submition.getStatus().toString();
         author = new UserDTO(submition.getAuthor());
-        reviewed = submition.getReviewersThatAddedReview().contains(author.getId());
     }
 }

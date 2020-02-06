@@ -114,7 +114,11 @@ public class ReviewerService {
         Author reviewer = authenticationService.getCurrentAuthor();
         return reviewer.getReviewedSubmitions()
                 .stream()
-                .map(ReviewerSubmitionDTO::new)
+                .map(r -> {
+                    ReviewerSubmitionDTO dto = new ReviewerSubmitionDTO(r);
+                    dto.setReviewed(r.getReviewersThatAddedReview().contains(reviewer.getId()));
+                    return dto;
+                })
                 .collect(Collectors.toList());
     }
 

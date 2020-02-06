@@ -1,0 +1,17 @@
+.container {
+    position: relative;
+}
+
+.heading {
+    margin-top: 2ex;
+    margin-bottom: 4ex;
+}
+
+.paper-holder {
+    font-size: 18px;
+    margin-bottom: 6ex;
+}
+
+ul {
+    list-style-type: circle;
+}

@@ -13,8 +13,11 @@ import { CreateSubmitionComponent } from './components/create-submition/create-s
 import { FormsModule } from '@angular/forms';
 import { MyScientificPapersComponent } from './components/my-scientific-papers/my-scientific-papers.component';
 import { EditorComponent } from './components/editor/editor.component';
+import { ScientificPapersViewComponent } from './components/scientific-papers-view/scientific-papers-view.component';
+import { DocumentDownloadComponent } from './components/document-download/document-download.component';
 import { PendingReviewsComponent } from './components/pending-reviews/pending-reviews.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 @NgModule({
   declarations: [
@@ -24,6 +27,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     CreateSubmitionComponent,
     MyScientificPapersComponent,
     EditorComponent,
+    ScientificPapersViewComponent,
+    DocumentDownloadComponent,
     PendingReviewsComponent
   ],
   imports: [

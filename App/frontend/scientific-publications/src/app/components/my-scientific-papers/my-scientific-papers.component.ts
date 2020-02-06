@@ -22,16 +22,13 @@ export class MyScientificPapersComponent implements OnInit {
 
   submitions: Array<AuthorSubmitionDTO>;
 
-  displayPopUp: boolean;
-  submitionInPopUp: AuthorSubmitionDTO;
-  documentType: string;
-  downloadType: string; // html or pdf
+  displayDownloadPopUp: boolean;
+  submitionToDownload: AuthorSubmitionDTO;
 
   constructor(private submitionSvc: SubmitionService , private toastSvc: ToasterService) {
     this.submitions = [];
-    this.displayPopUp = false;
-    this.downloadType = 'pdf';
-    this.documentType = '';
+    this.displayDownloadPopUp = false;
+
   }
 
   ngOnInit() {
@@ -45,28 +42,17 @@ export class MyScientificPapersComponent implements OnInit {
     );
   }
 
-  showPopUp(submition: AuthorSubmitionDTO): void {
-    this.displayPopUp = true;
-    this.submitionInPopUp = submition;
+  showPopUp(submition: any): void {
+    this.displayDownloadPopUp = true;
+    this.submitionToDownload = submition;
   }
 
-  closePopUp() {
-    this.displayPopUp = false;
-    this.documentType = '';
-  }
-
-  downloadTypeChanged(typeSelected: string) {
-    this.downloadType = typeSelected;
+  closePopUp(event: any) {
+    this.displayDownloadPopUp = event;
   }
 
   viewDocument(documentType: string, documentId: string) {
     window.open(`${environment.baseUrl}/api/${documentType}/view/${documentId}`, '_blank');
-  }
-
-  downloadDocument(documentId: string) {
-    window.open(
-      `${environment.baseUrl}/api/${this.documentType}/download/${this.downloadType}/${documentId}`,
-      '_blank');
   }
 
   cancelSubmition(id: string, index: number) {
@@ -83,7 +69,6 @@ export class MyScientificPapersComponent implements OnInit {
         this.toastSvc.showErrorMessage(err);
       }
     );
-
   }
 
 }

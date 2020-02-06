@@ -8,6 +8,7 @@ import com.sp.ScientificPublications.dto.reviews.ReviewDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -58,6 +59,7 @@ public class PaperReviewController {
 		return "123";
 	}
 
+	@Secured("ROLE_AUTHOR")
 	@PostMapping
 	public ResponseEntity<ReviewDTO> createReview(@RequestBody @Valid CreateReviewDTO createReviewDTO) {
 		return new ResponseEntity<>(paperReviewService.createReview(createReviewDTO), HttpStatus.OK);

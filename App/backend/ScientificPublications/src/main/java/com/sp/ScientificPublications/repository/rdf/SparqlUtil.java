@@ -12,6 +12,10 @@ public class SparqlUtil {
 	 * A template for creating SPARUL (SPARQL Update) query can be found here:
 	 * https://www.w3.org/TR/sparql11-update/
 	 */
+
+	public static final String SUBJECT_URI = "http://www.ftn.uns.ac.rs/scientific-publication";
+	public static final String PROPERTY_URI = "http://www.ftn.uns.ac.rs/rdf/predicate";
+
 	/* Insert RDF data into the default graph */
 	private static final String UPDATE_TEMPLATE = "INSERT DATA { %s }";
 	

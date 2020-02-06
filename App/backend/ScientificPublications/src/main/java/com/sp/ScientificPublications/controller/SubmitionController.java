@@ -1,8 +1,10 @@
 package com.sp.ScientificPublications.controller;
 
 import com.sp.ScientificPublications.dto.UserDTO;
+import com.sp.ScientificPublications.dto.reviews.ReviewDTO;
 import com.sp.ScientificPublications.dto.submitions.AuthorSubmitionDTO;
 import com.sp.ScientificPublications.dto.submitions.CreateSubmitionDTO;
+import com.sp.ScientificPublications.dto.submitions.SubmitionViewDTO;
 import com.sp.ScientificPublications.service.logic.SubmitionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -34,6 +36,11 @@ public class SubmitionController {
     public ResponseEntity getSubmitions() {
         Pageable pageable = PageRequest.of(0, 1000000);
         return new ResponseEntity(submitionService.getSubmitions(pageable), HttpStatus.OK);
+    }
+
+    @GetMapping("/published")
+    public ResponseEntity<List<SubmitionViewDTO>> getPublishedSubmitions() {
+        return new ResponseEntity<>(submitionService.getPublishedSubmitions(), HttpStatus.OK);
     }
 
     @Secured({"ROLE_AUTHOR"})
@@ -111,11 +118,4 @@ public class SubmitionController {
         submitionService.cancelRequestReview(submitionId, reviewerId);
         return new ResponseEntity(HttpStatus.OK);
     }
-
-    @Secured({"ROLE_EDITOR"})
-    @GetMapping("/{submitionId}/reviewers")
-    public ResponseEntity<List<UserDTO>> getAllReviewersForSubmition(@PathVariable Long submitionId) {
-        return new ResponseEntity<>(submitionService.getAllReviewersForSubmition(submitionId), HttpStatus.OK);
-    }
-
 }

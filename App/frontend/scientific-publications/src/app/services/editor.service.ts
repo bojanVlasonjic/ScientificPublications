@@ -17,15 +17,15 @@ export class EditorService {
     return this.http.put(`api/submitions/${id}/publish`, null);
   }
 
-  requestRevisionsSubmition(): Observable<any> {
-    return this.http.put('', null);
+  requestRevisionsSubmition(id: number): Observable<any> {
+    return this.http.put(`api/submitions/${id}/request-revision`, null);
   }
 
-  rejectSubmition(): Observable<any> {
-    return this.http.put('', null);
+  rejectSubmition(id: number): Observable<any> {
+    return this.http.put(`api/submitions/${id}/reject`, null);
   }
 
   startReviewForSubmition(id: number): Observable<any> {
-    return this.http.put('', null);
+    return this.http.put(`api/editor/set-in-review-process/${id}`, null);
   }
 }

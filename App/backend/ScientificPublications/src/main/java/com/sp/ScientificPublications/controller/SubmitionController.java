@@ -91,7 +91,7 @@ public class SubmitionController {
     }
 
     @Secured({"ROLE_EDITOR"})
-    @PutMapping("/{id]/request-revision")
+    @PutMapping("/{id}/request-revision")
     public ResponseEntity requestRevision(@PathVariable Long id) {
         submitionService.requestRevision(id);
         return new ResponseEntity(HttpStatus.OK);

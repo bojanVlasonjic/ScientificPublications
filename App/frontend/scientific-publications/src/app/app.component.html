@@ -18,6 +18,10 @@
 
     <div class="delimiter"></div>
 
+    <div class="navigation-item" [ngClass]="{'selected' : getUrl() == 'scientific-papers'}" routerLink="/scientific-papers">
+      Published papers
+    </div>
+
     <!-- Author tabs-->
     <div *ngIf="getUser?.roles.includes('ROLE_AUTHOR')" class="navigation-item">
       Scientific papers

@@ -8,6 +8,5 @@ export class SubmitionViewDto {
     status: string;
 
     constructor() {
-        
     }
 }

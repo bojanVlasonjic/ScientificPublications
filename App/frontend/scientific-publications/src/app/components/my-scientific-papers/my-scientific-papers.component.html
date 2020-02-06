@@ -43,46 +43,7 @@
     </table>
 </div>
 
-<div (click)="closePopUp()" class="dialog-background" *ngIf="displayPopUp">
-</div>
-<div class="dialog-pop-up" *ngIf="displayPopUp">
+<app-document-download [displayPopUp]="displayPopUp" [submition]="submitionToDownload"
+    (closePopUpEvent)="closePopUp($event)">
+</app-document-download>
 
-        <h3 class="heading"> Download </h3>
-
-        <div class="dialog-content">
-            <select class="custom-select" style="margin-bottom: 2ex;" [(ngModel)]="documentType">
-                <option value="" selected disabled hidden>Select document type</option>
-                <option value="scientific-paper">Scienitic paper</option>
-                <option value="cover-letter" *ngIf="submitionInPopUp.coverLetterId != null">
-                    Cover letter
-                </option>
-            </select>
-
-            <div class="form-check form-check-inline" style="margin-left: 5ex; margin-right: 5ex;">
-                <input class="form-check-input" name="extension" type="radio"
-                    (click)="downloadTypeChanged('pdf')" checked>
-                <label class="form-check-label"> Pdf </label>
-            </div>
-            <div class="form-check form-check-inline" style="margin-right: 5ex;">
-                <input class="form-check-input" name="extension" type="radio"
-                    (click)="downloadTypeChanged('html')">
-                <label class="form-check-label"> Html </label>
-            </div>
-            <div class="form-check form-check-inline" style="margin-bottom: 3ex;">
-                <input class="form-check-input" name="extension" type="radio"
-                    (click)="downloadTypeChanged('xml')">
-                <label class="form-check-label"> Xml </label>
-            </div>
-
-            <br/>
-
-            <button *ngIf="documentType == 'cover-letter'" class="btn btn-primary centered-btn"
-                (click)="downloadDocument(submitionInPopUp.coverLetterId)">
-                 Download
-            </button>
-            <button *ngIf="documentType == 'scientific-paper'" class="btn btn-primary centered-btn"
-                (click)="downloadDocument(submitionInPopUp.paperId)">
-                 Download 
-            </button>
-        </div>
-    </div>

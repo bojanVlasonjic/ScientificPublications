@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SubmitionService } from 'src/app/services/submition.service';
 import { SubmitionViewDto } from 'src/app/models/submitions/submition-view-dto.model';
 import { ToasterService } from 'src/app/services/toaster.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-scientific-papers-view',
@@ -28,6 +29,10 @@ export class ScientificPapersViewComponent implements OnInit {
         this.toastSvc.showErrorMessage(err);
       }
     );
+  }
+
+  viewPaper(paperId: string) {
+    window.open(`${environment.baseUrl}/api/scientific-paper/view/${paperId}`, '_blank');
   }
 
 }

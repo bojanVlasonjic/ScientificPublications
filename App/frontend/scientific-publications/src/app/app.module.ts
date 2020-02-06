@@ -14,6 +14,7 @@ import { FormsModule } from '@angular/forms';
 import { MyScientificPapersComponent } from './components/my-scientific-papers/my-scientific-papers.component';
 import { EditorComponent } from './components/editor/editor.component';
 import { ScientificPapersViewComponent } from './components/scientific-papers-view/scientific-papers-view.component';
+import { DocumentDownloadComponent } from './components/document-download/document-download.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { ScientificPapersViewComponent } from './components/scientific-papers-vi
     CreateSubmitionComponent,
     MyScientificPapersComponent,
     EditorComponent,
-    ScientificPapersViewComponent
+    ScientificPapersViewComponent,
+    DocumentDownloadComponent
   ],
   imports: [
     BrowserModule,

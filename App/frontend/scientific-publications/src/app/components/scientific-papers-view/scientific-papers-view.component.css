@@ -1,3 +1,7 @@
 .container {
     position: relative;
 }
+
+.heading {
+    margin-top: 2ex;
+}

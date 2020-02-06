@@ -116,4 +116,12 @@ public class ReviewerService {
         return reviewer.getReviewedSubmitions().stream().map(ReviewerSubmitionDTO::new).collect(Collectors.toList());
     }
 
+    public List<ReviewDTO> getReviewsForPaper(String paperId) {
+        return reviewRepository
+                .findAllBySubmitionPaperId(paperId)
+                .stream()
+                .map(ReviewDTO::new)
+                .collect(Collectors.toList());
+    }
+
 }

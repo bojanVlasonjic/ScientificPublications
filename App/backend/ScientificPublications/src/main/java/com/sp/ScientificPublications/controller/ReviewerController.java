@@ -1,6 +1,7 @@
 package com.sp.ScientificPublications.controller;
 
 import com.sp.ScientificPublications.dto.reviews.PendingReviewDTO;
+import com.sp.ScientificPublications.dto.reviews.ReviewDTO;
 import com.sp.ScientificPublications.service.logic.ReviewerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +24,12 @@ public class ReviewerController {
     @GetMapping("/pending/reviews")
     public ResponseEntity<List<PendingReviewDTO>> getPendingReviewsForCurrentReviewer() {
     	return new ResponseEntity<>(reviewerService.getPendingReviewsForCurrentReviewer(), HttpStatus.OK);
+    }
+
+    @Secured({"ROLE_AUTHOR"})
+    @GetMapping("/reviews-for-paper/{id}")
+    public ResponseEntity<List<ReviewDTO>> getReviewsForPaper(@PathVariable String paperId) {
+        return new ResponseEntity<>(reviewerService.getReviewsForPaper(paperId), HttpStatus.OK);
     }
 
     @Secured({"ROLE_AUTHOR"})

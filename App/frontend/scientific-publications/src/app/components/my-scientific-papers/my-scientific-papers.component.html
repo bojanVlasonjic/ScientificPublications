@@ -9,7 +9,7 @@
             <td scope="col">Status</td>
             <td scope="col">View</td>
             <td scope="col">Download</td>
-            <td scope="col">Action</td>
+            <td scope="col" colspan="2">Action</td>
         </tr>
         <tr *ngFor="let submition of submitions; index as i;" @fadeIn>
             <th scope="row"> {{ i+1 }} </th>
@@ -30,6 +30,11 @@
             <td>
                 <button class="btn btn-secondary" (click)="showPopUp(submition)">Download</button>
             </td>
+
+            <td *ngIf="submition.status == 'REVISIONS_REQUESTED'">
+                <button> Make revision </button>
+            </td>
+
             <td *ngIf="submition.status !== 'CANCELED'">
                 <button class="btn btn-danger" (click)="cancelSubmition(submition.submitionId, i)">
                     Cancel 

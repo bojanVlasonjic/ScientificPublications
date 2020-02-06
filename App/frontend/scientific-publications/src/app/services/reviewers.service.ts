@@ -13,6 +13,10 @@ export class ReviewersService {
     return this.http.get('api/reviewers/pending/reviews');
   }
 
+  getReviewsForPaper(paperId: string): Observable<any> {
+    return this.http.get(`api/reviewers/reviews-for-paper/${paperId}`);
+  }
+
   acceptSubmitionReviewRequest(id: number): Observable<any> {
     return this.http.put<any>(`api/reviewers/submitions/${id}/accept`, null);
   }

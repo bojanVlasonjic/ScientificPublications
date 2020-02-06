@@ -9,6 +9,7 @@ import { Editor } from 'brace';
 import { EditorComponent } from './components/editor/editor.component';
 import { ScientificPapersViewComponent } from './components/scientific-papers-view/scientific-papers-view.component';
 import { PendingReviewsComponent } from './components/pending-reviews/pending-reviews.component';
+import { CreateRevisionComponent } from './components/create-revision/create-revision.component';
 
 
 const routes: Routes = [

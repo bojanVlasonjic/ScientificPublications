@@ -21,19 +21,27 @@
                         (click)="viewDocument('scientific-paper', submition.paperId)">
                         Scientific paper
                     </button>
-                    <button *ngIf="submition.coverLetterId != null"
+                    <button [ngClass]="{'disabled-button': submition.coverLetterId != null}"
                         (click)="viewDocument('cover-letter', submition.coverLetterId)">
                         Cover letter
                     </button>
-                    </div>
+                </div>
             </td>
             <td>
-                <button class="btn btn-secondary" (click)="showPopUp(submition)">Download</button>
+                <button (click)="showPopUp(submition)">Download</button>
             </td>
-            <td *ngIf="submition.status !== 'CANCELED'">
-                <button class="btn btn-danger" (click)="cancelSubmition(submition.submitionId, i)">
-                    Cancel 
-                </button>
+
+            <td>
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <button [ngClass]="{'disabled-button': submition.status !== 'REVISIONS_REQUESTED'}"
+                        (click)="displayCreateRevision(submition)">
+                        Make revision 
+                    </button>
+                    <button [ngClass]="{'disabled-button': submition.status == 'CANCELED'}"
+                        (click)="cancelSubmition(submition.submitionId, i)">
+                        Cancel 
+                    </button>
+                </div>
             </td>
         </tr>
         <tr *ngIf="submitions.length == 0" class="last-row-no-data">
@@ -41,45 +49,10 @@
         </tr>
     </table>
 
-    <!--<table class="table">
-        <thead class="thead-dark">
-          <tr>
-            <th>#</th>
-            <th scope="col">Title</th>
-            <th scope="col">Status</th>
-            <th scope="col">View</th>
-            <th scope="col">Download</th>
-            <th scope="col">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let submition of submitions; index as i;">
-                <th scope="row"> {{ i+1 }} </th>
-                <td> {{ submition.paperTitle }} </td>
-                <td> {{ submition.status }} </td>
-                <td>
-                    <div class="btn-group" role="group" aria-label="Basic example">
-                        <button type="button" class="btn btn-secondary"
-                            (click)="viewDocument('scientific-paper', submition.paperId)">
-                           Scientific paper
-                        </button>
-                        <button *ngIf="submition.coverLetterId != null" type="button" class="btn btn-secondary"
-                            (click)="viewDocument('cover-letter', submition.coverLetterId)">
-                            Cover letter
-                        </button>
-                      </div>
-                </td>
-                <td>
-                    <button class="btn btn-secondary" (click)="showPopUp(submition)">Download</button>
-                </td>
-                <td *ngIf="submition.status !== 'CANCELED'">
-                    <button class="btn btn-danger" (click)="cancelSubmition(submition.submitionId, i)">
-                        Cancel 
-                    </button>
-                </td>
-            </tr>
-        </tbody>
-    </table>-->
+    <app-create-revision *ngIf="createRevisionDisplayed" [reviewedPaperId]="reviewedPaperId"
+        [reviewedSubmitionId]="reviewedSubmitionId" (submitionUpdatedEvent)="updateSubmition($event)">
+
+    </app-create-revision>
 </div>
 
 <app-document-download [displayPopUp]="displayDownloadPopUp" [submition]="submitionToDownload"

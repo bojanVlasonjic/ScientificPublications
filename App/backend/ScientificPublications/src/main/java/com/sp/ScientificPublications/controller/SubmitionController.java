@@ -71,9 +71,10 @@ public class SubmitionController {
 
     @Secured({"ROLE_AUTHOR"})
     @PutMapping("/{id}")
-    public ResponseEntity reviseSubmition(@PathVariable Long id, @RequestBody @Valid CreateSubmitionDTO revisedSubmitonDTO) {
-        submitionService.reviseSubmition(id, revisedSubmitonDTO);
-        return new ResponseEntity(HttpStatus.OK);
+    public ResponseEntity<AuthorSubmitionDTO> reviseSubmition(@PathVariable Long id,
+                                                              @RequestBody @Valid CreateSubmitionDTO revisedSubmitonDTO) {
+
+        return new ResponseEntity<>(submitionService.reviseSubmition(id, revisedSubmitonDTO), HttpStatus.OK);
     }
 
     @Secured({"ROLE_AUTHOR"})

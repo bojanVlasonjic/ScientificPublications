@@ -193,7 +193,6 @@ public class ScientificPaperService {
     	headers.setCacheControl("must-revalidate, post-check=0 pre-check=0");
     	
     	byte[] file = xmlTransformSvc.loadFile(filename);
-    	
     	return new ResponseEntity<byte[]>(file, headers, HttpStatus.OK);
     }
     // ============================================================
@@ -244,9 +243,11 @@ public class ScientificPaperService {
 
     public DocumentDTO uploadScientificPaperXMLFile(MultipartFile file) {
     	String xmlContent = domParserSvc.readMultipartXMLFile(file);
+
     	DocumentDTO document = new DocumentDTO();
     	document.setDocumentContent(xmlContent);
     	document = this.storeScientificPaperAsDocument(document);
+
     	this.generatePdf(document.getDocumentId());
     	this.generateHtml(document.getDocumentId());
     	

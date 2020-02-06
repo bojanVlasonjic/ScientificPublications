@@ -17,6 +17,7 @@ import { ScientificPapersViewComponent } from './components/scientific-papers-vi
 import { DocumentDownloadComponent } from './components/document-download/document-download.component';
 import { PendingReviewsComponent } from './components/pending-reviews/pending-reviews.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CreateRevisionComponent } from './components/create-revision/create-revision.component';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     EditorComponent,
     ScientificPapersViewComponent,
     DocumentDownloadComponent,
-    PendingReviewsComponent
+    PendingReviewsComponent,
+    CreateRevisionComponent
   ],
   imports: [
     BrowserModule,

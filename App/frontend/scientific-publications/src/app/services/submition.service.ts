@@ -46,6 +46,10 @@ export class SubmitionService {
     return this.http.get(`api/submitions/${id}/reviewers`);
   }
 
+  reviseSubmition(submitionId: number, submitionDto: CreateSubmitionDTO): Observable<any> {
+    return this.http.put(`api/submitions/${submitionId}`, submitionDto);
+  }
+
   
   
 }

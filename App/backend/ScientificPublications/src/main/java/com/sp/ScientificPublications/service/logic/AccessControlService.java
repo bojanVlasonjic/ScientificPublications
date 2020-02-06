@@ -78,4 +78,10 @@ public class AccessControlService {
         }
     }
 
+    public void checkIfReviewerAlreadySentReview(Submition submition, Author reviewer) {
+        if (submition.getReviewersThatAddedReview().contains(reviewer.getId())) {
+            throw new ApiBadRequestException("You already sent your review for this submition.");
+        }
+    }
+
 }

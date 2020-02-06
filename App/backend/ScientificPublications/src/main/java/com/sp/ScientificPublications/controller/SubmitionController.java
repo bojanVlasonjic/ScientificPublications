@@ -84,9 +84,9 @@ public class SubmitionController {
     }
 
     @Secured({"ROLE_EDITOR"})
-    @PutMapping("/{id}/reject")
-    public ResponseEntity rejectSubmition(@PathVariable Long id) {
-        submitionService.rejectSubmition(id);
+    @PutMapping("/{submitionId}/reject")
+    public ResponseEntity rejectSubmition(@PathVariable Long submitionId) {
+        submitionService.rejectSubmition(submitionId);
         return new ResponseEntity(HttpStatus.OK);
     }
 

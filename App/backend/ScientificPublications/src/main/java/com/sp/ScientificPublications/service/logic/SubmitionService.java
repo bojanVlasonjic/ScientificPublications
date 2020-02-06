@@ -12,6 +12,7 @@ import com.sp.ScientificPublications.exception.ApiNotFoundException;
 import com.sp.ScientificPublications.models.Author;
 import com.sp.ScientificPublications.models.Submition;
 import com.sp.ScientificPublications.models.SubmitionStatus;
+import com.sp.ScientificPublications.models.scientific_paper.ScientificPaper;
 import com.sp.ScientificPublications.repository.AuthorRepository;
 import com.sp.ScientificPublications.repository.SubmitionRepository;
 import com.sp.ScientificPublications.repository.rdf.RdfRepository;
@@ -273,7 +274,9 @@ public class SubmitionService {
             scientificPaperService.storeScientificPaperAsDocument(paperDTO);
             scientificPaperService.generateHtml(paperDTO.getDocumentId());
             scientificPaperService.generatePdf(paperDTO.getDocumentId());
+            ScientificPaper scientificPaper = scientificPaperService.retrieveScientificPaperAsObject(submition.getPaperId());
 
+            submition.setPaperTitle(scientificPaper.getHeader().getTitle());
             //TODO: SEND REVISED NOTIFICATION EMAIL TO REVIEWERS AND EDITOR
             submition = submitionRepository.save(submition);
 

@@ -13,7 +13,7 @@
         <tr *ngFor="let sub of submitions" @fadeIn>
             <td>{{sub.paperTitle}}</td>
             <td>{{sub.author.firstname}} {{sub.author.lastname}}</td>
-            <td>{{sub.status}}</td>
+            <td [ngClass]="{'published-status' : sub.status == 'PUBLISHED', 'reviewed-status' : sub.status == 'REVIEWED'}">{{sub.status}}</td>
             <td>
                 <a [href]="getSanitizedURL('http://localhost:8081/api/scientific-paper/view/' + sub.paperId)" [attr.target]="'_blank'"><button>SC</button></a>
             </td>
@@ -24,7 +24,8 @@
             <td><a [href]="getSanitizedURL('http://localhost:8081/api/scientific-paper/download/xml/' + sub.paperId)" [attr.target]="'_blank'"><button>XML</button></a></td>
             <td><a [href]="getSanitizedURL('http://localhost:8081/api/scientific-paper/download/html/' + sub.paperId)" [attr.target]="'_blank'"><button>HTML</button></a></td>
             <td><a [href]="getSanitizedURL('http://localhost:8081/api/scientific-paper/download/pdf/' + sub.paperId)" [attr.target]="'_blank'"><button>PDF</button></a></td>
-            <td><button (click)="selectPaper(sub)">Choose</button></td>
+            <td *ngIf="sub.status != 'PUBLISHED'"><button (click)="selectPaper(sub)">Choose</button></td>
+            <td *ngIf="sub.status == 'PUBLISHED'">Currently No Action</td>
         </tr>
         <tr *ngIf="submitions.length == 0" class="last-row-no-data">
             <td colspan="9">No new scientific papers</td>
@@ -64,47 +65,7 @@
             <td>{{rev.firstname}}</td>
             <td>{{rev.lastname}}</td>
             <td>{{rev.email}}</td>
-            <td>{{rev.reviewerStatus}}</td>
-        </tr>
-        <tr *ngIf="requestedReviewers.length == 0" class="last-row-no-data">
-            <td colspan="4">No requested reviewers</td>
-        </tr>
-    </table>
-</div>
-
-<div *ngIf="selectedPaper && selectedPaper.status == 'REVIEWED'">
-    <div class="back" (click)="selectPaper(null)">BACK</div>
-    <p class="new-papers-header">View reviews for {{selectedPaper.paperTitle}}</p>
-
-    <table class="edit-table">
-        <tr>
-            <td>Rank</td>
-            <td>Author</td>
-            <td>Email</td>
-            <td>Action</td>
-        </tr>
-        <tr *ngFor="let rev of reviewers" @fadeIn>
-            <td>{{rev.rank}}</td>
-            <td>{{rev.firstname}} {{rev.lastname}}</td>
-            <td>{{rev.email}}</td>
-            <td><button (click)="requestReview(rev)">Request review</button></td>
-        </tr>
-    </table>
-
-    <p class="requested-reviewers-header">Requested reviewers</p>
-
-    <table class="edit-table">
-        <tr>
-            <td>Firstname</td>
-            <td>Lastname</td>
-            <td>Email</td>
-            <td>Status</td>
-        </tr>
-        <tr *ngFor="let rev of requestedReviewers" @fadeIn>
-            <td>{{rev.firstname}}</td>
-            <td>{{rev.lastname}}</td>
-            <td>{{rev.email}}</td>
-            <td>{{rev.reviewerStatus}}</td>
+            <td [ngClass]="{'accepted-request' : rev.reviewerStatus == 'ACCEPTED', 'declined-request' : rev.reviewerStatus == 'DECLINED'}">{{rev.reviewerStatus}}</td>
         </tr>
         <tr *ngIf="requestedReviewers.length == 0" class="last-row-no-data">
             <td colspan="4">No requested reviewers</td>
@@ -113,8 +74,32 @@
 
     <p class="new-papers-header" style="margin-top: 90px !important;">Actions</p>
     <div class="editor-future-actions d-flex justify-content-center">
-        <button class="editor-future-actions-button">Accept</button>
-        <button class="editor-future-actions-button">Request revisions</button>
-        <button class="editor-future-actions-button">Reject</button>
+        <button style="margin:0 !important;" class="editor-future-actions-button" (click)="startReviewForSubmition()">Start Review</button>
+    </div>
+
+</div>
+
+<div *ngIf="selectedPaper && selectedPaper.status == 'REVIEWED'">
+    <div class="back" (click)="selectPaper(null)">BACK</div>
+    <p class="new-papers-header">View reviews for {{selectedPaper.paperTitle}}</p>
+
+    <table class="edit-table">
+        <tr>
+            <td>Paper Title</td>
+            <td>Reviewer</td>
+            <td>View</td>
+        </tr>
+        <tr *ngFor="let rev of reviewsForSelectedSubmition" @fadeIn>
+            <td>{{rev.paperTitle}}</td>
+            <td>{{rev.reviewerName}}</td>
+            <td><a [href]="getSanitizedURL('http://localhost:8081/api/paper-review/view/' + rev.reviewId)" [attr.target]="'_blank'"><button>View</button></a></td>
+        </tr>
+    </table>
+
+    <p class="new-papers-header" style="margin-top: 90px !important;">Actions</p>
+    <div class="editor-future-actions d-flex justify-content-center">
+        <button class="editor-future-actions-button" (click)="acceptSubmition()">Accept</button>
+        <button class="editor-future-actions-button" (click)="requestRevisionsSubmition()">Request revisions</button>
+        <button class="editor-future-actions-button" (click)="rejectSubmition()">Reject</button>
     </div>
 </div>

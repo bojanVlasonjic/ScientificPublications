@@ -72,4 +72,16 @@ public class AccessControlService {
         }
     }
 
+    public void checkIfAllReviewersAcceptedRequests(Submition submition) {
+        if (submition.getRequestedReviewers().size() == 0 && submition.getReviewers().size() >= 1) {
+            throw new ApiBadRequestException("Not all reviewers accepted request.");
+        }
+    }
+
+    public void checkIfReviewerAlreadySentReview(Submition submition, Author reviewer) {
+        if (submition.getReviewersThatAddedReview().contains(reviewer.getId())) {
+            throw new ApiBadRequestException("You already sent your review for this submition.");
+        }
+    }
+
 }

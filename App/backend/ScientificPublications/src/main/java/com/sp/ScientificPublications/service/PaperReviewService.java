@@ -190,14 +190,19 @@ public class PaperReviewService {
             Author reviewer = authenticationService.getCurrentAuthor();
 
             accessControlService.checkIfUserIsReviewerForSubmition(reviewer, submition);
+            accessControlService.checkIfReviewerAlreadySentReview(submition, reviewer);
 
             if (submition.getStatus() == SubmitionStatus.IN_REVIEW_PROCESS) {
                 DocumentDTO documentDTO = new DocumentDTO(null, createReviewDTO.getReviewContent());
                 DocumentDTO paperReview = storePaperReviewAsDocument(documentDTO);
+                this.generatePdf(paperReview.getDocumentId());
+                this.generateHtml(paperReview.getDocumentId());
 
                 Review review = new Review(paperReview.getDocumentId(), reviewer, submition);
                 reviewer.getReviews().add(review);
                 submition.getReviews().add(review);
+
+                submition.getReviewersThatAddedReview().add(review.getId());
 
                 // if all reviewers added their review submition changes its state to REVIEWED
                 if (submition.getRequestedReviewers().size() == 0 && submition.getReviews().size() == submition.getReviewers().size()) {

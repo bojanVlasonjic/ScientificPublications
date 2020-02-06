@@ -1,7 +1,6 @@
 package com.sp.ScientificPublications.controller;
 
 import com.sp.ScientificPublications.dto.UserDTO;
-import com.sp.ScientificPublications.dto.reviews.ReviewDTO;
 import com.sp.ScientificPublications.dto.submitions.AuthorSubmitionDTO;
 import com.sp.ScientificPublications.dto.submitions.CreateSubmitionDTO;
 import com.sp.ScientificPublications.dto.submitions.SubmitionViewDTO;
@@ -85,9 +84,9 @@ public class SubmitionController {
     }
 
     @Secured({"ROLE_EDITOR"})
-    @PutMapping("/{id}/reject")
-    public ResponseEntity rejectSubmition(@PathVariable Long id) {
-        submitionService.rejectSubmition(id);
+    @PutMapping("/{submitionId}/reject")
+    public ResponseEntity rejectSubmition(@PathVariable Long submitionId) {
+        submitionService.rejectSubmition(submitionId);
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -117,5 +116,11 @@ public class SubmitionController {
     public ResponseEntity cancelRequestReview(@PathVariable Long submitionId, @PathVariable Long reviewerId) {
         submitionService.cancelRequestReview(submitionId, reviewerId);
         return new ResponseEntity(HttpStatus.OK);
+    }
+    
+    @Secured({"ROLE_EDITOR"})
+    @GetMapping("/{submitionId}/reviewers")
+    public ResponseEntity<List<UserDTO>> getAllReviewersForSubmition(@PathVariable Long submitionId) {
+        return new ResponseEntity<>(submitionService.getAllReviewersForSubmition(submitionId), HttpStatus.OK);
     }
 }

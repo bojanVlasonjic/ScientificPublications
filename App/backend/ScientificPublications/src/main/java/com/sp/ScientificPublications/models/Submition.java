@@ -1,6 +1,9 @@
 package com.sp.ScientificPublications.models;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -38,11 +41,11 @@ public class Submition {
     @Temporal(TemporalType.DATE)
     private Date dateCreated = new Date();
 
-    @Column(nullable =  true)
+    @Column
     @Temporal(TemporalType.DATE)
     private Date dateRevised;
 
-    @Column(nullable = true)
+    @Column
     @Temporal(TemporalType.DATE)
     private Date datePublished;
 
@@ -54,6 +57,9 @@ public class Submition {
 
     @OneToMany(mappedBy = "submition",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Review> reviews = new HashSet<>();
+
+    @ElementCollection
+    private Set<Long> reviewersThatAddedReview = new HashSet<>();
 
     public Submition(String paperId, String title, String coverLetterId, SubmitionStatus status) {
         this.paperId = paperId;

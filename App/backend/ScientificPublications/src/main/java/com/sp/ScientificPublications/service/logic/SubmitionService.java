@@ -14,18 +14,21 @@ import com.sp.ScientificPublications.models.Submition;
 import com.sp.ScientificPublications.models.SubmitionStatus;
 import com.sp.ScientificPublications.repository.AuthorRepository;
 import com.sp.ScientificPublications.repository.SubmitionRepository;
+import com.sp.ScientificPublications.repository.rdf.RdfRepository;
+import com.sp.ScientificPublications.repository.rdf.SparqlUtil;
 import com.sp.ScientificPublications.service.CoverLetterService;
 import com.sp.ScientificPublications.service.ScientificPaperService;
+import com.sp.ScientificPublications.service.UtilityService;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.impl.PropertyImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,6 +51,12 @@ public class SubmitionService {
 
     @Autowired
     private AuthenticationService authenticationService;
+
+    @Autowired
+    private RdfRepository rdfRepository;
+
+    @Autowired
+    private UtilityService utilityService;
 
 
     public List<UserDTO> getAllReviewersForSubmition(Long submitionId) {
@@ -126,11 +135,24 @@ public class SubmitionService {
         Submition submition = new Submition(paper.getDocumentId(), title, coverLetter.getDocumentId(), SubmitionStatus.NEW);
         author.getSubmitions().add(submition);
         submition.setAuthor(author);
+        submition = submitionRepository.save(submition);
+        generateAndSaveMetadata(submition);
         return new AuthorSubmitionDTO(submitionRepository.save(submition));
     }
 
     public void generateAndSaveMetadata(Submition submition) {
+        Model model = ModelFactory.createDefaultModel();
 
+        // DATE CREATED
+        model.createResource(SparqlUtil.SUBJECT_URI + "/submition/" + submition.getId())
+                .addProperty(new PropertyImpl(SparqlUtil.PROPERTY_URI + "/dateCreated"),
+                        utilityService.formatDate(submition.getDateCreated()));
+
+        // STATUS
+        model.createResource(SparqlUtil.SUBJECT_URI + "/submition/" + submition.getId())
+                .addProperty(new PropertyImpl(SparqlUtil.PROPERTY_URI + "/status"), submition.getStatus().toString());
+
+        rdfRepository.saveModelToDb(model);
     }
 
 
@@ -154,7 +176,7 @@ public class SubmitionService {
         Submition submition = new Submition(paper.getDocumentId(), title, coverLetter.getDocumentId(), SubmitionStatus.NEW);
         author.getSubmitions().add(submition);
         submition.setAuthor(author);
-
+        generateAndSaveMetadata(submition);
         return new AuthorSubmitionDTO(submitionRepository.save(submition));
     }
 
@@ -242,9 +264,15 @@ public class SubmitionService {
             Submition submition = optionalSubmition.get();
             accessControlService.checkIfTransitionIsPossible(submition.getStatus(), SubmitionStatus.REVISED);
             submition.setStatus(SubmitionStatus.REVISED);
+            submition.setDateRevised(new Date());
             //TODO: SAVE REVISED DOCUMENT TO XML DATABASE
             //TODO: SEND REVISED NOTIFICATION EMAIL TO REVIEWERS AND EDITOR
-            submitionRepository.save(submition);
+            submition = submitionRepository.save(submition);
+
+            Model model = ModelFactory.createDefaultModel();
+            model.createResource(SparqlUtil.SUBJECT_URI + "/submition/" + submition.getId())
+                    .addProperty(new PropertyImpl(SparqlUtil.PROPERTY_URI + "/dateRevised"), submition.getDateRevised().toString());
+            rdfRepository.saveModelToDb(model);
         } else {
             throw new ApiNotFoundException("Submition doesnt exist.");
         }
@@ -253,10 +281,24 @@ public class SubmitionService {
     public void publishSubmition(Long id) {
         Optional<Submition> optionalSubmition = submitionRepository.findById(id);
         if (optionalSubmition.isPresent()) {
+
+            // get submition and check if can be published
             Submition submition = optionalSubmition.get();
             accessControlService.checkIfTransitionIsPossible(submition.getStatus(), SubmitionStatus.PUBLISHED);
+
+            // save published submition
             submition.setStatus(SubmitionStatus.PUBLISHED);
-            submitionRepository.save(submition);
+            submition.setDatePublished(new Date());
+            submition = submitionRepository.save(submition);
+
+            // generate metadata and save to RDF
+            Model model = ModelFactory.createDefaultModel();
+            model.createResource(SparqlUtil.SUBJECT_URI + "/submition/" + submition.getId())
+                    .addProperty(new PropertyImpl(SparqlUtil.PROPERTY_URI + "/datePublished"),
+                            utilityService.formatDate(submition.getDatePublished()));
+            rdfRepository.saveModelToDb(model);
+
+            // send email
             //TODO: SEND PUBLISHED NOTIFICATION EMAIL TO AUTHOR
         } else {
             throw new ApiNotFoundException("Submition doesnt exist.");
@@ -305,6 +347,20 @@ public class SubmitionService {
             Submition submition = optionalSubmition.get();
             List<ReviewDTO> reviewDTOS = submition.getReviews().stream().map(ReviewDTO::new).collect(Collectors.toList());
             return reviewDTOS;
+        } else {
+            throw new ApiNotFoundException("Submition doesnt exist.");
+        }
+    }
+
+    public void setSubmitionStatusInReviewProcess(Long submitionId) {
+        Optional<Submition> optionalSubmition = submitionRepository.findById(submitionId);
+        if (optionalSubmition.isPresent()) {
+            Submition submition = optionalSubmition.get();
+            accessControlService.checkIfAllReviewersAcceptedRequests(submition);
+            accessControlService.checkIfTransitionIsPossible(submition.getStatus(), SubmitionStatus.IN_REVIEW_PROCESS);
+            submition.setStatus(SubmitionStatus.IN_REVIEW_PROCESS);
+            submition.setReviewersThatAddedReview(new HashSet<>());
+            submitionRepository.save(submition);
         } else {
             throw new ApiNotFoundException("Submition doesnt exist.");
         }

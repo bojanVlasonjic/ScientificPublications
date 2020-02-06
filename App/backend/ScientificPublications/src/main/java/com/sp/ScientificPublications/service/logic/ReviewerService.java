@@ -83,7 +83,6 @@ public class ReviewerService {
             reviewer.getReviewedSubmitions().add(submition);
 
             submitionRepository.save(submition);
-            //TODO: SEND REVIEWER ACCEPTED TO EDITOR
         } else {
             throw new ApiNotFoundException("Submition doesnt exist");
         }

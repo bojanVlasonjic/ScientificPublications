@@ -25,4 +25,11 @@ public class EditorController {
     public ResponseEntity<List<ReviewDTO>> getReviewsForSubmition(@PathVariable Long submitionId) {
         return new ResponseEntity<>(submitionService.getReviewsForSubmitionEditor(submitionId), HttpStatus.OK);
     }
+
+    @Secured("ROLE_EDITOR")
+    @GetMapping("/set-in-review-process/{submitionId}")
+    public ResponseEntity setSubmitionStatusInReviewProcess(@PathVariable Long submitionId) {
+        submitionService.setSubmitionStatusInReviewProcess(submitionId);
+        return new ResponseEntity(HttpStatus.OK);
+    }
 }

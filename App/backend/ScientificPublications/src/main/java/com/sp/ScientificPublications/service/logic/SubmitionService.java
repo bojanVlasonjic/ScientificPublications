@@ -14,8 +14,13 @@ import com.sp.ScientificPublications.models.Submition;
 import com.sp.ScientificPublications.models.SubmitionStatus;
 import com.sp.ScientificPublications.repository.AuthorRepository;
 import com.sp.ScientificPublications.repository.SubmitionRepository;
+import com.sp.ScientificPublications.repository.rdf.RdfRepository;
+import com.sp.ScientificPublications.repository.rdf.SparqlUtil;
 import com.sp.ScientificPublications.service.CoverLetterService;
 import com.sp.ScientificPublications.service.ScientificPaperService;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.impl.PropertyImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -48,6 +53,9 @@ public class SubmitionService {
 
     @Autowired
     private AuthenticationService authenticationService;
+
+    @Autowired
+    private RdfRepository rdfRepository;
 
 
     public List<UserDTO> getAllReviewersForSubmition(Long submitionId) {
@@ -126,11 +134,23 @@ public class SubmitionService {
         Submition submition = new Submition(paper.getDocumentId(), title, coverLetter.getDocumentId(), SubmitionStatus.NEW);
         author.getSubmitions().add(submition);
         submition.setAuthor(author);
+        submition = submitionRepository.save(submition);
+        generateAndSaveMetadata(submition);
         return new AuthorSubmitionDTO(submitionRepository.save(submition));
     }
 
     public void generateAndSaveMetadata(Submition submition) {
+        Model model = ModelFactory.createDefaultModel();
 
+        // DATE CREATED
+        model.createResource(SparqlUtil.SUBJECT_URI + "/submition/" + submition.getId())
+                .addProperty(new PropertyImpl(SparqlUtil.PROPERTY_URI + "/dateCreated"), submition.getDateCreated().toString());
+
+        // STATUS
+        model.createResource(SparqlUtil.SUBJECT_URI + "/submition/" + submition.getId())
+                .addProperty(new PropertyImpl(SparqlUtil.PROPERTY_URI + "/status"), submition.getStatus().toString());
+
+        rdfRepository.saveModelToDb(model);
     }
 
 
@@ -154,7 +174,7 @@ public class SubmitionService {
         Submition submition = new Submition(paper.getDocumentId(), title, coverLetter.getDocumentId(), SubmitionStatus.NEW);
         author.getSubmitions().add(submition);
         submition.setAuthor(author);
-
+        generateAndSaveMetadata(submition);
         return new AuthorSubmitionDTO(submitionRepository.save(submition));
     }
 
@@ -305,6 +325,19 @@ public class SubmitionService {
             Submition submition = optionalSubmition.get();
             List<ReviewDTO> reviewDTOS = submition.getReviews().stream().map(ReviewDTO::new).collect(Collectors.toList());
             return reviewDTOS;
+        } else {
+            throw new ApiNotFoundException("Submition doesnt exist.");
+        }
+    }
+
+    public void setSubmitionStatusInReviewProcess(Long submitionId) {
+        Optional<Submition> optionalSubmition = submitionRepository.findById(submitionId);
+        if (optionalSubmition.isPresent()) {
+            Submition submition = optionalSubmition.get();
+            accessControlService.checkIfAllReviewersAcceptedRequests(submition);
+            accessControlService.checkIfTransitionIsPossible(submition.getStatus(), SubmitionStatus.IN_REVIEW_PROCESS);
+            submition.setStatus(SubmitionStatus.IN_REVIEW_PROCESS);
+            submitionRepository.save(submition);
         } else {
             throw new ApiNotFoundException("Submition doesnt exist.");
         }

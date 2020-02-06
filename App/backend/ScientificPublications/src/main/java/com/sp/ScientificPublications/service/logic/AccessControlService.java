@@ -72,4 +72,10 @@ public class AccessControlService {
         }
     }
 
+    public void checkIfAllReviewersAcceptedRequests(Submition submition) {
+        if (submition.getRequestedReviewers().size() == 0 && submition.getReviewers().size() >= 1) {
+            throw new ApiBadRequestException("Not all reviewers accepted request.");
+        }
+    }
+
 }

@@ -15,7 +15,6 @@ import com.sp.ScientificPublications.repository.exist.XQueryRepository;
 import com.sp.ScientificPublications.repository.rdf.FusekiDocumentRepository;
 import com.sp.ScientificPublications.service.logic.AuthenticationService;
 import com.sp.ScientificPublications.utility.FileUtil;
-import org.apache.xmlrpc.webserver.ServletWebServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamResource;
@@ -26,8 +25,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
-
-import org.xmldb.api.base.*;
+import org.xmldb.api.base.Resource;
+import org.xmldb.api.base.ResourceIterator;
+import org.xmldb.api.base.ResourceSet;
+import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.XMLResource;
 
 import javax.xml.bind.JAXBException;
@@ -37,15 +38,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
-
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ScientificPaperService {
@@ -235,8 +230,6 @@ public class ScientificPaperService {
         return true;
     }
 
-    // ================= File manipulation
-
     public boolean validateScientificPaperXMLFile(MultipartFile file) {
         return this.validateScientificPaper(domParserSvc.readMultipartXMLFile(file));
     }
@@ -251,8 +244,6 @@ public class ScientificPaperService {
     	
     	return document;
     }
-
-    // =================
 
     public boolean validateScientificPaper(String documentContent) {
         return domParserSvc.validateXmlDocument(documentContent, schemaPath);
@@ -281,14 +272,12 @@ public class ScientificPaperService {
 
 
     public ScientificPaper retrieveScientificPaperAsObject(String documentId) {
-
         try {
             return (ScientificPaper) existJaxbRepo.retrieveObject(collectionId, documentId, modelPackage);
         } catch (XMLDBException | JAXBException e) {
             e.printStackTrace();
             throw new ApiBadRequestException("Failed to retrieve scientific paper");
         }
-
     }
 
 

@@ -14,6 +14,10 @@ export class SubmitionService {
     return this.http.get('api/submitions');
   }
 
+  getPublishedSubmitions(): Observable<any> {
+    return this.http.get('api/submitions/published');
+  }
+
   getSubmitionsForAuthor(): Observable<any> {
     return this.http.get('api/submitions/author');
   }

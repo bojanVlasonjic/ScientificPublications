@@ -52,9 +52,16 @@
     background: black;
     color: white;
     padding: 10px 20px;
-    border-radius: 20px;
+    border-radius: 6px;
     cursor: pointer;
     z-index: 9;
+    transition: .3s;
+}
+
+.back:hover {
+    background: white;
+    color: black;
+    box-shadow: 0px 0px 20px 0px black;
 }
 
 .requested-reviewers-header {

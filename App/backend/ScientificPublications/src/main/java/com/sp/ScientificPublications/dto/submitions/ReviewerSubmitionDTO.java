@@ -1,5 +1,8 @@
 package com.sp.ScientificPublications.dto.submitions;
 
+import com.sp.ScientificPublications.dto.UserDTO;
+import com.sp.ScientificPublications.models.Submition;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +13,17 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReviewerSubmitionDTO {
-    private String submitionId;
+    private Long submitionId;
     private String paperId;
     private String status;
+    private String paperTitle;
+    private UserDTO author;
+    
+    public ReviewerSubmitionDTO(Submition submition) {
+    	submitionId = submition.getId();
+        paperId = submition.getPaperId();
+        paperTitle = submition.getPaperTitle();
+        status = submition.getStatus().toString();
+        author = new UserDTO(submition.getAuthor());
+    }
 }

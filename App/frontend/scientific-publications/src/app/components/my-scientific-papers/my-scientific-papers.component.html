@@ -1,8 +1,44 @@
-<div class="container">
+<div>
 
-    <h2 class="heading" style="margin-top: 3ex;">My scientific papers</h2>
+    <h2 class="h-header">My scientific papers</h2>
 
-    <table class="table">
+    <table class="t-table">
+        <tr>
+            <td>#</td>
+            <td scope="col">Title</td>
+            <td scope="col">Status</td>
+            <td scope="col">View</td>
+            <td scope="col">Download</td>
+            <td scope="col">Action</td>
+        </tr>
+        <tr *ngFor="let submition of submitions; index as i;" @fadeIn>
+            <th scope="row"> {{ i+1 }} </th>
+            <td> {{ submition.paperTitle }} </td>
+            <td> {{ submition.status }} </td>
+            <td>
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <button type="button"
+                        (click)="viewDocument('scientific-paper', submition.paperId)">
+                        Scientific paper
+                    </button>
+                    <button *ngIf="submition.coverLetterId != null"
+                        (click)="viewDocument('cover-letter', submition.coverLetterId)">
+                        Cover letter
+                    </button>
+                    </div>
+            </td>
+            <td>
+                <button class="btn btn-secondary" (click)="showPopUp(submition)">Download</button>
+            </td>
+            <td *ngIf="submition.status !== 'CANCELED'">
+                <button class="btn btn-danger" (click)="cancelSubmition(submition.submitionId, i)">
+                    Cancel 
+                </button>
+            </td>
+        </tr>
+    </table>
+
+    <!--<table class="table">
         <thead class="thead-dark">
           <tr>
             <th>#</th>
@@ -40,49 +76,10 @@
                 </td>
             </tr>
         </tbody>
-    </table>
+    </table>-->
 </div>
 
-<div (click)="closePopUp()" class="dialog-background" *ngIf="displayPopUp">
-</div>
-<div class="dialog-pop-up" *ngIf="displayPopUp">
+<app-document-download [displayPopUp]="displayDownloadPopUp" [submition]="submitionToDownload"
+    (closePopUpEvent)="closePopUp($event)">
+</app-document-download>
 
-        <h3 class="heading"> Download </h3>
-
-        <div class="dialog-content">
-            <select class="custom-select" style="margin-bottom: 2ex;" [(ngModel)]="documentType">
-                <option value="" selected disabled hidden>Select document type</option>
-                <option value="scientific-paper">Scienitic paper</option>
-                <option value="cover-letter" *ngIf="submitionInPopUp.coverLetterId != null">
-                    Cover letter
-                </option>
-            </select>
-
-            <div class="form-check form-check-inline" style="margin-left: 5ex; margin-right: 5ex;">
-                <input class="form-check-input" name="extension" type="radio"
-                    (click)="downloadTypeChanged('pdf')" checked>
-                <label class="form-check-label"> Pdf </label>
-            </div>
-            <div class="form-check form-check-inline" style="margin-right: 5ex;">
-                <input class="form-check-input" name="extension" type="radio"
-                    (click)="downloadTypeChanged('html')">
-                <label class="form-check-label"> Html </label>
-            </div>
-            <div class="form-check form-check-inline" style="margin-bottom: 3ex;">
-                <input class="form-check-input" name="extension" type="radio"
-                    (click)="downloadTypeChanged('xml')">
-                <label class="form-check-label"> Xml </label>
-            </div>
-
-            <br/>
-
-            <button *ngIf="documentType == 'cover-letter'" class="btn btn-primary centered-btn"
-                (click)="downloadDocument(submitionInPopUp.coverLetterId)">
-                 Download
-            </button>
-            <button *ngIf="documentType == 'scientific-paper'" class="btn btn-primary centered-btn"
-                (click)="downloadDocument(submitionInPopUp.paperId)">
-                 Download 
-            </button>
-        </div>
-    </div>

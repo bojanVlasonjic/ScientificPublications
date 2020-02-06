@@ -309,6 +309,7 @@ public class ScientificPaperService {
     }
 
 
+    /*
     // TODO: implement an update method, change method name
     public ScientificPaper storeScientificPaperAsObject(String documentId, ScientificPaper scPaper) {
         try {
@@ -317,7 +318,7 @@ public class ScientificPaperService {
             throw new ApiBadRequestException("Failed to store scientific paper");
         }
 
-    }
+    }*/
 
 
     public DocumentDTO storeScientificPaperAsDocument(DocumentDTO document) {

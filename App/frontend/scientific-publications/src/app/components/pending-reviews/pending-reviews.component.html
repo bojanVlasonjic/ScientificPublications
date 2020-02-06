@@ -21,5 +21,33 @@
             <td><button style="background:rgb(45, 146, 62)" (click)="acceptSubmition(sub)">Accept</button></td>
             <td><button style="background:rgb(146, 45, 45)" (click)="declineSubmition(sub)">Decline</button></td>
         </tr>
+        <tr *ngIf="submitions.length == 0" class="last-row-no-data">
+            <td colspan="9">No pending reviews</td>
+        </tr>
+    </table>
+
+    <p class="pending-reviews-header">My accepted submitions</p>
+    <table class="pending-reviews-table">
+        <tr>
+            <td>Paper name</td>
+            <td>Publisher</td>
+            <td>Status</td>
+            <td>View</td>
+            <td colspan="3">Download</td>
+            <td colspan="2">Action</td>
+        </tr>
+        <tr *ngFor="let sub of myAcceptedSubmitions" @fadeIn>
+            <td>{{sub.paperTitle}}</td>
+            <td>{{sub.author.firstname}} {{sub.author.lastname}}</td>
+            <td>{{sub.status}}</td>
+            <td><a [href]="getSanitizedURL('http://localhost:8081/api/scientific-paper/view/' + sub.paperId)" [attr.target]="'_blank'"><button>View</button></a></td>
+            <td><a [href]="getSanitizedURL('http://localhost:8081/api/scientific-paper/download/xml/' + sub.paperId)" [attr.target]="'_blank'"><button>XML</button></a></td>
+            <td><a [href]="getSanitizedURL('http://localhost:8081/api/scientific-paper/download/html/' + sub.paperId)" [attr.target]="'_blank'"><button>HTML</button></a></td>
+            <td><a [href]="getSanitizedURL('http://localhost:8081/api/scientific-paper/download/pdf/' + sub.paperId)" [attr.target]="'_blank'"><button>PDF</button></a></td>
+            <td *ngIf="sub.status == 'NEW'">Currently No Action</td>
+        </tr>
+        <tr *ngIf="myAcceptedSubmitions.length == 0" class="last-row-no-data">
+            <td colspan="8">No accepted reviews</td>
+        </tr>
     </table>
 </div>

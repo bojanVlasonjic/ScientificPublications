@@ -22,6 +22,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
 export class PendingReviewsComponent implements OnInit {
 
   private submitions = [];
+  private myAcceptedSubmitions = [];
 
   constructor(private submitionService: SubmitionService,
               private reviewersService: ReviewersService,
@@ -30,6 +31,11 @@ export class PendingReviewsComponent implements OnInit {
               private toaster: ToasterService) { }
 
   ngOnInit() {
+    this.getPendingReviewsForCurrentReviewer();
+    this.getMyAcceptedSubmitionReviews();
+  }
+
+  getPendingReviewsForCurrentReviewer(): void {
     this.reviewersService.getPendingReviewsForCurrentReviewer().subscribe(
       data => {
         this.submitions = data;
@@ -38,7 +44,20 @@ export class PendingReviewsComponent implements OnInit {
       error => {
         console.log(error);
       }
-    )
+    );
+  }
+
+  getMyAcceptedSubmitionReviews(): void {
+    this.reviewersService.getMyAcceptedSubmitionReviews().subscribe(
+      data => {
+        
+        this.myAcceptedSubmitions = data;
+        console.log(data);
+      },
+      error => {
+        console.log(error);
+      }
+    );
   }
 
   getSanitizedURL(url: string) {
@@ -50,6 +69,7 @@ export class PendingReviewsComponent implements OnInit {
     this.reviewersService.acceptSubmitionReviewRequest(submition.id).subscribe(
       data => {
         this.toaster.showMessage("Accepted", "Accepted review request");
+        this.getMyAcceptedSubmitionReviews();
         console.log(data);
       },
       error => {

@@ -199,6 +199,7 @@ public class CoverLetterService {
         return document;
     }
 
+    /*
     // TODO: implement an update method, change method name
     public CoverLetter storeCoverLetterAsObject(String documentId) {
 
@@ -213,7 +214,7 @@ public class CoverLetterService {
             throw new ApiBadRequestException("Failed to store cover letter");
         }
 
-    }
+    }*/
 
 
     public DocumentDTO storeCoverLetterAsDocument(DocumentDTO documentDTO) {

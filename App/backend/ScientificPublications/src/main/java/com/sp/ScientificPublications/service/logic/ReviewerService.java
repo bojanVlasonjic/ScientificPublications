@@ -112,7 +112,10 @@ public class ReviewerService {
 
     public List<ReviewerSubmitionDTO> getMySubmitions(Pageable pageable) {
         Author reviewer = authenticationService.getCurrentAuthor();
-        return reviewer.getReviewedSubmitions().stream().map(ReviewerSubmitionDTO::new).collect(Collectors.toList());
+        return reviewer.getReviewedSubmitions()
+                .stream()
+                .map(ReviewerSubmitionDTO::new)
+                .collect(Collectors.toList());
     }
 
     public List<ReviewDTO> getReviewsForPaper(String paperId) {

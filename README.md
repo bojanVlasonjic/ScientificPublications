@@ -7,7 +7,11 @@
 
 # ScientificPublications
 In general, an informational system for posting, publishing and reviewing scientific papers.
-Scientific publications consist of 4 types of documents: scientific papers, cover letters and paper reviews.
+Scientific publications consist of 3 types of documents:
+- scientific papers
+- cover letters
+- paper reviews
+
 The documents are modeled via an xml schema, and they are persisted in the exist database.
 The documents contain may contain metadata modeled by the user, which helps build references between documents and provide search.
 
@@ -21,7 +25,7 @@ Authors can upload scientific papers using the xml text editor provided, or by u
 
 Editor manages all of the scientific papers. He can view and download them. He can choose reviewers for certain scientific papers, and he decides in the end whether the scientific papers are going to get published or not.
 
-Unregistered users can view published papers in a pdf format, and download them in xml, pdf or html.
+Unregistered users can view and search published papers, and download them in xml, pdf or html.
 
 
 # Technologies used

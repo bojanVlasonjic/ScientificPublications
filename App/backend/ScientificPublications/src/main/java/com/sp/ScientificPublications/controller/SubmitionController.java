@@ -117,4 +117,10 @@ public class SubmitionController {
         submitionService.cancelRequestReview(submitionId, reviewerId);
         return new ResponseEntity(HttpStatus.OK);
     }
+    
+    @Secured({"ROLE_EDITOR"})
+    @GetMapping("/{submitionId}/reviewers")
+    public ResponseEntity<List<UserDTO>> getAllReviewersForSubmition(@PathVariable Long submitionId) {
+        return new ResponseEntity<>(submitionService.getAllReviewersForSubmition(submitionId), HttpStatus.OK);
+    }
 }

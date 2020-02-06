@@ -63,6 +63,8 @@ export class PendingReviewsComponent implements OnInit, OnDestroy {
     }).subscribe(
       data => {
         console.log(data);
+        this.currentlyReviewingSubmition = null;
+        this.getMyAcceptedSubmitionReviews();
         this.hideUploadSpinner();
       },
       error => {

@@ -134,7 +134,7 @@ public class DocumentReviewService {
             document = new DocumentDTO(resource.getId(), resource.getContent().toString());
         } catch (XMLDBException e) {
             e.printStackTrace();
-            throw new ApiBadRequestException("Failed to retrieve the cover document review");
+            throw new ApiBadRequestException("Failed to retrieve the document review");
         }
 
         return document;
@@ -142,6 +142,7 @@ public class DocumentReviewService {
     }
 
 
+    /*
     // TODO: implement an update method, change method name
     public DocumentReview storeDocumentReviewAsObject(String documentId) {
 
@@ -156,7 +157,7 @@ public class DocumentReviewService {
             throw new ApiBadRequestException("Failed to store document review");
         }
 
-    }
+    }*/
 
     public DocumentDTO storeDocumentReviewAsDocument(DocumentDTO documentDTO) {
 

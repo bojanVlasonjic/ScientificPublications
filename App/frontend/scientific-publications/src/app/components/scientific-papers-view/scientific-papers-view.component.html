@@ -1,0 +1,32 @@
+<div class="container">
+
+    <h2 class="heading"> Published papers </h2> 
+
+    <h4 class="heading" *ngIf="publishedPapers.length == 0">
+        No papers were published
+    </h4>
+
+    <div class="row">
+        <div class="col col-lg-6 paper-holder" *ngFor="let paper of publishedPapers">
+            <p> Paper name: "{{ paper.paperTitle }}" </p>
+            <label>Authors: </label>
+            <ul>
+                <li *ngFor="let author of paper.authors"> {{ author.firstName }} {{ author.lastName }}</li>
+            </ul>
+
+            <button class="btn btn-secondary" style="margin-left: 2ex;" (click)="viewPaper(paper.paperId)">
+                 View 
+            </button>
+
+            <button class="btn btn-secondary" style="margin-left: 3ex;" (click)="showPopUp(paper)"> 
+                Download
+            </button>
+
+        </div>
+    </div>
+</div>
+
+<app-document-download [displayPopUp]="downloadPopUpDisplayed" [submition]="paperToDownload"
+    (closePopUpEvent)="closePopUp($event)">
+</app-document-download>
+

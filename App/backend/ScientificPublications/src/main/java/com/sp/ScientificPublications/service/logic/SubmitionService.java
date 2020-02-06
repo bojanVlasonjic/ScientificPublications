@@ -255,7 +255,7 @@ public class SubmitionService {
             Author reviewer = optionalReviewer.get();
             accessControlService.checkIfRequestReviewIsPossible(submition);
             accessControlService.checkIfUserIsRequestedToReviewSubmition(reviewer, submition);
-            accessControlService.checkIfUserIsReviewerForSubmition(reviewer, submition);
+            accessControlService.checkIfUserIsNotReviewerForSubmition(reviewer, submition);
             submition.getRequestedReviewers().add(reviewer);
             reviewer.getRequestedSubmitions().add(submition);
             submitionRepository.save(submition);

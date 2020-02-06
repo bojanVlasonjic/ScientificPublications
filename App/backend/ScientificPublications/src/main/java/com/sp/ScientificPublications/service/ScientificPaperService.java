@@ -474,11 +474,13 @@ public class ScientificPaperService {
         String keywordsTemplate = FileUtil.readFile(simpleSearchTemplatePath, StandardCharsets.UTF_8);
         String simpleSearchQuery = String.format(keywordsTemplate, query);
 
+
         ResourceSet resourceSet = xQueryRepository.find(collectionId, simpleSearchQuery);
         ResourceIterator resourceIterator = resourceSet.getIterator();
 
-        Set<String> results = new HashSet<>();
-
+        while (resourceIterator.hasMoreResources()) {
+            Resource resource = resourceIterator.nextResource();
+        }
 
     }
 }

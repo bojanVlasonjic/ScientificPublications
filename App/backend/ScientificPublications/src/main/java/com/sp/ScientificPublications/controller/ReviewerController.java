@@ -1,9 +1,6 @@
 package com.sp.ScientificPublications.controller;
 
-import com.sp.ScientificPublications.dto.PageableResultsDTO;
-import com.sp.ScientificPublications.dto.reviews.CreateReviewDTO;
 import com.sp.ScientificPublications.dto.reviews.PendingReviewDTO;
-import com.sp.ScientificPublications.dto.submitions.EditorSubmitionDTO;
 import com.sp.ScientificPublications.service.logic.ReviewerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -14,8 +11,6 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/reviewers")

@@ -2,12 +2,16 @@ xquery version "3.1";
 
 declare namespace sp = "http://www.ftn.uns.ac.rs/scientific-publication";
 
-let $queryWord := %s
+let $queryWord := (%s)
 
 for $doc in collection("/db/scientific-publication/scientific-papers")
-    let $title := string($doc/sp:scientific-paper/sp:header/sp:title)
+    let $id := string($doc/sp:scientific-paper/@id)
     let $text := normalize-space(string-join($doc))
     let $text := replace($text, ",", "")
     let $text := lower-case($text)
-    where contains($text, $queryWord)
-        return $title
+    let $tokens := tokenize($text, " ")
+    let $intersection := distinct-values($queryWord[.=$tokens])
+    let $score := count($intersection)
+    where $score != 0
+    order by $score descending
+    return concat($id, "-", $score)

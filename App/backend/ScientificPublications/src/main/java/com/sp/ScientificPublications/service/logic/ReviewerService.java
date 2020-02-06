@@ -5,6 +5,7 @@ import com.sp.ScientificPublications.dto.PageableResultsDTO;
 import com.sp.ScientificPublications.dto.reviews.CreateReviewDTO;
 
 import com.sp.ScientificPublications.dto.reviews.PendingReviewDTO;
+import com.sp.ScientificPublications.dto.reviews.ReviewDTO;
 import com.sp.ScientificPublications.dto.submitions.AuthorSubmitionDTO;
 import com.sp.ScientificPublications.dto.submitions.EditorSubmitionDTO;
 import com.sp.ScientificPublications.exception.ApiInternalServerException;
@@ -108,11 +109,9 @@ public class ReviewerService {
         return new PageableResultsDTO(authorSubmitionDTOS, submitionPage.getTotalPages());
     }
 
-    public PageableResultsDTO<AuthorSubmitionDTO> getMySubmitions(Pageable pageable) {
+    public List<AuthorSubmitionDTO> getMySubmitions(Pageable pageable) {
         Author reviewer = authenticationService.getCurrentAuthor();
-        Page<Submition> submitionPage = new PageImpl<Submition>((List)reviewer.getSubmitions(), pageable, reviewer.getSubmitions().size());
-        List<AuthorSubmitionDTO> authorSubmitionDTOS = submitionPage.getContent().stream().map(AuthorSubmitionDTO::new).collect(Collectors.toList());
-        return new PageableResultsDTO(authorSubmitionDTOS, submitionPage.getTotalPages());
+        return reviewer.getReviewedSubmitions().stream().map(AuthorSubmitionDTO::new).collect(Collectors.toList());
     }
 
 }

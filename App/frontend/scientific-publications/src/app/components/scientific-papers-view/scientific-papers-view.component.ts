@@ -43,4 +43,9 @@ export class ScientificPapersViewComponent implements OnInit {
     this.downloadPopUpDisplayed = event;
   }
 
+  showPopUp(submition: any): void {
+    this.downloadPopUpDisplayed = true;
+    this.paperToDownload = submition;
+  }
+
 }

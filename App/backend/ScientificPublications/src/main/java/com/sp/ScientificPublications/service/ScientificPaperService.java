@@ -474,12 +474,19 @@ public class ScientificPaperService {
         String keywordsTemplate = FileUtil.readFile(simpleSearchTemplatePath, StandardCharsets.UTF_8);
         String simpleSearchQuery = String.format(keywordsTemplate, query);
 
-
         ResourceSet resourceSet = xQueryRepository.find(collectionId, simpleSearchQuery);
         ResourceIterator resourceIterator = resourceSet.getIterator();
 
         while (resourceIterator.hasMoreResources()) {
             Resource resource = resourceIterator.nextResource();
+            String paperId = resource.getContent().toString().split(" ")[0];
+            String score = resource.getContent().toString().split(" ")[1];
+
+            ScientificPaper scientificPaper = retrieveScientificPaperAsObject(paperId);
+            String title = scientificPaper.getHeader().getTitle();
+
+            submitionRepository.findByPaperId(paperId);
+
         }
 
     }

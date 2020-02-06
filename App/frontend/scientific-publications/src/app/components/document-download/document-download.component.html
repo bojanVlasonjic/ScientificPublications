@@ -1,10 +1,8 @@
 <div (click)="closePopUp()" class="dialog-background" *ngIf="popUpDisplayed">
 </div>
 <div class="dialog-pop-up" *ngIf="popUpDisplayed">
-
-        <h3 class="heading"> Download </h3>
-
         <div class="dialog-content">
+            <h3 class="heading"> Download </h3>
             <select class="custom-select" style="margin-bottom: 2ex;" [(ngModel)]="documentType">
                 <option value="" selected disabled hidden>Select document type</option>
                 <option value="scientific-paper">Scienitic paper</option>
@@ -13,7 +11,7 @@
                 </option>
             </select>
 
-            <div class="form-check form-check-inline" style="margin-left: 5ex; margin-right: 5ex;">
+            <div class="form-check form-check-inline" style="margin-left: 11ex; margin-right: 5ex;">
                 <input class="form-check-input" name="extension" type="radio"
                     (click)="downloadTypeChanged('pdf')" checked>
                 <label class="form-check-label"> Pdf </label>

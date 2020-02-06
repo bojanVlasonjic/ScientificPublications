@@ -21,7 +21,7 @@
                         (click)="viewDocument('scientific-paper', submition.paperId)">
                         Scientific paper
                     </button>
-                    <button [ngClass]="{'disabled-button': submition.coverLetterId != null}"
+                    <button [ngClass]="{'disabled-button': submition.coverLetterId == null}"
                         (click)="viewDocument('cover-letter', submition.coverLetterId)">
                         Cover letter
                     </button>

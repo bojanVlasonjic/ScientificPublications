@@ -15,7 +15,6 @@ import { SubmitionService } from 'src/app/services/submition.service';
 })
 export class CreateRevisionComponent implements OnInit {
 
-  uploadType: string // file or editor
   reviewsForPaper: Array<ReviewDto>;
 
   paperId: string;
@@ -41,7 +40,6 @@ export class CreateRevisionComponent implements OnInit {
     if(id != null) {
       this.getPaperReviews();
       this.getPaperContent();
-      this.uploadType = '';
     }
   }
 
@@ -100,7 +98,6 @@ export class CreateRevisionComponent implements OnInit {
     this.submitionSvc.reviseSubmition(this.submitionId, submitionDTO).subscribe(
       data => {
         this.toastSvc.showMessage('Success', 'Your revision was successfully sent');
-        this.uploadType = '';
         this.submitionUpdatedEvent.emit(data);
       },
       err => {
@@ -115,10 +112,6 @@ export class CreateRevisionComponent implements OnInit {
 
   viewReview(reviewId: string) {
     window.open(`${environment.baseUrl}/api/paper-review/view/${reviewId}`, '_blank');
-  }
-
-  uploadPaperRevision(paperContent: string) {
-    let dto = new CreateSubmitionDTO
   }
 
   displayUploadSpinner() {

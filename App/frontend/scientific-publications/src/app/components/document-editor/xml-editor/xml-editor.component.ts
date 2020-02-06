@@ -23,7 +23,7 @@ export class XmlEditorComponent implements OnInit {
   @Input() template: string;
   @Input() documentValid: boolean;
   @Input() logMessage: string;
-  @Input() contentToUpdate: string;
+  
 
   @Output() validationEvent = new EventEmitter();
 
@@ -37,6 +37,13 @@ export class XmlEditorComponent implements OnInit {
 
     if(this.contentToUpdate != null) {
       this.xmlContent = this.contentToUpdate;
+    }
+  }
+
+  @Input()
+  set contentToUpdate(content: string) {
+    if(content != null) {
+      this.xmlContent = content;
     }
   }
 

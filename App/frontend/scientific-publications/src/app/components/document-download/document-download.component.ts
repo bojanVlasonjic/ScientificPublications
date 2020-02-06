@@ -8,9 +8,10 @@ import { environment } from 'src/environments/environment';
 })
 export class DocumentDownloadComponent implements OnInit {
 
-  popUpDisplayed: boolean;
-  submitionInPopUp: any;
-  documentType: string;
+  popUpDisplayed: boolean; // input
+  submitionInPopUp: any; // input
+
+  documentType: string; // scientific-paper or cover-letter
   downloadType: string; // html or pdf
 
   @Output() closePopUpEvent: EventEmitter<boolean>;

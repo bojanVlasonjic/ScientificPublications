@@ -13,11 +13,15 @@ export class ScientificPapersViewComponent implements OnInit {
 
   publishedPapers: Array<SubmitionViewDto>;
 
+  paperToDownload: SubmitionViewDto;
+  downloadPopUpDisplayed: boolean;
+
   constructor(
     private submitionSvc: SubmitionService,
     private toastSvc: ToasterService
     ) { 
     this.publishedPapers = [];
+    this.downloadPopUpDisplayed = false;
   }
 
   ngOnInit() {
@@ -33,6 +37,10 @@ export class ScientificPapersViewComponent implements OnInit {
 
   viewPaper(paperId: string) {
     window.open(`${environment.baseUrl}/api/scientific-paper/view/${paperId}`, '_blank');
+  }
+
+  closePopUp(event: any) {
+    this.downloadPopUpDisplayed = event;
   }
 
 }

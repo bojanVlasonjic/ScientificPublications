@@ -13,12 +13,12 @@ export class MyScientificPapersComponent implements OnInit {
 
   submitions: Array<AuthorSubmitionDTO>;
 
-  displayPopUp: boolean;
+  displayDownloadPopUp: boolean;
   submitionToDownload: AuthorSubmitionDTO;
 
   constructor(private submitionSvc: SubmitionService , private toastSvc: ToasterService) {
     this.submitions = [];
-    this.displayPopUp = false;
+    this.displayDownloadPopUp = false;
 
   }
 
@@ -34,12 +34,12 @@ export class MyScientificPapersComponent implements OnInit {
   }
 
   showPopUp(submition: any): void {
-    this.displayPopUp = true;
+    this.displayDownloadPopUp = true;
     this.submitionToDownload = submition;
   }
 
   closePopUp(event: any) {
-    this.displayPopUp = event;
+    this.displayDownloadPopUp = event;
   }
 
   viewDocument(documentType: string, documentId: string) {

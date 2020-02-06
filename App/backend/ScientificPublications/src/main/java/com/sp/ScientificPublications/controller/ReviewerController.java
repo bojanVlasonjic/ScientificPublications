@@ -51,11 +51,4 @@ public class ReviewerController {
         return new ResponseEntity<>(reviewerService.getMyRequestedSubmitions(pageable), HttpStatus.OK);
     }
 
-    @Secured({"ROLE_AUTHOR"})
-    @PostMapping
-    public ResponseEntity createReview(@RequestBody @Valid CreateReviewDTO createReviewDTO) {
-        reviewerService.createReview(createReviewDTO);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
 }

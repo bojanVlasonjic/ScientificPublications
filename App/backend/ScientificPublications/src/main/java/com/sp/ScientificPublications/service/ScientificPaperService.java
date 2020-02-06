@@ -18,6 +18,7 @@ import com.sp.ScientificPublications.repository.exist.ExistJaxbRepository;
 import com.sp.ScientificPublications.repository.exist.XQueryRepository;
 import com.sp.ScientificPublications.repository.rdf.FusekiDocumentRepository;
 import com.sp.ScientificPublications.utility.FileUtil;
+import org.apache.xmlrpc.webserver.ServletWebServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamResource;
@@ -469,5 +470,19 @@ public class ScientificPaperService {
             results.addAll(tokenizeKeywords(resource.getContent().toString()));
         }
         return results;
+    }
+
+    public void simpleSearch(String query) throws Exception {
+        String simpleSearchTemplatePath = "src/main/resources/data/xquery/simple-search.sqy";
+        String collectionId = "/db/scientific-publication/scientific-papers/";
+        String keywordsTemplate = FileUtil.readFile(simpleSearchTemplatePath, StandardCharsets.UTF_8);
+        String simpleSearchQuery = String.format(keywordsTemplate, query);
+
+        ResourceSet resourceSet = xQueryRepository.find(collectionId, simpleSearchQuery);
+        ResourceIterator resourceIterator = resourceSet.getIterator();
+
+        Set<String> results = new HashSet<>();
+
+
     }
 }

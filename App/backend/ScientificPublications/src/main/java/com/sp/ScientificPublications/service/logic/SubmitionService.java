@@ -138,6 +138,8 @@ public class SubmitionService {
         submition.setAuthor(author);
         submition = submitionRepository.save(submition);
         generateAndSaveMetadata(submition);
+        rdfRepository.saveMetadataFromXml(paper.getDocumentContent());
+
         return new AuthorSubmitionDTO(submitionRepository.save(submition));
     }
 

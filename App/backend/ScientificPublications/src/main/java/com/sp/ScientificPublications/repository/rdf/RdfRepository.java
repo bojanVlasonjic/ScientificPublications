@@ -46,8 +46,9 @@ public class RdfRepository {
                 Model model = ModelFactory.createDefaultModel();
 
                 model.read(new ByteArrayInputStream(outputStream.toByteArray()), null);
-                model.createResource(SparqlUtil.SUBJECT_URI + "/author/john")
-                        .addProperty(new PropertyImpl(SparqlUtil.PROPERTY_URI + "/parentTo"), "jane");
+
+                //model.createResource(SparqlUtil.SUBJECT_URI + "/author/john")
+                //        .addProperty(new PropertyImpl(SparqlUtil.PROPERTY_URI + "/parentTo"), "jane");
 
                 model.write(nTriplesOutputStream, SparqlUtil.NTRIPLES);
 

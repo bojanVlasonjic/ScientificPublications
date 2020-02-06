@@ -49,7 +49,7 @@ Extract the fuseki.war file to the apache tomee web apps folder.
 
 Database access:
 - You may access the exist database by opening your browser and navigating to 'localhost:8080/exist'.
-Log in with the following credentials: username -> 'admin', password -> ''.
+Log in with the following credentials: username='admin', password is empty.
 - You may access the fuseki database by navigation in your browser to localhost:8080/fuseki.
 - You may access the h2 database by navigating to localhost:8081/h2. Make sure that the JDBC Url contains following content: 'jdbc:h2:file:./data/h2-database'.
 

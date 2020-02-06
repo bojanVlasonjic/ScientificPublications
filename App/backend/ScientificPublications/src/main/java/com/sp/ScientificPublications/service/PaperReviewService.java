@@ -191,6 +191,8 @@ public class PaperReviewService {
             if (submition.getStatus() == SubmitionStatus.IN_REVIEW_PROCESS) {
                 DocumentDTO documentDTO = new DocumentDTO(null, createReviewDTO.getReviewContent());
                 DocumentDTO paperReview = storePaperReviewAsDocument(documentDTO);
+                this.generatePdf(paperReview.getDocumentId());
+                this.generateHtml(paperReview.getDocumentId());
 
                 Review review = new Review(paperReview.getDocumentId(), reviewer, submition);
                 reviewer.getReviews().add(review);

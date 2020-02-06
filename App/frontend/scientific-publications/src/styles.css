@@ -120,3 +120,18 @@ body {
     pointer-events: none;
 }
 
+.published-status {
+    color: rgb(32, 90, 34);
+}
+
+.reviewed-status {
+    color: rgb(28, 87, 97);
+}
+
+.accepted-request {
+    color: rgb(32, 90, 34);
+}
+
+.declined-request {
+    color: rgb(90, 32, 32);
+}

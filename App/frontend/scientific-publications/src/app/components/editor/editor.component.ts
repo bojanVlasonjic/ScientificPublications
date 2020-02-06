@@ -4,6 +4,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ScientificPaperService } from 'src/app/services/scientific-paper.service';
 import { ToasterService } from 'src/app/services/toaster.service';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { EditorService } from 'src/app/services/editor.service';
 
 @Component({
   selector: 'app-editor',
@@ -24,13 +25,19 @@ export class EditorComponent implements OnInit {
   private submitions = [];
   private reviewers = [];
   private requestedReviewers = [];
+  private reviewsForSelectedSubmition = [];
 
   constructor(private submitionService: SubmitionService,
               private scientificPaperService: ScientificPaperService,
               private sanitizer: DomSanitizer,
+              private editorService: EditorService,
               private toaster: ToasterService) { }
 
   ngOnInit() {
+    this.getAllSubmitions();
+  }
+
+  getAllSubmitions() {
     this.submitionService.getAllSubmitions().subscribe(
       data => {
         this.submitions = data.results;
@@ -39,12 +46,38 @@ export class EditorComponent implements OnInit {
       error => {
         console.log(error);
       }
+    );
+  }
+
+  startReviewForSubmition(): void {
+    
+  }
+
+  acceptSubmition(): void {
+    console.log(this.selectedPaper.id);
+    this.editorService.acceptSubmition(this.selectedPaper.id).subscribe(
+      data => {
+        this.removeSelections();
+        this.getAllSubmitions();
+        console.log(data);
+      },
+      error => {
+        console.log(error);
+      }
     )
+  }
+
+  requestRevisionsSubmition(): void {
+
+  }
+
+  rejectSubmition(): void {
+
   }
 
   selectPaper(paper) {
     this.selectedPaper = paper;
-    if (paper != null) {
+    if (paper != null && paper.status == "NEW") {
       this.getRequestReviewers();
 
       this.scientificPaperService.getRecommenderReviewers(this.selectedPaper.paperId).subscribe(
@@ -57,10 +90,28 @@ export class EditorComponent implements OnInit {
         }
       )
     }
-    else {
-      this.requestedReviewers = [];
-      this.reviewers = [];
+    else if (paper != null && paper.status == "REVIEWED") {
+      this.editorService.getReviewsForSubmition(this.selectedPaper.id).subscribe(
+        data => {
+          this.reviewsForSelectedSubmition = data;
+          console.log(data);
+        },
+        error => {
+          console.log(error);
+        }
+      )
     }
+
+    else {
+      this.removeSelections();
+    }
+  }
+
+  removeSelections(): void {
+    this.selectedPaper = null;
+    this.requestedReviewers = [];
+    this.reviewers = [];
+    this.reviewsForSelectedSubmition = [];
   }
 
   getSanitizedURL(url: string) {

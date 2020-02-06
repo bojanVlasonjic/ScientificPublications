@@ -28,7 +28,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MyScientificPapersComponent,
     EditorComponent,
     ScientificPapersViewComponent,
-    DocumentDownloadComponent
+    DocumentDownloadComponent,
     PendingReviewsComponent
   ],
   imports: [

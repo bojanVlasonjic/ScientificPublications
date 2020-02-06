@@ -13,8 +13,12 @@ import com.sp.ScientificPublications.repository.exist.ExistDocumentRepository;
 import com.sp.ScientificPublications.repository.exist.ExistJaxbRepository;
 import com.sp.ScientificPublications.repository.exist.XQueryRepository;
 import com.sp.ScientificPublications.repository.rdf.FusekiDocumentRepository;
+import com.sp.ScientificPublications.repository.rdf.RdfRepository;
+import com.sp.ScientificPublications.repository.rdf.SparqlUtil;
 import com.sp.ScientificPublications.service.logic.AuthenticationService;
 import com.sp.ScientificPublications.utility.FileUtil;
+import org.apache.jena.query.QuerySolution;
+import org.apache.jena.query.ResultSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamResource;
@@ -80,6 +84,9 @@ public class ScientificPaperService {
     
     @Autowired
     ReviewRepository reviewRepository;
+
+    @Autowired
+    RdfRepository rdfRepository;
 
 
     private static final String schemaPath = "src/main/resources/data/xsd_schema/scientific-paper.xsd";
@@ -456,6 +463,25 @@ public class ScientificPaperService {
         return results;
     }
 
+    public List<SearchResultDTO> search(String query, String dateCreated, String datePublished, String dateRevised, String status) {
+        List<SearchResultDTO> simpleSearchDTOs = simpleSearch(query);
+        List<SearchResultDTO> advancedSearchDTOs = advancedSearch(dateCreated, datePublished, dateRevised, status);
+
+        System.out.println("SS:" + simpleSearchDTOs.size());
+        System.out.println("AS:" + advancedSearchDTOs.size());
+
+        advancedSearchDTOs.stream().forEach(r -> System.out.println(r.getTitle()));
+        List<SearchResultDTO> combinedResultsDTOs = joinResults(simpleSearchDTOs, advancedSearchDTOs);
+
+        System.out.println("CR:" + combinedResultsDTOs.size());
+
+        List<SearchResultDTO> fileterdResultsDTOs = filterSearchResults(combinedResultsDTOs);
+        System.out.println("FR:" + fileterdResultsDTOs.size());
+
+        return fileterdResultsDTOs;
+    }
+
+
     public List<SearchResultDTO> simpleSearch(String query) {
         List<SearchResultDTO> resultDTOS = new ArrayList<>();
 
@@ -472,47 +498,103 @@ public class ScientificPaperService {
                 Resource resource = resourceIterator.nextResource();
                 String paperId = resource.getContent().toString().split(" ")[0];
                 Long score = Long.parseLong(resource.getContent().toString().split(" ")[1]);
-
-                ScientificPaper scientificPaper = retrieveScientificPaperAsObject(paperId);
-                String title = scientificPaper.getHeader().getTitle();
-
-                Submition submition = submitionRepository.findByPaperId(paperId);
-                if (submition != null) {
-                    String author = submition.getAuthor().getFirstname() + " " + submition.getAuthor().getLastname();
-                    resultDTOS.add(new SearchResultDTO(paperId, title, author, score, submition.getStatus()));
-                }
-            }
-
-            String userType = authenticationService.getTypeOfUser();
-
-
-            // GUESTS CAN VIEW ONLY PUBLISHED PAPERS
-            if (userType.equals("GUEST")) {
-                resultDTOS = resultDTOS
-                        .stream()
-                        .filter(r -> r.getStatus().equals(SubmitionStatus.PUBLISHED))
-                        .collect(Collectors.toList());
-            }
-            // AUTHORS CAN VIEW PUBLISHED PAPERS AND PAPERS THEY OWN
-            else if (userType.equals("AUTHOR")) {
-                Author author = authenticationService.getCurrentAuthor();
-
-                List<String> paperIds = author
-                        .getSubmitions()
-                        .stream()
-                        .map(Submition::getPaperId)
-                        .collect(Collectors.toList());
-
-                resultDTOS = resultDTOS
-                        .stream()
-                        .filter(r -> paperIds.contains(r.getPaperId()) || r.getStatus().equals(SubmitionStatus.PUBLISHED))
-                        .collect(Collectors.toList());
+                resultDTOS.add(createSearchResultDTO(paperId, score));
             }
 
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         return resultDTOS;
-
     }
+
+    public List<SearchResultDTO> advancedSearch(String dateCreated,String datePublished,String dateRevised,String status) {
+        String query = "";
+        String whereConditionTemplate = "?s <" + SparqlUtil.PROPERTY_URI + "%s> '%s' .\n";
+
+        if (!dateCreated.isEmpty()) {
+            query += String.format(whereConditionTemplate, "/dateCreated", dateCreated);
+        }
+
+        if (!dateRevised.isEmpty()) {
+            query += String.format(whereConditionTemplate, "/dateRevised", dateRevised);
+        }
+
+        if (!datePublished.isEmpty()) {
+            query += String.format(whereConditionTemplate, "/datePublished", datePublished);
+        }
+
+        if (!status.isEmpty()) {
+            query += String.format(whereConditionTemplate, "/status", status.toUpperCase());
+        }
+
+        if (query.equals("")) {
+            query = "?s ?p ?o .";
+        }
+
+        String selectQuery = SparqlUtil.selectData(SPARQL_NAMED_GRAPH_URI, query);
+        System.out.println(selectQuery);
+
+        List<SearchResultDTO> searchResultDTOS = new ArrayList<>();
+
+        ResultSet resultSet = rdfRepository.getTripletsFromRdfDb(query);
+        while (resultSet.hasNext()) {
+            QuerySolution querySolution = resultSet.next();
+            String subject = querySolution.getResource("s").toString();
+            String[] tokens = subject.split("/");
+            String paperId = tokens[tokens.length - 1];
+            searchResultDTOS.add(createSearchResultDTO(paperId, 0L));
+        }
+
+        return searchResultDTOS;
+    }
+
+    public List<SearchResultDTO> joinResults(List<SearchResultDTO> simpleResults, List<SearchResultDTO> advancedResults) {
+        List<String> advencedResultStrings = advancedResults.stream().map(SearchResultDTO::getPaperId).collect(Collectors.toList());
+        return simpleResults.stream().filter(r -> advencedResultStrings.contains(r.getPaperId())).collect(Collectors.toList());
+    }
+
+    public List<SearchResultDTO> filterSearchResults(List<SearchResultDTO> resultDTOS) {
+        String userType = authenticationService.getTypeOfUser();
+
+        // GUESTS CAN VIEW ONLY PUBLISHED PAPERS
+        if (userType.equals("GUEST")) {
+            resultDTOS = resultDTOS
+                    .stream()
+                    .filter(r -> r.getStatus().equals(SubmitionStatus.PUBLISHED))
+                    .collect(Collectors.toList());
+        }
+        // AUTHORS CAN VIEW PUBLISHED PAPERS AND PAPERS THEY OWN
+        else if (userType.equals("AUTHOR")) {
+            Author author = authenticationService.getCurrentAuthor();
+
+            List<String> paperIds = author
+                    .getSubmitions()
+                    .stream()
+                    .map(Submition::getPaperId)
+                    .collect(Collectors.toList());
+
+            resultDTOS = resultDTOS
+                    .stream()
+                    .filter(r -> paperIds.contains(r.getPaperId()) || r.getStatus().equals(SubmitionStatus.PUBLISHED))
+                    .collect(Collectors.toList());
+        }
+
+        return resultDTOS;
+    }
+
+    public SearchResultDTO createSearchResultDTO(String paperId, Long rank) {
+        ScientificPaper scientificPaper = retrieveScientificPaperAsObject(paperId);
+        String title = scientificPaper.getHeader().getTitle();
+        Submition submition = submitionRepository.findByPaperId(paperId);
+        String author = submition.getAuthor().getFirstname() + " " + submition.getAuthor().getLastname();
+
+        SearchResultDTO searchResultDTO = new SearchResultDTO();
+        searchResultDTO.setTitle(title);
+        searchResultDTO.setPaperId(paperId);
+        searchResultDTO.setAuthor(author);
+        searchResultDTO.setStatus(submition.getStatus());
+        searchResultDTO.setRank(rank);
+        return searchResultDTO;
+    }
+
 }

@@ -204,7 +204,7 @@ public class PaperReviewService {
                 submition.getReviewersThatAddedReview().add(reviewer.getId());
 
                 // if all reviewers added their review submition changes its state to REVIEWED
-                if (submition.getRequestedReviewers().size() == 0 && submition.getReviews().size() == submition.getReviewers().size()) {
+                if (submition.getRequestedReviewers().size() == 0 && submition.getReviewersThatAddedReview().size() == submition.getReviewers().size()) {
                     accessControlService.checkIfTransitionIsPossible(submition.getStatus(), SubmitionStatus.REVIEWED);
                     submition.setStatus(SubmitionStatus.REVIEWED);
                 }

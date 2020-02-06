@@ -10,7 +10,7 @@ for $doc in collection("/db/scientific-publication/scientific-papers")
     let $text := replace($text, ",", "")
     let $text := lower-case($text)
     let $tokens := tokenize($text, " ")
-    let $intersection := distinct-values($queryWord[.=$tokens])
+    let $intersection := if (count($queryWord) = 0) then $tokens else distinct-values($queryWord[.=$tokens])
     let $score := count($intersection)
     where $score != 0
     order by $score descending

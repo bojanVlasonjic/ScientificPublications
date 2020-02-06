@@ -50,7 +50,7 @@ public class ReviewerController {
     @GetMapping("/submitions")
     public ResponseEntity getAcceptedSubmitionReviews(
             @RequestParam(name = "page", defaultValue = "0") Integer page,
-            @RequestParam(name = "size", defaultValue = "5") Integer size) {
+            @RequestParam(name = "size", defaultValue = "999999") Integer size) {
         Pageable pageable = PageRequest.of(page, size);
         return new ResponseEntity<>(reviewerService.getMySubmitions(pageable), HttpStatus.OK);
     }
@@ -59,7 +59,7 @@ public class ReviewerController {
     @GetMapping("/requested-submitions")
     public ResponseEntity getRequestedSubmitionReviews(
             @RequestParam(name = "page", defaultValue = "0") Integer page,
-            @RequestParam(name = "size", defaultValue = "5") Integer size) {
+            @RequestParam(name = "size", defaultValue = "999999") Integer size) {
         Pageable pageable = PageRequest.of(page, size);
         return new ResponseEntity<>(reviewerService.getMyRequestedSubmitions(pageable), HttpStatus.OK);
     }

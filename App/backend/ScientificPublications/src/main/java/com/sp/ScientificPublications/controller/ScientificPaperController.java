@@ -15,6 +15,7 @@ import java.util.List;
 
 import javax.xml.transform.TransformerException;
 
+import com.sun.tools.xjc.model.CDefaultValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
@@ -161,7 +162,20 @@ public class ScientificPaperController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<SearchResultDTO>> simpleSearch(@RequestParam(name = "query", defaultValue = "") String query) {
-        return new ResponseEntity<>(scPaperService.simpleSearch(query), HttpStatus.OK);
+    public ResponseEntity<List<SearchResultDTO>> simpleSearch(
+            @RequestParam(name = "query", defaultValue = "") String query,
+            @RequestParam(name = "dateCreated", defaultValue = "") String dateCreated,
+            @RequestParam(name = "datePublished", defaultValue = "") String datePublished,
+            @RequestParam(name = "dateRevised", defaultValue = "") String dateRevised,
+            @RequestParam(name = "status", defaultValue = "") String status)
+    {
+        return new ResponseEntity<>(
+                scPaperService.search(
+                        query,
+                        dateCreated,
+                        datePublished,
+                        dateRevised,
+                        status),
+                HttpStatus.OK);
     }
 }

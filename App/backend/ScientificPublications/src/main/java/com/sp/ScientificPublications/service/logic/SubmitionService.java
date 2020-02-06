@@ -144,12 +144,12 @@ public class SubmitionService {
         Model model = ModelFactory.createDefaultModel();
 
         // DATE CREATED
-        model.createResource(SparqlUtil.SUBJECT_URI + "/submition/" + submition.getId())
+        model.createResource(SparqlUtil.SUBJECT_URI + "/submition/" + submition.getPaperId())
                 .addProperty(new PropertyImpl(SparqlUtil.PROPERTY_URI + "/dateCreated"),
                         utilityService.formatDate(submition.getDateCreated()));
 
         // STATUS
-        model.createResource(SparqlUtil.SUBJECT_URI + "/submition/" + submition.getId())
+        model.createResource(SparqlUtil.SUBJECT_URI + "/submition/" + submition.getPaperId())
                 .addProperty(new PropertyImpl(SparqlUtil.PROPERTY_URI + "/status"), submition.getStatus().toString());
 
         rdfRepository.saveModelToDb(model);
@@ -278,7 +278,7 @@ public class SubmitionService {
             submition = submitionRepository.save(submition);
 
             Model model = ModelFactory.createDefaultModel();
-            model.createResource(SparqlUtil.SUBJECT_URI + "/submition/" + submition.getId())
+            model.createResource(SparqlUtil.SUBJECT_URI + "/submition/" + submition.getPaperId())
                     .addProperty(new PropertyImpl(SparqlUtil.PROPERTY_URI + "/dateRevised"), submition.getDateRevised().toString());
             rdfRepository.saveModelToDb(model);
 
@@ -303,7 +303,7 @@ public class SubmitionService {
 
             // generate metadata and save to RDF
             Model model = ModelFactory.createDefaultModel();
-            model.createResource(SparqlUtil.SUBJECT_URI + "/submition/" + submition.getId())
+            model.createResource(SparqlUtil.SUBJECT_URI + "/submition/" + submition.getPaperId())
                     .addProperty(new PropertyImpl(SparqlUtil.PROPERTY_URI + "/datePublished"),
                             utilityService.formatDate(submition.getDatePublished()));
             rdfRepository.saveModelToDb(model);

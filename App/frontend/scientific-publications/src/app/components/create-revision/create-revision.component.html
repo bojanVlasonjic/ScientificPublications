@@ -1,0 +1,28 @@
+<div class="revision-holder">
+
+    <h2 class="heading"> Submit revision </h2>
+
+    <label> Reviewers that reviewed your scientific paper:  </label>
+    <ul>
+        <li *ngFor="let review of reviewsForPaper" (click)="viewReview(review.reviewId)">
+            {{ review.reviewerName }} &nbsp; &nbsp;  (View)
+        </li>
+    </ul>
+
+    <div class="form-group" *ngIf="!uploadCoverLetter">
+        <label> How would you like to add your revision? </label>
+        <select class="form-control" [(ngModel)]="uploadType">
+            <option value="" selected disabled hidden></option>
+            <option value="file"> Upload file </option>
+            <option value="editor"> Use editor </option>
+        </select>
+    </div>
+
+    <div *ngIf="uploadType == 'file'" [type]="'document-review'" [cid]="'d1'" app-document-upload>
+    </div>
+
+</div>
+
+<app-document-review-editor *ngIf="uploadType == 'editor'">
+
+</app-document-review-editor>

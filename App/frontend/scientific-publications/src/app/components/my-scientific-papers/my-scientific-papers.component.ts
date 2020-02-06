@@ -25,9 +25,13 @@ export class MyScientificPapersComponent implements OnInit {
   displayDownloadPopUp: boolean;
   submitionToDownload: AuthorSubmitionDTO;
 
+  reviewedPaperId: string;
+  createRevisionDisplayed: boolean; 
+
   constructor(private submitionSvc: SubmitionService , private toastSvc: ToasterService) {
     this.submitions = [];
     this.displayDownloadPopUp = false;
+    this.createRevisionDisplayed = false;
 
   }
 
@@ -69,6 +73,11 @@ export class MyScientificPapersComponent implements OnInit {
         this.toastSvc.showErrorMessage(err);
       }
     );
+  }
+
+  displayCreateRevision(paperId: string) {
+    this.createRevisionDisplayed = true;
+    this.reviewedPaperId = paperId;
   }
 
 }

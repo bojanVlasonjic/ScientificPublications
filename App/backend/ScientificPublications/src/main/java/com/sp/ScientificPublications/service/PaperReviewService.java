@@ -97,10 +97,13 @@ public class PaperReviewService {
     public DocumentDTO uploadPaperReviewXMLFile(MultipartFile file) {
     	String xmlContent = domParserSvc.readMultipartXMLFile(file);
     	DocumentDTO document = new DocumentDTO();
+
     	document.setDocumentContent(xmlContent);
     	document = this.storePaperReviewAsDocument(document);
+
     	this.generatePdf(document.getDocumentId());
     	this.generateHtml(document.getDocumentId());
+
     	return document;
     }
     

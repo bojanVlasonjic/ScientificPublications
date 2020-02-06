@@ -28,8 +28,8 @@ public class ReviewerController {
 
     @Secured({"ROLE_AUTHOR"})
     @GetMapping("/reviews-for-paper/{id}")
-    public ResponseEntity<List<ReviewDTO>> getReviewsForPaper(@PathVariable String paperId) {
-        return new ResponseEntity<>(reviewerService.getReviewsForPaper(paperId), HttpStatus.OK);
+    public ResponseEntity<List<ReviewDTO>> getReviewsForPaper(@PathVariable String id) {
+        return new ResponseEntity<>(reviewerService.getReviewsForPaper(id), HttpStatus.OK);
     }
 
     @Secured({"ROLE_AUTHOR"})

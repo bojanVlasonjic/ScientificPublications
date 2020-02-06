@@ -14,7 +14,7 @@ export class ReviewersService {
   }
 
   getReviewsForPaper(paperId: string): Observable<any> {
-    return this.http.get(`api/reviews/reviews-for-paper/${paperId}`);
+    return this.http.get(`api/reviewers/reviews-for-paper/${paperId}`);
   }
 
   acceptSubmitionReviewRequest(id: number): Observable<any> {

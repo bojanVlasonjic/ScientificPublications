@@ -1,6 +1,6 @@
 package com.sp.ScientificPublications.controller;
 
-import com.sp.ScientificPublications.dto.reviews.CreateReviewDTO;
+import com.sp.ScientificPublications.dto.reviews.PendingReviewDTO;
 import com.sp.ScientificPublications.service.logic.ReviewerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/reviewers")
@@ -18,6 +18,12 @@ public class ReviewerController {
 
     @Autowired
     private ReviewerService reviewerService;
+    
+    @Secured({"ROLE_AUTHOR"})
+    @GetMapping("/pending/reviews")
+    public ResponseEntity<List<PendingReviewDTO>> getPendingReviewsForCurrentReviewer() {
+    	return new ResponseEntity<>(reviewerService.getPendingReviewsForCurrentReviewer(), HttpStatus.OK);
+    }
 
     @Secured({"ROLE_AUTHOR"})
     @PutMapping("/submitions/{id}/accept")

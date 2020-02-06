@@ -15,6 +15,9 @@ import { MyScientificPapersComponent } from './components/my-scientific-papers/m
 import { EditorComponent } from './components/editor/editor.component';
 import { ScientificPapersViewComponent } from './components/scientific-papers-view/scientific-papers-view.component';
 import { DocumentDownloadComponent } from './components/document-download/document-download.component';
+import { PendingReviewsComponent } from './components/pending-reviews/pending-reviews.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 @NgModule({
   declarations: [
@@ -26,6 +29,7 @@ import { DocumentDownloadComponent } from './components/document-download/docume
     EditorComponent,
     ScientificPapersViewComponent,
     DocumentDownloadComponent
+    PendingReviewsComponent
   ],
   imports: [
     BrowserModule,
@@ -33,7 +37,8 @@ import { DocumentDownloadComponent } from './components/document-download/docume
     AppRoutingModule,
     FormsModule,
     EditorModule,
-    HomeModule
+    HomeModule,
+    BrowserAnimationsModule
 
   ],
   providers: [

@@ -3,11 +3,20 @@ import { SubmitionService } from 'src/app/services/submition.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ScientificPaperService } from 'src/app/services/scientific-paper.service';
 import { ToasterService } from 'src/app/services/toaster.service';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-editor',
   templateUrl: './editor.component.html',
-  styleUrls: ['./editor.component.css']
+  styleUrls: ['./editor.component.css'],
+  animations: [
+    trigger('fadeIn', [
+      transition(':enter', [
+        style({ opacity: '0' }),
+        animate('.5s ease-out', style({ opacity: '1' })),
+      ]),
+    ]),
+  ],
 })
 export class EditorComponent implements OnInit {
 
@@ -63,7 +72,8 @@ export class EditorComponent implements OnInit {
   }
 
   requestReview(reviewer) {
-    this.reviewers.splice(this.reviewers.indexOf(reviewer));
+    const index = this.reviewers.indexOf(reviewer);
+    this.reviewers.splice(index, 1);
     this.submitionService.requestReview(this.selectedPaper.id, reviewer.id).subscribe(
       data => {
         this.toaster.showMessage("Success", "Review requested");
@@ -76,7 +86,7 @@ export class EditorComponent implements OnInit {
   }
 
   getRequestReviewers(): void {
-    this.submitionService.getRequestedReviewers(this.selectedPaper.paperId).subscribe(
+    this.submitionService.getAllReviewersForSubmition(this.selectedPaper.id).subscribe(
       data => {
         this.requestedReviewers = data;
         console.log(data);

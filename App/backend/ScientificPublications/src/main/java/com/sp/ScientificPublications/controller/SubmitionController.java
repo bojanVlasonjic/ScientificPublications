@@ -1,7 +1,6 @@
 package com.sp.ScientificPublications.controller;
 
 import com.sp.ScientificPublications.dto.UserDTO;
-import com.sp.ScientificPublications.dto.reviews.ReviewDTO;
 import com.sp.ScientificPublications.dto.submitions.AuthorSubmitionDTO;
 import com.sp.ScientificPublications.dto.submitions.CreateSubmitionDTO;
 import com.sp.ScientificPublications.dto.submitions.SubmitionViewDTO;

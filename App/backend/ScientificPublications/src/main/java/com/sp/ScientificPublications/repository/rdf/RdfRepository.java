@@ -69,6 +69,16 @@ public class RdfRepository {
         }
     }
 
+    public void saveModelToDb(Model model) {
+        ByteArrayOutputStream nTriplesOutputStream = new ByteArrayOutputStream();
+        model.write(nTriplesOutputStream, SparqlUtil.NTRIPLES);
+        String sparqlUpdate = SparqlUtil.insertData(
+                fusekiConnectionProperties.dataEndpoint + SPARQL_NAMED_GRAPH_URI,
+                new String(nTriplesOutputStream.toByteArray()));
+        UpdateRequest updateRequest = UpdateFactory.create(sparqlUpdate);
+        UpdateExecutionFactory.createRemote(updateRequest, fusekiConnectionProperties.updateEndpoint).execute();
+    }
+
     // QUERY CONDITION FORMAT: ?s ?p ?o
     public ResultSet getTripletsFromRdfDb(String queryCondition) {
         String sparqlQuery = SparqlUtil.selectData(fusekiConnectionProperties.dataEndpoint + SPARQL_NAMED_GRAPH_URI, queryCondition);

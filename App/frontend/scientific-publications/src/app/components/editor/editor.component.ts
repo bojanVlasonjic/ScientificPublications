@@ -134,6 +134,10 @@ export class EditorComponent implements OnInit {
       this.getRequestReviewers();
     }
 
+    else if (paper != null && paper.status == "REVISED") {
+      this.getRequestReviewers();
+    }
+
     else {
       this.removeSelections();
     }

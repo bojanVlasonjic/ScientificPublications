@@ -102,9 +102,19 @@ public class XmlTransformerService {
     private File createPdfFile(String documentId) {
 
         // generating pdf file name based on the input file name
+    	File file = new File(outputDirectory + "pdf");
+    	if (!file.exists()) {
+    		file.mkdir();
+    	}
+    	
         String outputFilePath = outputDirectory + "pdf/" + documentId + ".pdf";
 
         File pdfFile = new File(outputFilePath);
+        
+        if (!pdfFile.getParentFile().getParentFile().exists()) {
+        	pdfFile.getParentFile().getParentFile().mkdir();
+        }
+        
         if(!pdfFile.getParentFile().exists()) {
             pdfFile.getParentFile().mkdir();
         }
@@ -147,6 +157,10 @@ public class XmlTransformerService {
     private void createHtmlOutputDirectory(String filePath) {
 
         File htmlFile = new File(filePath);
+        
+        if (!htmlFile.getParentFile().getParentFile().exists()) {
+        	htmlFile.getParentFile().getParentFile().mkdir();
+        }
 
         if(!htmlFile.getParentFile().exists()) {
             htmlFile.getParentFile().mkdir();

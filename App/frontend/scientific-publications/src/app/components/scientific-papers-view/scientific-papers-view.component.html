@@ -1,27 +1,40 @@
 <div class="container">
+    
 
-    <h2 class="heading"> Published papers </h2> 
+    <h2 class="heading" style="font-weight: 600;"> Published papers </h2> 
 
-    <h4 class="heading" *ngIf="publishedPapers.length == 0">
+    <div *ngIf="publishedPapers.length > 0" class="d-flex justify-content-center" style="margin-top:20px;margin-bottom:40px;">
+        <div>
+            <input placeholder="Default" class="search-input" /><br>
+            <input placeholder="" class="search-input" /><br>
+            <input placeholder="" class="search-input" /><br>
+            <input placeholder="" class="search-input" /><br>
+            <input placeholder="" class="search-input" /><br>
+            <button class="search-button">Search</button>
+        </div>
+    </div>
+
+    <h4 class="heading" style="font-weight: 600;" *ngIf="publishedPapers.length == 0">
         No papers were published
     </h4>
 
-    <div class="row">
-        <div class="col col-lg-6 paper-holder" *ngFor="let paper of publishedPapers">
-            <p> Paper name: "{{ paper.paperTitle }}" </p>
-            <label>Authors: </label>
-            <ul>
-                <li *ngFor="let author of paper.authors"> {{ author.firstName }} {{ author.lastName }}</li>
-            </ul>
+    <div class="row paper-item" style="margin-top:70px;">
+        <div class="col col-lg-6 paper-holder d-flex justify-content-center" *ngFor="let paper of publishedPapers">
+            <div>
+                <p class="paper-name"> Paper name: "{{ paper.paperTitle }}" </p>
+                <label>Authors: </label>
+                <ul>
+                    <li *ngFor="let author of paper.authors"> {{ author.firstName }} {{ author.lastName }}</li>
+                </ul>
 
-            <button class="btn btn-secondary" style="margin-left: 2ex;" (click)="viewPaper(paper.paperId)">
-                 View 
-            </button>
+                <button class="search-button" (click)="viewPaper(paper.paperId)">
+                    View 
+                </button>
 
-            <button class="btn btn-secondary" style="margin-left: 3ex;" (click)="showPopUp(paper)"> 
-                Download
-            </button>
-
+                <button class="search-button" style="margin-left: 3ex;" (click)="showPopUp(paper)"> 
+                    Download
+                </button>
+            </div>
         </div>
     </div>
 </div>

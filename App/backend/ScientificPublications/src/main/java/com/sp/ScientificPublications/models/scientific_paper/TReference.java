@@ -8,10 +8,18 @@
 
 package com.sp.ScientificPublications.models.scientific_paper;
 
-import rs.ac.uns.ftn.common.TAuthors;
 
-import javax.xml.bind.annotation.*;
+
 import java.math.BigInteger;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSchemaType;
+import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.XmlType;
+
+import com.sp.ScientificPublications.models.common.TAuthors;
 
 
 /**

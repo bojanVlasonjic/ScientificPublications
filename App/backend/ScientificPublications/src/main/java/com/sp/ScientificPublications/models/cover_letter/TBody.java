@@ -8,12 +8,14 @@
 
 package com.sp.ScientificPublications.models.cover_letter;
 
-import rs.ac.uns.ftn.common.TParagraphs;
+
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+
+import com.sp.ScientificPublications.models.common.TParagraphs;
 
 
 /**

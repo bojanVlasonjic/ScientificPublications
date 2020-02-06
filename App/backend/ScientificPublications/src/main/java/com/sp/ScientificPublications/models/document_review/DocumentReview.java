@@ -8,10 +8,16 @@
 
 package com.sp.ScientificPublications.models.document_review;
 
-import rs.ac.uns.ftn.common.TAuthors;
-import rs.ac.uns.ftn.common.TSections;
 
-import javax.xml.bind.annotation.*;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
+import com.sp.ScientificPublications.models.common.TAuthors;
+import com.sp.ScientificPublications.models.common.TSections;
 
 
 /**

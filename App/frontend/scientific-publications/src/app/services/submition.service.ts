@@ -38,6 +38,10 @@ export class SubmitionService {
     return this.http.get(`api/submitions/requested-reviewers/${paperId}`);
   }
 
+  getAllReviewersForSubmition(id: number): Observable<any> {
+    return this.http.get(`api/submitions/${id}/reviewers`);
+  }
+
   
   
 }

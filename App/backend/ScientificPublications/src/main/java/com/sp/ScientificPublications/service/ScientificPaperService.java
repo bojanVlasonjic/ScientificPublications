@@ -1,9 +1,6 @@
 package com.sp.ScientificPublications.service;
 
-import com.sp.ScientificPublications.dto.DocumentDTO;
-import com.sp.ScientificPublications.dto.SearchByAuthorsResponseDTO;
-import com.sp.ScientificPublications.dto.SendEmailDTO;
-import com.sp.ScientificPublications.dto.UserDTO;
+import com.sp.ScientificPublications.dto.*;
 import com.sp.ScientificPublications.exception.ApiBadRequestException;
 import com.sp.ScientificPublications.models.Author;
 import com.sp.ScientificPublications.models.Submition;
@@ -16,6 +13,7 @@ import com.sp.ScientificPublications.repository.exist.ExistDocumentRepository;
 import com.sp.ScientificPublications.repository.exist.ExistJaxbRepository;
 import com.sp.ScientificPublications.repository.exist.XQueryRepository;
 import com.sp.ScientificPublications.repository.rdf.FusekiDocumentRepository;
+import com.sp.ScientificPublications.service.logic.AuthenticationService;
 import com.sp.ScientificPublications.utility.FileUtil;
 import org.apache.xmlrpc.webserver.ServletWebServer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +49,9 @@ import java.util.*;
 
 @Service
 public class ScientificPaperService {
+
+    @Autowired
+    AuthenticationService authenticationService;
 
     @Autowired
     DomParserService domParserSvc;
@@ -309,13 +310,7 @@ public class ScientificPaperService {
 
 
     // TODO: implement an update method, change method name
-    public ScientificPaper storeScientificPaperAsObject(String documentId) {
-
-        ScientificPaper scPaper = retrieveScientificPaperAsObject(documentId);
-
-        //TODO: update data
-        scPaper.getHeader().setTitle("Setter in a getter, woohoo!");
-
+    public ScientificPaper storeScientificPaperAsObject(String documentId, ScientificPaper scPaper) {
         try {
             return (ScientificPaper) existJaxbRepo.storeObject(collectionId, documentId, modelPackage, scPaper);
         } catch (XMLDBException | JAXBException ex) {
@@ -335,6 +330,11 @@ public class ScientificPaperService {
 
         try {
             resource = existDocumentRepo.storeXmlFile(collectionId, document);
+
+            ScientificPaper scientificPaper = retrieveScientificPaperAsObject(resource.getDocumentId());
+            scientificPaper.setId(resource.getDocumentId());
+            storeScientificPaperAsObject(document.getDocumentId(), scientificPaper);
+
             document.setDocumentId(resource.getDocumentId());
         } catch (XMLDBException e) {
             e.printStackTrace();
@@ -468,26 +468,63 @@ public class ScientificPaperService {
         return results;
     }
 
-    public void simpleSearch(String query) throws Exception {
-        String simpleSearchTemplatePath = "src/main/resources/data/xquery/simple-search.sqy";
-        String collectionId = "/db/scientific-publication/scientific-papers/";
-        String keywordsTemplate = FileUtil.readFile(simpleSearchTemplatePath, StandardCharsets.UTF_8);
-        String simpleSearchQuery = String.format(keywordsTemplate, query);
+    public List<SearchResultDTO> simpleSearch(String query) {
+        List<SearchResultDTO> resultDTOS = new ArrayList<>();
 
-        ResourceSet resourceSet = xQueryRepository.find(collectionId, simpleSearchQuery);
-        ResourceIterator resourceIterator = resourceSet.getIterator();
+        try {
+            String simpleSearchTemplatePath = "src/main/resources/data/xquery/simple-search.sqy";
+            String collectionId = "/db/scientific-publication/scientific-papers/";
+            String keywordsTemplate = FileUtil.readFile(simpleSearchTemplatePath, StandardCharsets.UTF_8);
+            String simpleSearchQuery = String.format(keywordsTemplate, query);
 
-        while (resourceIterator.hasMoreResources()) {
-            Resource resource = resourceIterator.nextResource();
-            String paperId = resource.getContent().toString().split(" ")[0];
-            String score = resource.getContent().toString().split(" ")[1];
+            ResourceSet resourceSet = xQueryRepository.find(collectionId, simpleSearchQuery);
+            ResourceIterator resourceIterator = resourceSet.getIterator();
 
-            ScientificPaper scientificPaper = retrieveScientificPaperAsObject(paperId);
-            String title = scientificPaper.getHeader().getTitle();
+            while (resourceIterator.hasMoreResources()) {
+                Resource resource = resourceIterator.nextResource();
+                String paperId = resource.getContent().toString().split(" ")[0];
+                Long score = Long.parseLong(resource.getContent().toString().split(" ")[1]);
 
-            submitionRepository.findByPaperId(paperId);
+                ScientificPaper scientificPaper = retrieveScientificPaperAsObject(paperId);
+                String title = scientificPaper.getHeader().getTitle();
 
+                Submition submition = submitionRepository.findByPaperId(paperId);
+                if (submition != null) {
+                    String author = submition.getAuthor().getFirstname() + " " + submition.getAuthor().getLastname();
+                    resultDTOS.add(new SearchResultDTO(paperId, title, author, score, submition.getStatus()));
+                }
+            }
+
+            String userType = authenticationService.getTypeOfUser();
+
+
+            // GUESTS CAN VIEW ONLY PUBLISHED PAPERS
+            if (userType.equals("GUEST")) {
+                resultDTOS = resultDTOS
+                        .stream()
+                        .filter(r -> r.getStatus().equals(SubmitionStatus.PUBLISHED))
+                        .collect(Collectors.toList());
+            }
+            // AUTHORS CAN VIEW PUBLISHED PAPERS AND PAPERS THEY OWN
+            else if (userType.equals("AUTHOR")) {
+                Author author = authenticationService.getCurrentAuthor();
+
+                List<String> paperIds = author
+                        .getSubmitions()
+                        .stream()
+                        .map(Submition::getPaperId)
+                        .collect(Collectors.toList());
+
+                resultDTOS = resultDTOS
+                        .stream()
+                        .filter(r -> paperIds.contains(r.getPaperId()) || r.getStatus().equals(SubmitionStatus.PUBLISHED))
+                        .collect(Collectors.toList());
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
+        return resultDTOS;
 
     }
 }

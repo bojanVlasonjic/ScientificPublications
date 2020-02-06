@@ -1,17 +1,21 @@
 package com.sp.ScientificPublications.dto;
 
+import com.sp.ScientificPublications.models.Submition;
+import com.sp.ScientificPublications.models.SubmitionStatus;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
 public class SearchResultDTO {
 
-    private String content;
+    private String paperId;
     private String title;
     private String author;
-    private Integer rank;
-    
+    private Long rank;
+    private SubmitionStatus status;
 }

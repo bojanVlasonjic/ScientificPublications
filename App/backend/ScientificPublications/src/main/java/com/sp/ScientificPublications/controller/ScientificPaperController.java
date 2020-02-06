@@ -3,6 +3,7 @@ package com.sp.ScientificPublications.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.sp.ScientificPublications.dto.DocumentDTO;
 import com.sp.ScientificPublications.dto.SearchByAuthorsResponseDTO;
+import com.sp.ScientificPublications.dto.SearchResultDTO;
 import com.sp.ScientificPublications.dto.SendEmailDTO;
 import com.sp.ScientificPublications.service.DomParserService;
 import com.sp.ScientificPublications.service.ScientificPaperService;
@@ -155,5 +156,10 @@ public class ScientificPaperController {
     @GetMapping("/{paperId}/recommended-reviewers")
     public ResponseEntity getRecommendedReviewers(@PathVariable String paperId) {
         return new ResponseEntity(scPaperService.getRecommendedReviewers(paperId), HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<SearchResultDTO>> simpleSearch(@RequestParam(name = "query", defaultValue = "") String query) {
+        return new ResponseEntity<>(scPaperService.simpleSearch(query), HttpStatus.OK);
     }
 }

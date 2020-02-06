@@ -136,7 +136,6 @@ public class SubmitionService {
         submition.setAuthor(author);
 
         return new AuthorSubmitionDTO(submitionRepository.save(submition));
-
     }
 
     public AuthorSubmitionDTO cancelSubmition(Long id) {
@@ -147,8 +146,6 @@ public class SubmitionService {
             accessControlService.checkIfUserOwnsSubmition(user, submition);
             accessControlService.checkIfTransitionIsPossible(submition.getStatus(), SubmitionStatus.CANCELED);
             submition.setStatus(SubmitionStatus.CANCELED);
-
-
             return new AuthorSubmitionDTO(submitionRepository.save(submition));
         } else {
             throw new ApiNotFoundException("Submition doesn't exist.");
@@ -258,6 +255,23 @@ public class SubmitionService {
             accessControlService.checkIfUserIsNotReviewerForSubmition(reviewer, submition);
             submition.getRequestedReviewers().add(reviewer);
             reviewer.getRequestedSubmitions().add(submition);
+            submitionRepository.save(submition);
+            //TODO: SEND REQUESTED REVIEW EMAIL TO REVIEWER
+        } else {
+            throw new ApiNotFoundException("Submition and/or reviewer doesnt exist.");
+        }
+    }
+
+    public void cancelRequestReview(Long submitionId, Long reviewerId) {
+        Optional<Submition> optionalSubmition = submitionRepository.findById(submitionId);
+        Optional<Author> optionalReviewer = authorRepository.findById(reviewerId);
+
+        if (optionalSubmition.isPresent() && optionalReviewer.isPresent()) {
+            Submition submition = optionalSubmition.get();
+            Author reviewer = optionalReviewer.get();
+
+            submition.getRequestedReviewers().removeIf(r -> r.getId() == reviewerId);
+            reviewer.getRequestedSubmitions().removeIf(s -> s.getId() == submitionId);
             submitionRepository.save(submition);
             //TODO: SEND REQUESTED REVIEW EMAIL TO REVIEWER
         } else {

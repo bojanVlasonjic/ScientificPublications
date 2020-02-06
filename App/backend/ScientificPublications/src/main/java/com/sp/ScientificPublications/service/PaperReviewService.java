@@ -201,7 +201,6 @@ public class PaperReviewService {
                 Review review = new Review(paperReview.getDocumentId(), reviewer, submition);
                 reviewer.getReviews().add(review);
                 submition.getReviews().add(review);
-
                 submition.getReviewersThatAddedReview().add(reviewer.getId());
 
                 // if all reviewers added their review submition changes its state to REVIEWED

@@ -18,6 +18,7 @@ public class ReviewerSubmitionDTO {
     private String status;
     private String paperTitle;
     private UserDTO author;
+    private Boolean reviewed;
     
     public ReviewerSubmitionDTO(Submition submition) {
     	submitionId = submition.getId();
@@ -25,5 +26,6 @@ public class ReviewerSubmitionDTO {
         paperTitle = submition.getPaperTitle();
         status = submition.getStatus().toString();
         author = new UserDTO(submition.getAuthor());
+        reviewed = submition.getReviewersThatAddedReview().contains(author.getId());
     }
 }

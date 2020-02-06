@@ -557,8 +557,6 @@ public class ScientificPaperService {
         } catch (Exception ex) {
             System.out.println("Nothing founded in RDF.");
         }
-
-
         return searchResultDTOS;
     }
 

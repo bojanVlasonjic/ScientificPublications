@@ -36,6 +36,9 @@
                 </button>
             </td>
         </tr>
+        <tr *ngIf="submitions.length == 0" class="last-row-no-data">
+            <td colspan="6">No scientific papers yet</td>
+        </tr>
     </table>
 
     <!--<table class="table">

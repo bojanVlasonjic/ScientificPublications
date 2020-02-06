@@ -3,9 +3,12 @@ package com.sp.ScientificPublications.service.logic;
 import com.sp.ScientificPublications.dto.DocumentDTO;
 import com.sp.ScientificPublications.dto.PageableResultsDTO;
 import com.sp.ScientificPublications.dto.reviews.CreateReviewDTO;
-import com.sp.ScientificPublications.dto.reviews.ReviewDTO;
+
+import com.sp.ScientificPublications.dto.reviews.PendingReviewDTO;
 import com.sp.ScientificPublications.dto.submitions.AuthorSubmitionDTO;
-import com.sp.ScientificPublications.exception.ApiBadRequestException;
+import com.sp.ScientificPublications.dto.submitions.EditorSubmitionDTO;
+import com.sp.ScientificPublications.exception.ApiInternalServerException;
+
 import com.sp.ScientificPublications.exception.ApiNotFoundException;
 import com.sp.ScientificPublications.models.Author;
 import com.sp.ScientificPublications.models.Review;
@@ -19,6 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.print.Doc;
@@ -43,6 +48,23 @@ public class ReviewerService {
 
     @Autowired
     private AuthenticationService authenticationService;
+    
+    public List<PendingReviewDTO> getPendingReviewsForCurrentReviewer() {
+    	
+    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    	String email = authentication.getName();
+    	
+    	Optional<Author> optReviewer = authorRepository.findByEmail(email);
+    	if (!optReviewer.isPresent()) throw new ApiInternalServerException("No such user");
+    	
+    	Author reviewer = optReviewer.get();
+    	
+    	List<Submition> pendingSubmitions = submitionRepository.findAllByRequestedReviewersContaining(reviewer);
+    	
+    	List<PendingReviewDTO> pendingReviewsDTO = pendingSubmitions.stream().map(x -> new PendingReviewDTO(x)).collect(Collectors.toList());
+    	
+    	return pendingReviewsDTO;
+    }
 
     @Autowired
     private PaperReviewService paperReviewService;

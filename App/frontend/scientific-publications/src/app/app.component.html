@@ -28,7 +28,7 @@
     <div *ngIf="getUser?.roles.includes('ROLE_AUTHOR')" class="navigation-item" routerLink="/my-papers" [ngClass]="{'selected' : getUrl() == 'my-papers'}">
       My scientific papers
     </div>
-    <div *ngIf="getUser?.roles.includes('ROLE_AUTHOR')" class="navigation-item">
+    <div *ngIf="getUser?.roles.includes('ROLE_AUTHOR')" class="navigation-item" routerLink="/pending-reviews" [ngClass]="{'selected' : getUrl() == 'pending-reviews'}">
       Pending reviews
     </div>
 

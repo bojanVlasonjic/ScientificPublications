@@ -4,9 +4,11 @@ import com.sp.ScientificPublications.dto.UserDTO;
 import com.sp.ScientificPublications.exception.ApiAuthException;
 import com.sp.ScientificPublications.exception.ApiBadRequestException;
 import com.sp.ScientificPublications.models.Author;
+import com.sp.ScientificPublications.models.Authority;
 import com.sp.ScientificPublications.models.Editor;
 import com.sp.ScientificPublications.models.User;
 import com.sp.ScientificPublications.repository.AuthorRepository;
+import com.sp.ScientificPublications.repository.AuthorityRepository;
 import com.sp.ScientificPublications.repository.EditorRepository;
 import com.sp.ScientificPublications.repository.UserRepository;
 import com.sp.ScientificPublications.security.JwtUtils;
@@ -38,6 +40,9 @@ public class AuthenticationService {
 	private UserRepository userRepository;
 
 	@Autowired
+	private AuthorityRepository authorityRepository;
+
+	@Autowired
 	private AuthenticationManager authManager;
 
 	@Autowired
@@ -58,7 +63,7 @@ public class AuthenticationService {
 
 		String token = jwtUtils.generateToken(auth.getName());
 		SecurityContextHolder.getContext().setAuthentication(auth);
-		UserDTO user = new UserDTO(userRepository.findByEmail(auth.getName()).get());
+		UserDTO user = new UserDTO(userRepository.findByEmail(email).get());
 		user.setToken(token);
 
 		return user;
@@ -69,9 +74,11 @@ public class AuthenticationService {
 		if (!optionalUser.isPresent()) {
 			Author author = new Author();
 			author.setEmail(userDTO.getEmail());
-			author.setPassword(userDTO.getPassword());
+			author.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 			author.setFirstname(userDTO.getFirstname());
 			author.setLastname(userDTO.getLastname());
+			author.getCollectionOfAuthorities().add(
+					authorityRepository.findByName("ROLE_AUTHOR").get());
 			authorRepository.save(author);
 			return new UserDTO(author);
 		} else {

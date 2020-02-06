@@ -5,6 +5,7 @@ import com.sp.ScientificPublications.dto.DocumentDTO;
 import com.sp.ScientificPublications.dto.SearchByAuthorsResponseDTO;
 import com.sp.ScientificPublications.dto.SearchResultDTO;
 import com.sp.ScientificPublications.dto.SendEmailDTO;
+import com.sp.ScientificPublications.models.scientific_paper.ScientificPaper;
 import com.sp.ScientificPublications.service.DomParserService;
 import com.sp.ScientificPublications.service.ScientificPaperService;
 
@@ -14,6 +15,7 @@ import java.util.List;
 
 import javax.xml.transform.TransformerException;
 
+import com.sun.tools.xjc.model.CDefaultValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
@@ -86,12 +88,13 @@ public class ScientificPaperController {
         return new ResponseEntity<>(scPaperService.getTemplate(), HttpStatus.OK);
     }
 
-    /*
+
     @GetMapping("/{id}")
     public  ResponseEntity<DocumentDTO> getScientificPaperById(@PathVariable String id) {
         return new ResponseEntity<>(scPaperService.retrieveScientificPaperAsDocument(id), HttpStatus.OK);
     }
 
+    /*
     @GetMapping("jaxb//{id}")
     public  ResponseEntity<ScientificPaper> getScientificPaperObjectById(@PathVariable String id) {
         return new ResponseEntity<>(scPaperService.retrieveScientificPaperAsObject(id), HttpStatus.OK);
@@ -159,7 +162,20 @@ public class ScientificPaperController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<SearchResultDTO>> simpleSearch(@RequestParam(name = "query", defaultValue = "") String query) {
-        return new ResponseEntity<>(scPaperService.simpleSearch(query), HttpStatus.OK);
+    public ResponseEntity<List<SearchResultDTO>> simpleSearch(
+            @RequestParam(name = "query", defaultValue = "") String query,
+            @RequestParam(name = "dateCreated", defaultValue = "") String dateCreated,
+            @RequestParam(name = "datePublished", defaultValue = "") String datePublished,
+            @RequestParam(name = "dateRevised", defaultValue = "") String dateRevised,
+            @RequestParam(name = "status", defaultValue = "") String status)
+    {
+        return new ResponseEntity<>(
+                scPaperService.search(
+                        query,
+                        dateCreated,
+                        datePublished,
+                        dateRevised,
+                        status),
+                HttpStatus.OK);
     }
 }

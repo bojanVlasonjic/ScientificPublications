@@ -1,0 +1,21 @@
+
+.revision-holder {
+    position: relative;
+    width: 60%;
+    left: 20%;
+    margin-top: 5ex;
+    margin-bottom: 3ex;
+}
+
+.heading {
+    margin-bottom: 2ex;
+}
+
+ul {
+    margin-bottom: 3ex;
+}
+
+li:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}

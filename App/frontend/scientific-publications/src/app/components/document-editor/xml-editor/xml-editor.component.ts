@@ -23,6 +23,7 @@ export class XmlEditorComponent implements OnInit {
   @Input() template: string;
   @Input() documentValid: boolean;
   @Input() logMessage: string;
+  @Input() contentToUpdate: string;
 
   @Output() validationEvent = new EventEmitter();
 
@@ -33,6 +34,10 @@ export class XmlEditorComponent implements OnInit {
     this.logMessage = '';
     this.themes = ['monokai', 'eclipse', 'cobalt'];
     this.selectedTheme = this.themes[0];
+
+    if(this.contentToUpdate != null) {
+      this.xmlContent = this.contentToUpdate;
+    }
   }
 
   textChanged() {

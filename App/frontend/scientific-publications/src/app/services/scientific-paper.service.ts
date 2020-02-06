@@ -36,4 +36,8 @@ export class ScientificPaperService {
     });
   }
 
+  getPaperById(id: string): Observable<any> {
+    return this.http.get(`api/scientific-paper/${id}`);
+  }
+
 }

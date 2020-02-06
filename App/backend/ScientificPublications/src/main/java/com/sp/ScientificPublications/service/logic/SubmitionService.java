@@ -144,12 +144,12 @@ public class SubmitionService {
         Model model = ModelFactory.createDefaultModel();
 
         // DATE CREATED
-        model.createResource(SparqlUtil.SUBJECT_URI + "/submition/" + submition.getId())
+        model.createResource(SparqlUtil.SUBJECT_URI + "/submition/" + submition.getPaperId())
                 .addProperty(new PropertyImpl(SparqlUtil.PROPERTY_URI + "/dateCreated"),
                         utilityService.formatDate(submition.getDateCreated()));
 
         // STATUS
-        model.createResource(SparqlUtil.SUBJECT_URI + "/submition/" + submition.getId())
+        model.createResource(SparqlUtil.SUBJECT_URI + "/submition/" + submition.getPaperId())
                 .addProperty(new PropertyImpl(SparqlUtil.PROPERTY_URI + "/status"), submition.getStatus().toString());
 
         rdfRepository.saveModelToDb(model);
@@ -258,21 +258,31 @@ public class SubmitionService {
         }
     }
 
-    public void reviseSubmition(Long id, CreateSubmitionDTO revisedSubmitonDTO) {
+    public AuthorSubmitionDTO reviseSubmition(Long id, CreateSubmitionDTO revisedSubmitonDTO) {
         Optional<Submition> optionalSubmition = submitionRepository.findById(id);
         if (optionalSubmition.isPresent()) {
             Submition submition = optionalSubmition.get();
             accessControlService.checkIfTransitionIsPossible(submition.getStatus(), SubmitionStatus.REVISED);
             submition.setStatus(SubmitionStatus.REVISED);
             submition.setDateRevised(new Date());
-            //TODO: SAVE REVISED DOCUMENT TO XML DATABASE
+
+            // updating scientific paper
+            DocumentDTO paperDTO = new DocumentDTO();
+            paperDTO.setDocumentId(submition.getPaperId());
+            paperDTO.setDocumentContent(revisedSubmitonDTO.getPaperContent());
+            scientificPaperService.storeScientificPaperAsDocument(paperDTO);
+            scientificPaperService.generateHtml(paperDTO.getDocumentId());
+            scientificPaperService.generatePdf(paperDTO.getDocumentId());
+
             //TODO: SEND REVISED NOTIFICATION EMAIL TO REVIEWERS AND EDITOR
             submition = submitionRepository.save(submition);
 
             Model model = ModelFactory.createDefaultModel();
-            model.createResource(SparqlUtil.SUBJECT_URI + "/submition/" + submition.getId())
+            model.createResource(SparqlUtil.SUBJECT_URI + "/submition/" + submition.getPaperId())
                     .addProperty(new PropertyImpl(SparqlUtil.PROPERTY_URI + "/dateRevised"), submition.getDateRevised().toString());
             rdfRepository.saveModelToDb(model);
+
+            return new AuthorSubmitionDTO(submition);
         } else {
             throw new ApiNotFoundException("Submition doesnt exist.");
         }
@@ -293,7 +303,7 @@ public class SubmitionService {
 
             // generate metadata and save to RDF
             Model model = ModelFactory.createDefaultModel();
-            model.createResource(SparqlUtil.SUBJECT_URI + "/submition/" + submition.getId())
+            model.createResource(SparqlUtil.SUBJECT_URI + "/submition/" + submition.getPaperId())
                     .addProperty(new PropertyImpl(SparqlUtil.PROPERTY_URI + "/datePublished"),
                             utilityService.formatDate(submition.getDatePublished()));
             rdfRepository.saveModelToDb(model);
@@ -362,7 +372,7 @@ public class SubmitionService {
             submition.setReviewersThatAddedReview(new HashSet<>());
             submitionRepository.save(submition);
         } else {
-            throw new ApiNotFoundException("Submition doesnt exist.");
+            throw new ApiNotFoundException("Submition doesn't exist.");
         }
     }
 }

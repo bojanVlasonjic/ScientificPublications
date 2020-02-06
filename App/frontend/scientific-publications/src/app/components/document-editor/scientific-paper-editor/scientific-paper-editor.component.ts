@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { DocumentDTO } from 'src/app/models/document-dto';
 import { ScientificPaperService } from 'src/app/services/scientific-paper.service';
 
@@ -14,6 +14,8 @@ export class ScientificPaperEditorComponent implements OnInit {
 
   documentValid: boolean;
   logMessage: string;
+
+  @Input() contentToUpdate: string;
 
   constructor(private scientfPaperSvc: ScientificPaperService) { }
 

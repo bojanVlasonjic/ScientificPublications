@@ -7,6 +7,7 @@ import { ReviewersService } from 'src/app/services/reviewers.service';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { Subscription } from 'rxjs';
 import { UploadService } from 'src/app/services/upload.service';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'app-pending-reviews',
@@ -31,6 +32,8 @@ export class PendingReviewsComponent implements OnInit, OnDestroy {
   private logMessage = '';
   private template = '';
 
+  private currentAuthor = null;
+
   private editorSubscription: Subscription;
 
   constructor(private submitionService: SubmitionService,
@@ -38,7 +41,8 @@ export class PendingReviewsComponent implements OnInit, OnDestroy {
               private scientificPaperService: ScientificPaperService,
               private sanitizer: DomSanitizer,
               private toaster: ToasterService,
-              private uploadSvc: UploadService) { }
+              private uploadSvc: UploadService,
+              private authService: AuthenticationService) { }
 
   ngOnInit() {
     this.editorSubscription = this.uploadSvc.getEditorContent().subscribe(

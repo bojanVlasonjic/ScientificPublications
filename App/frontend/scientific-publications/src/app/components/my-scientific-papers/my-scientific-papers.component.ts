@@ -84,9 +84,11 @@ export class MyScientificPapersComponent implements OnInit {
 
   updateSubmition(submition: any) {
 
-    for(let i = 0; i < this.submitions.length; i++) {
-      if(this.submitions[i].submitionId == submition.submitionId) {
-        this.submitions[i] = submition;
+    if(submition != null) {
+      for(let i = 0; i < this.submitions.length; i++) {
+        if(this.submitions[i].submitionId == submition.submitionId) {
+          this.submitions[i] = submition;
+        }
       }
     }
 

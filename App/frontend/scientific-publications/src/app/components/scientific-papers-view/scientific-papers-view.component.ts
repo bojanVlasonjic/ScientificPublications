@@ -3,6 +3,8 @@ import { SubmitionService } from 'src/app/services/submition.service';
 import { SubmitionViewDto } from 'src/app/models/submitions/submition-view-dto.model';
 import { ToasterService } from 'src/app/services/toaster.service';
 import { environment } from 'src/environments/environment';
+import { SearchParams } from 'src/app/models/search-params.model';
+import { ScientificPaperService } from 'src/app/services/scientific-paper.service';
 
 @Component({
   selector: 'app-scientific-papers-view',
@@ -12,20 +14,22 @@ import { environment } from 'src/environments/environment';
 export class ScientificPapersViewComponent implements OnInit {
 
   publishedPapers: Array<SubmitionViewDto>;
+  searchParams: SearchParams;
 
   paperToDownload: SubmitionViewDto;
   downloadPopUpDisplayed: boolean;
 
   constructor(
-    private submitionSvc: SubmitionService,
+    private scientificPaperSvc: ScientificPaperService,
     private toastSvc: ToasterService
     ) { 
     this.publishedPapers = [];
     this.downloadPopUpDisplayed = false;
+    this.searchParams = new SearchParams();
   }
 
   ngOnInit() {
-    this.submitionSvc.getPublishedSubmitions().subscribe(
+    this.scientificPaperSvc.searchScientificPapers(this.searchParams).subscribe(
       data => {
         this.publishedPapers = data;
       },

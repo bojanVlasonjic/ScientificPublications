@@ -39,7 +39,8 @@
         <tr *ngFor="let sub of myAcceptedSubmitions" @fadeIn>
             <td>{{sub.paperTitle}}</td>
             <td>{{sub.author.firstname}} {{sub.author.lastname}}</td>
-            <td>{{sub.status}}</td>
+            <td [ngClass]="{'published-status' : sub.status == 'PUBLISHED',
+            'reviewed-status' : sub.status == 'REVIEWED', 'rejected-status' : sub.status == 'REJECTED'}">{{sub.status}}</td>
             <td><a [href]="getSanitizedURL('http://localhost:8081/api/scientific-paper/view/' + sub.paperId)" [attr.target]="'_blank'"><button>View</button></a></td>
             <td><a [href]="getSanitizedURL('http://localhost:8081/api/scientific-paper/download/xml/' + sub.paperId)" [attr.target]="'_blank'"><button>XML</button></a></td>
             <td><a [href]="getSanitizedURL('http://localhost:8081/api/scientific-paper/download/html/' + sub.paperId)" [attr.target]="'_blank'"><button>HTML</button></a></td>

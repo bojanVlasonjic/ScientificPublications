@@ -122,16 +122,25 @@ body {
 
 .published-status {
     color: rgb(32, 90, 34);
+    font-weight: 700;
 }
 
 .reviewed-status {
     color: rgb(28, 87, 97);
+    font-weight: 700;
+}
+
+.rejected-status {
+    color: rgb(97, 28, 28);
+    font-weight: 700;
 }
 
 .accepted-request {
     color: rgb(32, 90, 34);
+    font-weight: 700;
 }
 
 .declined-request {
     color: rgb(90, 32, 32);
+    font-weight: 700;
 }

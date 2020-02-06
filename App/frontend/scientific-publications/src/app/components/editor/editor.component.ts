@@ -50,7 +50,17 @@ export class EditorComponent implements OnInit {
   }
 
   startReviewForSubmition(): void {
-    
+    this.editorService.startReviewForSubmition(this.selectedPaper.id).subscribe(
+      data => {
+        this.getAllSubmitions();
+        this.removeSelections();
+        console.log(data);
+      },
+      error => {
+        this.toaster.showMessage("Review", "Can not start review without reviewers");
+        console.log(error);
+      }
+    )
   }
 
   acceptSubmition(): void {
@@ -68,11 +78,29 @@ export class EditorComponent implements OnInit {
   }
 
   requestRevisionsSubmition(): void {
-
+    this.editorService.requestRevisionsSubmition(this.selectedPaper.id).subscribe(
+      data => {
+        this.getAllSubmitions();
+        this.removeSelections();
+        console.log(data);
+      },
+      error => {
+        console.log(error);
+      }
+    );
   }
 
   rejectSubmition(): void {
-
+    this.editorService.rejectSubmition(this.selectedPaper.id).subscribe(
+      data => {
+        this.removeSelections();
+        this.getAllSubmitions();
+        console.log(data);
+      },
+      error => {
+        console.log(error);
+      }
+    )
   }
 
   selectPaper(paper) {
@@ -100,6 +128,10 @@ export class EditorComponent implements OnInit {
           console.log(error);
         }
       )
+    }
+
+    else if (paper != null && paper.status == "IN_REVIEW_PROCESS") {
+      this.getRequestReviewers();
     }
 
     else {

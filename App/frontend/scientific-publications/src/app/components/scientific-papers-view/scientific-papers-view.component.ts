@@ -29,9 +29,15 @@ export class ScientificPapersViewComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.searchSP();
+  }
+
+  searchSP() {
+    console.log(this.searchParams);
     this.scientificPaperSvc.searchScientificPapers(this.searchParams).subscribe(
       data => {
         this.publishedPapers = data;
+        console.log(data);
       },
       err => {
         this.toastSvc.showErrorMessage(err);

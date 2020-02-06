@@ -1,9 +1,7 @@
 <div class="container">
-    
-
     <h2 class="heading" style="font-weight: 600;"> Published papers </h2> 
 
-    <div *ngIf="publishedPapers.length > 0" class="d-flex justify-content-center" style="margin-top:20px;margin-bottom:40px;">
+    <div class="d-flex justify-content-center" style="margin-top:20px;margin-bottom:40px;">
         <div>
             <input placeholder="Simple Search" [(ngModel)]="searchParams.query" class="search-input" /><br>
             <input placeholder="Date created" [(ngModel)]="searchParams.dateCreated" class="search-input" /><br>
@@ -11,7 +9,7 @@
             <input placeholder="Date published" [(ngModel)]="searchParams.datePublished" class="search-input" /><br>
             <input placeholder="Status" [(ngModel)]="searchParams.status" class="search-input" /><br>
             <input placeholder="Custom metadata" [(ngModel)]="searchParams.customMetadata" class="search-input" /><br>
-            <button class="search-button">Search</button>
+            <button class="search-button" (click)="searchSP()">Search</button>
         </div>
     </div>
 

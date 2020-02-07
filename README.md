@@ -39,7 +39,7 @@ Unregistered users can view and search published papers, and download them in xm
 # Getting started
 - Firstly clone this repository. Open your command prompt and paste the following command: 'git clone https://github.com/bojanVlasonjic/ScientificPublications.git'
 - The next step would be to configure the database. I have created a separate heading called 'Database' that guides you through the process.
-- Starting the spring boot server: I would recommend opening the project with 'eclipse' or 'intelliJ'. Open the App/Backend/ScientificPublications project. Open the MBookingApplication class and run it.
+- Starting the spring boot server: I would recommend opening the project with 'eclipse' or 'intelliJ'. Open the App/Backend/ScientificPublications project. Open the ScientificPublicationsApplication class and run it.
 - Starting angular: Hopefully you have npm and angular cli installed. If that's the case open App/Backend/Scientific publications folder. Open the command line and run 'npm start'. If the project won't start, try running 'npm install' and 'npm update'.
 - After you have started the servers, you may open your browser and navigate to localhost:4200 to view the web app.
 
